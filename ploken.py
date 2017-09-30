@@ -4,13 +4,15 @@ from ply import lex as lex
 
 # Tuple of token names.
 tokens = (
-   'NUMBER',
-   'PLUS',
-   'MINUS',
-   'TIMES',
-   'DIVIDE',
-   'LPAREN',
-   'RPAREN',
+    'NUMBER',
+    'PLUS',
+    'MINUS',
+    'TIMES',
+    'DIVIDE',
+    'EQUALS',
+    'LPAREN',
+    'RPAREN',
+    'VAR'
 )
 
 # Regular expression rules for simple tokens
@@ -18,8 +20,10 @@ t_PLUS = r'\+'
 t_MINUS = r'-'
 t_TIMES = r'\*'
 t_DIVIDE = r'/'
+t_EQUALS = r'='
 t_LPAREN = r'\('
 t_RPAREN = r'\)'
+t_VAR = r'[a-zA-Z] [a-zA-Z0-9]*'
 
 
 # A regular expression rule with some action code
@@ -49,10 +53,7 @@ lexer = lex.lex()
 
 # função para testes do analisador léxico
 def main():
-    ficheiro = ''
-    fd = open('r', ficheiro)
-    data = fd.readlines()
-    fd.close()
+    data = input()
 
     global lexer
     lexer.input(data)
