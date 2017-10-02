@@ -4,7 +4,8 @@ from ply import lex as lex
 
 # Tuple of token names.
 tokens = (
-    'NUMBER',
+    'INT',
+    'FLOAT',
     'PLUS',
     'MINUS',
     'TIMES',
@@ -26,8 +27,15 @@ t_RPAREN = r'\)'
 t_VAR = r'[a-zA-Z] [a-zA-Z0-9]*'
 
 
-# A regular expression rule with some action code
-def t_NUMBER(t):
+# regular expression rule to Float numbers
+def t_FLOAT(t):
+    r'\d + (\.\d +)?'
+    t.value = float(t.value)
+    return t
+
+
+# A regular expression rule to Int numbers
+def t_INT(t):
     r'\d+'
     t.value = int(t.value)
     return t
@@ -37,6 +45,7 @@ def t_NUMBER(t):
 def t_newline(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
+
 
 # A string containing ignored characters (spaces and tabs)
 t_ignore = ' \t'
