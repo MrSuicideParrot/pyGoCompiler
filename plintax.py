@@ -4,16 +4,32 @@ from ploken import tokens
 from ply import yacc as yacc
 
 
+precedence = (
+    ('left', 'PLUS', 'MINUS'),
+    ('left', 'TIMES', 'DIVIDE'),
+)
+
+"""
+def p_assignment(p):
+    '''assignment : VAR EQUALS expression
+                  | VAR EQUALS INT
+                  | VAR EQUALS FLOAT'''
+
+    pass"""
+
+
 def p_expression(p):
-    '''expression: expression PLUS expression
-                 | expression MINUS expression
-                 | expression TIMES expression
-                 | expression DIVIDE expression
-                 | LPAREN expression RPAREN
-                 | PLUS NUMBER
-                 | MINUS NUMBER
-                 | NUMBER
-                 | FLOAT'''
+    '''expression : expression PLUS expression
+                  | expression MINUS expression
+                  | expression TIMES expression
+                  | expression DIVIDE expression
+                  | LPAREN expression RPAREN
+                  | PLUS INT
+                  | MINUS INT
+                  | PLUS FLOAT
+                  | MINUS FLOAT
+                  | INT
+                  | FLOAT'''
 
     if len(p) == 4:
         if p[2] == '+':
@@ -30,7 +46,6 @@ def p_expression(p):
         pass
 
 
-
 # Error rule for syntax errors
 def p_error(p):
     print("Syntax error in input!")
@@ -38,11 +53,17 @@ def p_error(p):
 # Build the parser
 parser = yacc.yacc()
 
-while True:
-   try:
-       s = input('calc > ')
-   except EOFError:
-       break
-   if not s: continue
-   result = parser.parse(s)
-   print(result)
+
+def main():
+    while True:
+        try:
+            s = input('calc > ')
+        except EOFError:
+            break
+        if not s:
+            continue
+        result = parser.parse(s)
+        print(result)
+
+if __name__ == '__main__':
+    main()

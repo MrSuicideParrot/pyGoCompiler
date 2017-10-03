@@ -29,7 +29,7 @@ t_VAR = r'[a-zA-Z] [a-zA-Z0-9]*'
 
 # regular expression rule to Float numbers
 def t_FLOAT(t):
-    r'\d + (\.\d +)?'
+    r'\d + \.\d+'
     t.value = float(t.value)
     return t
 
