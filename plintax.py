@@ -1,54 +1,74 @@
 # -*- coding: utf-8 -*-
 
-from ploken import tokens
+from ploken import tokens, lexer
 from ply import yacc as yacc
-
 
 precedence = (
     ('left', 'PLUS', 'MINUS'),
     ('left', 'TIMES', 'DIVIDE'),
+    ('right', 'UMINUS'),
 )
+
+# variaveis = {}
 
 """
 def p_assignment(p):
-    '''assignment : VAR EQUALS expression
-                  | VAR EQUALS INT
-                  | VAR EQUALS FLOAT'''
-
-    pass"""
+    '''assignment : VAR EQUALS expression'''
+    variaveis[p[1]] = p[3]
+"""
 
 
-def p_expression(p):
+def p_expression_binop(p):
     '''expression : expression PLUS expression
                   | expression MINUS expression
                   | expression TIMES expression
-                  | expression DIVIDE expression
-                  | LPAREN expression RPAREN
-                  | PLUS INT
-                  | MINUS INT
-                  | PLUS FLOAT
-                  | MINUS FLOAT
-                  | INT
-                  | FLOAT'''
+                  | expression DIVIDE expression'''
 
-    if len(p) == 4:
-        if p[2] == '+':
-            p[0] = p[1] + p[3]
-        elif p[2] == '-':
-            p[0] = p[1] - p[3]
-        elif p[2] == '*':
-            p[0] = p[1] * p[3]
-        elif p[2] == '/':
-            p[0] = p[1] / p[3]
-        else:
-            p[0] = p[2]
-    elif len(p) == 3:
-        pass
+    if p[2] == '+':
+        p[0] = p[1] + p[3]
+    elif p[2] == '-':
+        p[0] = p[1] - p[3]
+    elif p[2] == '*':
+        p[0] = p[1] * p[3]
+    elif p[2] == '/':
+        p[0] = p[1] / p[3]
+
+
+def p_expression_inverse(p):
+    'expression : MINUS expression %prec UMINUS'
+    p[0] = -p[1]
+
+
+def p_expression_int(p):
+    'expression : INT'
+    p[0] = p[1]
+
+
+def p_expression_float(p):
+    'expression : FLOAT'
+    p[0] = p[1]
+
+
+def p_expression_group(p):
+    'expression : LPAREN expression RPAREN'
+    p[0] = p[2]
+
+
+"""
+def p_expression_var(p):
+    'expression : VAR'
+    try:
+        p[0] = variaveis[p[1]]
+    except LookupError:
+        print("Undifened valua")
+        p[0] = 0
+"""
 
 
 # Error rule for syntax errors
 def p_error(p):
-    print("Syntax error in input!")
+    print(p)
+
 
 # Build the parser
 parser = yacc.yacc()
@@ -64,6 +84,7 @@ def main():
             continue
         result = parser.parse(s)
         print(result)
+
 
 if __name__ == '__main__':
     main()
