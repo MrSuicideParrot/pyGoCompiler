@@ -2,8 +2,37 @@
 
 from ply import lex as lex
 
+#words reserved to the go language
+reservedw = {
+    'break' : 'BREAK',
+    'case' : 'CASE',
+    'chan' : 'CHAN',
+    'const' : 'CONST',
+    'continue' : 'CONTINUE',
+    'default' : 'DEFAULT',
+    'defer' : 'DEFER',
+    'else' : 'ELSE',
+    'fallthrough' : 'FALLTHROUGH',
+    'for' : 'FOR',
+    'func' : 'FUNC',
+    'go' : 'GO',
+    'goto' : 'GOTO',
+    'if' : 'IF',
+    'import' : 'IMPORT',
+    'interface' : 'INTERFACE',
+    'map' : 'MAP',
+    'package' : 'PACKAGE',
+    'range' : 'RANGE',
+    'return' : 'RETURN',
+    'select' : 'SELECT',
+    'struct' : 'STRUCT',
+    'switch' : 'SWITCH',
+    'type' : 'TYPE',
+    'var' : 'VAR'
+}
+
 # Tuple of token names.
-tokens = (
+tokens = [
     'INT',
     'FLOAT',
     'PLUS',
@@ -13,8 +42,9 @@ tokens = (
     'EQUALS',
     'LPAREN',
     'RPAREN',
-    'VAR'
-)
+    'VARIABLE',
+    'ID'
+] + list(reservedw.values())
 
 # Regular expression rules for simple tokens
 t_PLUS = r'\+'
@@ -24,7 +54,7 @@ t_DIVIDE = r'/'
 t_EQUALS = r'='
 t_LPAREN = r'\('
 t_RPAREN = r'\)'
-t_VAR = r'[a-zA-Z] [a-zA-Z0-9]*'
+t_VARIABLE = r'[a-zA-Z] [a-zA-Z0-9]*'
 
 
 # regular expression rule to Float numbers
@@ -46,6 +76,10 @@ def t_newline(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
 
+def t_ID(t):
+    r'[a-zA-Z_][a-zA-Z_0-9]*'
+    t.type = reservedw.get(t.value,'ID') #check for reserved words
+    return t
 
 # A string containing ignored characters (spaces and tabs)
 t_ignore = ' \t'
