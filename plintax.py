@@ -81,6 +81,7 @@ def main():
         try:
             s = input('calc > ')
         except EOFError:
+            print()
             break
         if not s:
             continue
