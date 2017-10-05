@@ -42,7 +42,7 @@ tokens = [
     'EQUALS',
     'LPAREN',
     'RPAREN',
-    'VARIABLE',
+  #  'VARIABLE',
     'ID'
 ] + list(reservedw.values())
 
@@ -54,7 +54,7 @@ t_DIVIDE = r'/'
 t_EQUALS = r'='
 t_LPAREN = r'\('
 t_RPAREN = r'\)'
-t_VARIABLE = r'[a-zA-Z] [a-zA-Z0-9]*'
+#t_VARIABLE = r'[a-zA-Z] [a-zA-Z0-9]*'
 
 
 # regular expression rule to Float numbers

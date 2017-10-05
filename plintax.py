@@ -9,13 +9,16 @@ precedence = (
     ('right', 'UMINUS'),
 )
 
-# variaveis = {}
+variaveis = {}
 
-"""
-def p_assignment(p):
-    '''assignment : VAR EQUALS expression'''
+def p_statement_assignment(p):
+    '''statement : ID EQUALS expression'''
     variaveis[p[1]] = p[3]
-"""
+
+
+def p_statement_expr(t):
+    'statement : expression'
+    print(t[1])
 
 
 def p_expression_binop(p):
@@ -54,15 +57,14 @@ def p_expression_group(p):
     p[0] = p[2]
 
 
-"""
 def p_expression_var(p):
-    'expression : VAR'
+    'expression : ID'
     try:
         p[0] = variaveis[p[1]]
     except LookupError:
         print("Undifened valua")
         p[0] = 0
-"""
+
 
 
 # Error rule for syntax errors
@@ -83,7 +85,8 @@ def main():
         if not s:
             continue
         result = parser.parse(s)
-        print(result)
+        if result is not None:
+            print(result)
 
 
 if __name__ == '__main__':
