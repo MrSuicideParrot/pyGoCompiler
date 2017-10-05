@@ -43,7 +43,8 @@ tokens = [
     'LPAREN',
     'RPAREN',
   #  'VARIABLE',
-    'ID'
+    'ID',
+    'COMMENT'
 ] + list(reservedw.values())
 
 # Regular expression rules for simple tokens
@@ -80,6 +81,10 @@ def t_ID(t):
     r'[a-zA-Z_][a-zA-Z_0-9]*'
     t.type = reservedw.get(t.value,'ID') #check for reserved words
     return t
+
+def t_COMMENT(t):
+    r'//.*'
+    pass #token discarded
 
 # A string containing ignored characters (spaces and tabs)
 t_ignore = ' \t'
