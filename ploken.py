@@ -61,7 +61,7 @@ t_DIVIDE = r'/'
 t_EQUALS = r'='
 t_LPAREN = r'\('
 t_RPAREN = r'\)'
-t_STRING = r'\".*\"'
+#t_STRING = r'\".*\"'
 t_EQUALSTO = r'=='
 t_MORE = r'>'
 t_LESS = r'<'
@@ -97,6 +97,11 @@ def t_ID(t):
 def t_COMMENT(t):
     r'//.*'
     pass #token discarded
+
+def t_STRING(t):
+    r'\".*\"'
+    t.value = t.value[1:-1]
+    return t
 
 
 # A string containing ignored characters (spaces and tabs)
