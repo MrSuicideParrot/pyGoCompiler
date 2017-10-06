@@ -42,9 +42,15 @@ tokens = [
     'EQUALS',
     'LPAREN',
     'RPAREN',
-  #  'VARIABLE',
     'ID',
-    'COMMENT'
+    'COMMENT',
+    'STRING',
+    'EQUALSTO',
+    'MORE',
+    'LESS',
+    'MOREEQUAL',
+    'LESSEQUAL',
+    'NOTEQUAL'
 ] + list(reservedw.values())
 
 # Regular expression rules for simple tokens
@@ -55,7 +61,13 @@ t_DIVIDE = r'/'
 t_EQUALS = r'='
 t_LPAREN = r'\('
 t_RPAREN = r'\)'
-#t_VARIABLE = r'[a-zA-Z] [a-zA-Z0-9]*'
+t_STRING = r'\".*\"'
+t_EQUALSTO = r'=='
+t_MORE = r'>'
+t_LESS = r'<'
+t_MOREEQUAL = r'>='
+t_LESSEQUAL = r'<='
+t_NOTEQUAL = r'!='
 
 
 # regular expression rule to Float numbers
@@ -85,6 +97,7 @@ def t_ID(t):
 def t_COMMENT(t):
     r'//.*'
     pass #token discarded
+
 
 # A string containing ignored characters (spaces and tabs)
 t_ignore = ' \t'
