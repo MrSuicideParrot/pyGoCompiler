@@ -2,6 +2,14 @@ Created by PLY version 3.10 (http://www.dabeaz.com/ply)
 
 Unused terminals:
 
+    COMMENT
+    STRING
+    EQUALSTO
+    MORE
+    LESS
+    MOREEQUAL
+    LESSEQUAL
+    NOTEQUAL
     BREAK
     CASE
     CHAN
@@ -48,6 +56,7 @@ Terminals, with rules where they appear
 BREAK                : 
 CASE                 : 
 CHAN                 : 
+COMMENT              : 
 CONST                : 
 CONTINUE             : 
 DEFAULT              : 
@@ -55,6 +64,7 @@ DEFER                :
 DIVIDE               : 6
 ELSE                 : 
 EQUALS               : 1
+EQUALSTO             : 
 FALLTHROUGH          : 
 FLOAT                : 9
 FOR                  : 
@@ -66,15 +76,21 @@ IF                   :
 IMPORT               : 
 INT                  : 8
 INTERFACE            : 
+LESS                 : 
+LESSEQUAL            : 
 LPAREN               : 10
 MAP                  : 
 MINUS                : 4 7
+MORE                 : 
+MOREEQUAL            : 
+NOTEQUAL             : 
 PACKAGE              : 
 PLUS                 : 3
 RANGE                : 
 RETURN               : 
 RPAREN               : 10
 SELECT               : 
+STRING               : 
 STRUCT               : 
 SWITCH               : 
 TIMES                : 5
