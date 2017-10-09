@@ -2,7 +2,7 @@
 
 from ploken import tokens, lexer
 from ply import yacc as yacc
-import tree
+from tree import *
 
 precedence = (
     ('left', 'PLUS', 'MINUS'),
@@ -14,12 +14,17 @@ variaveis = {}
 
 def p_statement_assignment(p):
     '''statement : ID EQUALS expression'''
-    p[0]=tree.Assignment('=',p[1],p[3])
+    #p[0]=tree.Assignment('=',p[1],p[3])
+    pass
 
+"""def p_expr_list(p):
+    '''expression : expression
+                  |expression expr_list'''
+    pass"""
 
 def p_statement_expr(t):
     'statement : expression'
-    print(t[1])
+    print(Expr.eval(t[1]))
 
 
 def p_expression_binop(p):
@@ -29,38 +34,38 @@ def p_expression_binop(p):
                   | expression DIVIDE expression'''
 
     if p[2] == '+':
-        p[0] = tree.Expession('+',p[1],p[3])
+        p[0] = Expr_oper('+',p[1],p[3])
     elif p[2] == '-':
-        p[0] = tree.Expession('-',p[1],p[3])
+        p[0] = Expr_oper('-',p[1],p[3])
     elif p[2] == '*':
-        p[0] = tree.Expession('*',p[1],p[3])
+        p[0] = Expr_oper('*',p[1],p[3])
     elif p[2] == '/':
-        p[0] = tree.Expession('/',p[1],p[3])
+        p[0] = Expr_oper('/',p[1],p[3])
 
 
 def p_expression_inverse(p):
     'expression : MINUS expression %prec UMINUS'
-    p[0] = tree.Expession('-',left=None, right=p[2])
+    p[0] = Expr_number('-',left=None, right=p[2])
 
 
 def p_expression_int(p):
     'expression : INT'
-    p[0] = tree.INT(p[1].value)
+    p[0] = Expr_number(p[1])
 
 
 def p_expression_float(p):
     'expression : FLOAT'
-    p[0] = tree.FLOAT(p[1].value)
+    p[0] = Expr_number(p[1])
 
 
 def p_expression_group(p):
     'expression : LPAREN expression RPAREN'
-    p[0] = tree.Expession(p[2],tree.LPAREN(),tree.RPAREN)
-
+    #p[0] = Expr_number(p[2],tree.LPAREN(),tree.RPAREN)
+    pass
 
 def p_expression_var(p):
     'expression : ID'
-    p[0]= tree.ID(p[1].value)
+    p[0]= Expr_number(p[1].value)
 
 
 
@@ -74,17 +79,23 @@ parser = yacc.yacc()
 
 
 def main():
-    while True:
-        try:
-            s = input('calc > ')
-        except EOFError:
-            print()
-            break
-        if not s:
-            continue
-        result = parser.parse(s)
-        if result is not None:
-            print(result)
+    file = True
+    if not file:
+        while True:
+            try:
+                s = input('calc > ')
+            except EOFError:
+                print()
+                break
+            if not s:
+                continue
+            result = parser.parse(s)
+            if result is not None:
+                print(result)
+    else:
+        fd = open("exemplo1.txt","r")
+        result = parser.parse(fd.readlines())
+
 
 
 if __name__ == '__main__':
