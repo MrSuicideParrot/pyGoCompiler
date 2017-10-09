@@ -12,19 +12,32 @@ precedence = (
 
 variaveis = {}
 
+
+
+""""
 def p_statement_assignment(p):
     '''statement : ID EQUALS expression'''
     #p[0]=tree.Assignment('=',p[1],p[3])
-    pass
-
-"""def p_expr_list(p):
-    '''expression : expression
-                  |expression expr_list'''
     pass"""
 
+
+
+
+
 def p_statement_expr(t):
-    'statement : expression'
-    print(Expr.eval(t[1]))
+    'statement : expr_list'
+    for expr in t[1]:
+        print(Expr.eval(expr))
+
+
+def p_expr_list(p):
+    '''expr_list : expression
+                 | expression expr_list'''
+    if len(p) == 2:
+        p[0] = [p[1]]
+    else:
+        p[0] = [p[1]] + p[2]
+
 
 
 def p_expression_binop(p):
@@ -57,16 +70,17 @@ def p_expression_float(p):
     'expression : FLOAT'
     p[0] = Expr_number(p[1])
 
-
+"""
 def p_expression_group(p):
     'expression : LPAREN expression RPAREN'
     #p[0] = Expr_number(p[2],tree.LPAREN(),tree.RPAREN)
     pass
+"""
+
 
 def p_expression_var(p):
     'expression : ID'
     p[0]= Expr_number(p[1].value)
-
 
 
 # Error rule for syntax errors
@@ -93,9 +107,8 @@ def main():
             if result is not None:
                 print(result)
     else:
-        fd = open("exemplo1.txt","r")
-        result = parser.parse(fd.readlines())
-
+        fd = open("exemplo1.txt", "r")
+        parser.parse(''.join(fd.readlines()))
 
 
 if __name__ == '__main__':
