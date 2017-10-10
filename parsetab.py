@@ -5,9 +5,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'leftPLUSMINUSleftTIMESDIVIDErightUMINUSINT FLOAT PLUS MINUS TIMES DIVIDE EQUALS LPAREN RPAREN ID COMMENT STRING EQUALSTO MORE LESS MOREEQUAL LESSEQUAL NOTEQUAL BREAK CASE CHAN CONST CONTINUE DEFAULT DEFER ELSE FALLTHROUGH FOR FUNC GO GOTO IF IMPORT INTERFACE MAP PACKAGE RANGE RETURN SELECT STRUCT SWITCH TYPE VARstatement : expr_listexpr_list : expression\n                 | expression expr_listexpression : expression PLUS expression\n                  | expression MINUS expression\n                  | expression TIMES expression\n                  | expression DIVIDE expressionexpression : MINUS expression %prec UMINUSexpression : INTexpression : FLOATexpression : ID'
+_lr_signature = 'leftPLUSMINUSleftTIMESDIVIDErightUMINUSINT FLOAT PLUS MINUS TIMES DIVIDE EQUALS LPAREN RPAREN ID COMMENT STRING EQUALSTO MORE LESS MOREEQUAL LESSEQUAL NOTEQUAL BREAK CASE CHAN CONST CONTINUE DEFAULT DEFER ELSE FALLTHROUGH FOR FUNC GO GOTO IF IMPORT INTERFACE MAP PACKAGE RANGE RETURN SELECT STRUCT SWITCH TYPE VARstatement : expr_listexpr_list : expression\n                 | expression expr_listexpression : expression PLUS expression\n                  | expression MINUS expression\n                  | expression TIMES expression\n                  | expression DIVIDE expressionexpression : MINUS expression %prec UMINUSexpression : INTexpression : FLOATexpression : LPAREN expression RPARENexpression : ID'
     
-_lr_action_items = {'MINUS':([0,3,4,5,6,7,9,10,11,12,13,14,15,16,17,18,19,],[4,10,4,-9,-10,-11,4,4,4,4,-8,-4,-5,-6,-7,4,-5,]),'INT':([0,3,4,5,6,7,9,10,11,12,13,14,15,16,17,18,19,],[5,5,5,-9,-10,-11,5,5,5,5,-8,-4,-5,-6,-7,5,-5,]),'FLOAT':([0,3,4,5,6,7,9,10,11,12,13,14,15,16,17,18,19,],[6,6,6,-9,-10,-11,6,6,6,6,-8,-4,-5,-6,-7,6,-5,]),'ID':([0,3,4,5,6,7,9,10,11,12,13,14,15,16,17,18,19,],[7,7,7,-9,-10,-11,7,7,7,7,-8,-4,-5,-6,-7,7,-5,]),'$end':([1,2,3,5,6,7,8,13,14,15,16,17,19,],[0,-1,-2,-9,-10,-11,-3,-8,-4,-5,-6,-7,-5,]),'PLUS':([3,5,6,7,13,14,15,16,17,19,],[9,-9,-10,-11,-8,-4,-5,-6,-7,-5,]),'TIMES':([3,5,6,7,13,14,15,16,17,19,],[11,-9,-10,-11,-8,11,11,-6,-7,11,]),'DIVIDE':([3,5,6,7,13,14,15,16,17,19,],[12,-9,-10,-11,-8,12,12,-6,-7,12,]),}
+_lr_action_items = {'MINUS':([0,3,4,5,6,7,8,10,11,12,13,14,15,16,17,18,19,20,21,22,],[4,11,4,-9,-10,4,-12,4,4,4,4,-8,20,-4,-5,-6,-7,4,-11,-5,]),'INT':([0,3,4,5,6,7,8,10,11,12,13,14,16,17,18,19,20,21,22,],[5,5,5,-9,-10,5,-12,5,5,5,5,-8,-4,-5,-6,-7,5,-11,-5,]),'FLOAT':([0,3,4,5,6,7,8,10,11,12,13,14,16,17,18,19,20,21,22,],[6,6,6,-9,-10,6,-12,6,6,6,6,-8,-4,-5,-6,-7,6,-11,-5,]),'LPAREN':([0,3,4,5,6,7,8,10,11,12,13,14,16,17,18,19,20,21,22,],[7,7,7,-9,-10,7,-12,7,7,7,7,-8,-4,-5,-6,-7,7,-11,-5,]),'ID':([0,3,4,5,6,7,8,10,11,12,13,14,16,17,18,19,20,21,22,],[8,8,8,-9,-10,8,-12,8,8,8,8,-8,-4,-5,-6,-7,8,-11,-5,]),'$end':([1,2,3,5,6,8,9,14,16,17,18,19,21,22,],[0,-1,-2,-9,-10,-12,-3,-8,-4,-5,-6,-7,-11,-5,]),'PLUS':([3,5,6,8,14,15,16,17,18,19,21,22,],[10,-9,-10,-12,-8,10,-4,-5,-6,-7,-11,-5,]),'TIMES':([3,5,6,8,14,15,16,17,18,19,21,22,],[12,-9,-10,-12,-8,12,12,12,-6,-7,-11,12,]),'DIVIDE':([3,5,6,8,14,15,16,17,18,19,21,22,],[13,-9,-10,-12,-8,13,13,13,-6,-7,-11,13,]),'RPAREN':([5,6,8,14,15,16,18,19,21,22,],[-9,-10,-12,-8,21,-4,-6,-7,-11,-5,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -16,7 +16,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'statement':([0,],[1,]),'expr_list':([0,3,],[2,8,]),'expression':([0,3,4,9,10,11,12,18,],[3,3,13,14,15,16,17,19,]),}
+_lr_goto_items = {'statement':([0,],[1,]),'expr_list':([0,3,],[2,9,]),'expression':([0,3,4,7,10,11,12,13,20,],[3,3,14,15,16,17,18,19,22,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -26,15 +26,16 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> statement","S'",1,None,None,None),
-  ('statement -> expr_list','statement',1,'p_statement_expr','plintax.py',25),
-  ('expr_list -> expression','expr_list',1,'p_expr_list','plintax.py',30),
-  ('expr_list -> expression expr_list','expr_list',2,'p_expr_list','plintax.py',31),
-  ('expression -> expression PLUS expression','expression',3,'p_expression_binop','plintax.py',40),
-  ('expression -> expression MINUS expression','expression',3,'p_expression_binop','plintax.py',41),
-  ('expression -> expression TIMES expression','expression',3,'p_expression_binop','plintax.py',42),
-  ('expression -> expression DIVIDE expression','expression',3,'p_expression_binop','plintax.py',43),
-  ('expression -> MINUS expression','expression',2,'p_expression_inverse','plintax.py',56),
-  ('expression -> INT','expression',1,'p_expression_int','plintax.py',61),
-  ('expression -> FLOAT','expression',1,'p_expression_float','plintax.py',66),
-  ('expression -> ID','expression',1,'p_expression_var','plintax.py',76),
+  ('statement -> expr_list','statement',1,'p_statement_expr','plintax.py',28),
+  ('expr_list -> expression','expr_list',1,'p_expr_list','plintax.py',34),
+  ('expr_list -> expression expr_list','expr_list',2,'p_expr_list','plintax.py',35),
+  ('expression -> expression PLUS expression','expression',3,'p_expression_binop','plintax.py',44),
+  ('expression -> expression MINUS expression','expression',3,'p_expression_binop','plintax.py',45),
+  ('expression -> expression TIMES expression','expression',3,'p_expression_binop','plintax.py',46),
+  ('expression -> expression DIVIDE expression','expression',3,'p_expression_binop','plintax.py',47),
+  ('expression -> MINUS expression','expression',2,'p_expression_inverse','plintax.py',60),
+  ('expression -> INT','expression',1,'p_expression_int','plintax.py',65),
+  ('expression -> FLOAT','expression',1,'p_expression_float','plintax.py',70),
+  ('expression -> LPAREN expression RPAREN','expression',3,'p_expression_group','plintax.py',74),
+  ('expression -> ID','expression',1,'p_expression_var','plintax.py',79),
 ]

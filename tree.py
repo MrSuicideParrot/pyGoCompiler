@@ -41,3 +41,9 @@ class Expr_oper(Expr):
         self.left = left
         self.right = right
         self.type = "OPERATION"
+
+class Expr_id(Expr):
+    def __init__(self, name, valueArray):
+        self.name = name
+        self.valueArray = valueArray
+        self.type = 'ID'

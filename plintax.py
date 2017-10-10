@@ -48,7 +48,7 @@ def p_expression_binop(p):
 
     if p[2] == '+':
         p[0] = Expr_oper('+',p[1],p[3])
-    elif p[2] == '-':
+    elif p[2] == '-':                   #----->falar prof
         p[0] = Expr_oper('-',p[1],p[3])
     elif p[2] == '*':
         p[0] = Expr_oper('*',p[1],p[3])
@@ -70,18 +70,16 @@ def p_expression_float(p):
     'expression : FLOAT'
     p[0] = Expr_number(p[1])
 
-"""
 def p_expression_group(p):
     'expression : LPAREN expression RPAREN'
-    #p[0] = Expr_number(p[2],tree.LPAREN(),tree.RPAREN)
-    pass
+    p[0] = p[2]
+#----> falar prof
+
 """
-
-
 def p_expression_var(p):
     'expression : ID'
-    p[0]= Expr_number(p[1].value)
-
+    p[0]= Expr_id(p[1].value, variaveis) 
+"""
 
 # Error rule for syntax errors
 def p_error(p):
@@ -93,7 +91,7 @@ parser = yacc.yacc()
 
 
 def main():
-    file = True
+    file = False
     if not file:
         while True:
             try:
