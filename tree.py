@@ -34,7 +34,6 @@ class Expr_number(Expr):
         self.value = value
         self.type = "NUMBER"
 
-
 class Expr_oper(Expr):
     def __init__(self, operator, left, right):
         self.operator = operator

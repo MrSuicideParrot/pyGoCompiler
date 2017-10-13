@@ -48,7 +48,7 @@ def p_expression_binop(p):
 
     if p[2] == '+':
         p[0] = Expr_oper('+',p[1],p[3])
-    elif p[2] == '-':                   #----->falar prof
+    elif p[2] == '-':
         p[0] = Expr_oper('-',p[1],p[3])
     elif p[2] == '*':
         p[0] = Expr_oper('*',p[1],p[3])
@@ -58,8 +58,7 @@ def p_expression_binop(p):
 
 def p_expression_inverse(p):
     'expression : MINUS expression %prec UMINUS'
-    p[0] = Expr_number('-',left=None, right=p[2])
-
+    p[0] = Expr_number(-(p[2].value))
 
 def p_expression_int(p):
     'expression : INT'
@@ -73,13 +72,11 @@ def p_expression_float(p):
 def p_expression_group(p):
     'expression : LPAREN expression RPAREN'
     p[0] = p[2]
-#----> falar prof
 
-"""
-def p_expression_var(p):
+'''def p_expression_var(p):
     'expression : ID'
-    p[0]= Expr_id(p[1].value, variaveis) 
-"""
+    p[0]= Expr_id(p[1], variaveis)
+'''
 
 # Error rule for syntax errors
 def p_error(p):
