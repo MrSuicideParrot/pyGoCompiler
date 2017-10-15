@@ -12,8 +12,6 @@ precedence = (
 
 variaveis = {}
 
-
-
 """"
 def p_statement_assignment(p):
     '''statement : ID EQUALS expression'''
@@ -21,13 +19,11 @@ def p_statement_assignment(p):
     pass"""
 
 
-
-
-
 def p_statement_expr(t):
     'statement : expr_list'
     for expr in t[1]:
-        print(Expr.eval(expr))
+        # print(Expr.eval(expr))
+        pprint(expr)
 
 
 def p_expr_list(p):
@@ -39,7 +35,6 @@ def p_expr_list(p):
         p[0] = [p[1]] + p[2]
 
 
-
 def p_expression_binop(p):
     '''expression : expression PLUS expression
                   | expression MINUS expression
@@ -47,18 +42,19 @@ def p_expression_binop(p):
                   | expression DIVIDE expression'''
 
     if p[2] == '+':
-        p[0] = Expr_oper('+',p[1],p[3])
+        p[0] = Expr_oper('+', p[1], p[3])
     elif p[2] == '-':
-        p[0] = Expr_oper('-',p[1],p[3])
+        p[0] = Expr_oper('-', p[1], p[3])
     elif p[2] == '*':
-        p[0] = Expr_oper('*',p[1],p[3])
+        p[0] = Expr_oper('*', p[1], p[3])
     elif p[2] == '/':
-        p[0] = Expr_oper('/',p[1],p[3])
+        p[0] = Expr_oper('/', p[1], p[3])
 
 
 def p_expression_inverse(p):
     'expression : MINUS expression %prec UMINUS'
     p[0] = Expr_number(-(p[2].value))
+
 
 def p_expression_int(p):
     'expression : INT'
@@ -69,14 +65,17 @@ def p_expression_float(p):
     'expression : FLOAT'
     p[0] = Expr_number(p[1])
 
+
 def p_expression_group(p):
     'expression : LPAREN expression RPAREN'
     p[0] = p[2]
+
 
 '''def p_expression_var(p):
     'expression : ID'
     p[0]= Expr_id(p[1], variaveis)
 '''
+
 
 # Error rule for syntax errors
 def p_error(p):
