@@ -54,9 +54,10 @@ tokens = [
     'ID',
     'COMMENT',
     'STRING',
-    'EQUALSTO',
+
 
     # Boolean operators
+    'EQUALSTO',
     'MORE',
     'LESS',
     'MOREEQUAL',

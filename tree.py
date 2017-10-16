@@ -3,8 +3,13 @@
 from binarytree import Node, pprint
 
 
+class Programa(Node):
+    def __init__(self, lista):
+        self.left = lista
+
+
 class ListCommand(Node):
-    def __init__(self, left, right):
+    def __init__(self, left, right=None):
         """
         :param left: Elemento da lista de comandos
         :type left: Node
@@ -73,3 +78,17 @@ class For(Node):
         self.value = ('FOR',)
         self.left = condicao
         self.right = body
+
+
+class Group(Node):
+    def __init__(self, valor):
+        self.value = ('GROUP',)
+        self.left = valor
+        self.right = None
+
+
+class Assignment(Node):
+    def __init__(self, ID, valor):
+        self.value = ('EQUALS', '=')
+        self.left = ID
+        self.right = valor
