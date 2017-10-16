@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from binarytree import Node
+from binarytree import Node, pprint
 
 
 class ListCommand(Node):
