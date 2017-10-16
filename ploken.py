@@ -28,7 +28,16 @@ reservedw = {
     'struct' : 'STRUCT',
     'switch' : 'SWITCH',
     'type' : 'TYPE',
-    'var' : 'VAR'
+    'var' : 'VAR',
+
+    # funcoes
+    'main' : 'MAIN',
+    'Sprint' : 'SPRINT',
+    'Sscan':'SSCAN',
+
+    # valores booleanos
+    'true': 'TRUE',
+    'false': 'FALSE',
 }
 
 # Tuple of token names.
@@ -46,6 +55,8 @@ tokens = [
     'COMMENT',
     'STRING',
     'EQUALSTO',
+
+    # Boolean operators
     'MORE',
     'LESS',
     'MOREEQUAL',
@@ -58,15 +69,15 @@ t_PLUS = r'\+'
 t_MINUS = r'-'
 t_TIMES = r'\*'
 t_DIVIDE = r'/'
-t_EQUALS = r'='
 t_LPAREN = r'\('
 t_RPAREN = r'\)'
 t_EQUALSTO = r'=='
-t_MORE = r'>'
-t_LESS = r'<'
 t_MOREEQUAL = r'>='
 t_LESSEQUAL = r'<='
 t_NOTEQUAL = r'!='
+t_MORE = r'>'
+t_LESS = r'<'
+t_EQUALS = r'='
 
 
 # regular expression rule to Float numbers

@@ -21,9 +21,8 @@ def p_statement_assignment(p):
 
 def p_statement_expr(t):
     'statement : expr_list'
-    for expr in t[1]:
-        # print(Expr.eval(expr))
-        pprint(expr)
+    t[0] = Prog()
+    t[0].
 
 
 def p_expr_list(p):
