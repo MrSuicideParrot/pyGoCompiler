@@ -5,6 +5,7 @@ from ply import yacc as yacc
 from tree import *
 
 precedence = (
+    ('nonassoc', 'LESS', 'MORE'),
     ('left', 'PLUS', 'MINUS'),
     ('left', 'TIMES', 'DIVIDE'),
     ('right', 'UMINUS'),
@@ -12,38 +13,38 @@ precedence = (
 
 variaveis = {}
 
-""""
+"""
 def p_statement_assignment(p):
     '''statement : ID EQUALS expressionAR'''
     #p[0]=tree.Assignment('=',p[1],p[3])
     pass"""
 
 
-def p_statement_expr(t):
+
+#tive que desativar isto
+"""def p_statement_expr(t):
     'statement : list'
-    t[0] = t[1]
+    t[0] = t[1]"""
 
 
-def p_list(p):
+"""def p_list(p):
     '''list : inst
             | inst list'''
     if len(p) == 2:
         p[0] = ListCommand(p[1])
     else:
-        p[0] = ListCommand(p[1] + p[2])
+        p[0] = ListCommand(p[1] + p[2])"""
 
-
-def p_inst(p):
+#def p_inst(p):
 
 
 #---------------------------------------------------------
 # operações ariteméticas
 def p_expressionAR_binop(p):
-    '''expressionAR : expressionAR PLUS expressionAR
-                    | expressionAR MINUS expressionAR
-                    | expressionAR TIMES expressionAR
-                    | expressionAR DIVIDE expressionAR'''
-
+    '''expressionaAR : expressionAR PLUS expressionAR
+                     | expressionAR MINUS expressionAR
+                     | expressionAR TIMES expressionAR
+                     | expressionAR DIVIDE expressionAR'''
     if p[2] == '+':
         p[0] = ExprAr('+', p[1], p[3])
     elif p[2] == '-':
@@ -51,12 +52,11 @@ def p_expressionAR_binop(p):
     elif p[2] == '*':
         p[0] = ExprAr('*', p[1], p[3])
     elif p[2] == '/':
-        p[0] = ExprAr('/', p[1], p[3])
-
+     p[0] = ExprAr('/', p[1], p[3])
 
 def p_expressionAR_inverse(p):
     'expressionAR : MINUS expressionAR %prec UMINUS'
-    p[0] = ExprAr('-',left=None, right=p[2].value)
+    p[0] = ExprAr('-', left=None, right=p[2].value)
 
 
 def p_expressionAR_int(p):
@@ -76,9 +76,10 @@ def p_expressionAR_group(p):
 
 def p_expressionAR_var(p):
     'expressionAR : ID'
-    p[0]= Identifier(p[1])
+    p[0] = Identifier(p[1])
 
-#---------------------------------------------------------
+
+# ---------------------------------------------------------
 # operações booleanas
 def p_expressionBo_binop(p):
     '''expressionBo : expressionBo MORE expressionBo
@@ -98,12 +99,16 @@ def p_expressionBo_binop(p):
         p[0] = ExprBo('<=', p[1], p[3])
     elif p[2] == '!=':
         p[0] = ExprBo('!=', p[1], p[3])
+    elif p[2] == '==':
+        p[0] = ExprBo('==', p[1], p[3])
+
 
 """
 def p_expressionBo_inverse(p):
     'expressionBo : MINUS expressionBo %prec UMINUS'
     p[0] = ExprBo('',(p[2].value))
 """
+
 
 def p_expressionBo_int(p):
     '''expressionBo : TRUE
@@ -113,6 +118,7 @@ def p_expressionBo_int(p):
     else:
         p[0] = Boolean(False)
 
+
 def p_expressionBo_group(p):
     'expressionBo : LPAREN expressionBo RPAREN'
     p[0] = Group(p[2])
@@ -120,8 +126,7 @@ def p_expressionBo_group(p):
 
 def p_expressionBo_var(p):
     'expressionBo : ID'
-    p[0]= Identifier(p[1])
-
+    p[0] = Identifier(p[1])
 
 
 # Error rule for syntax errors

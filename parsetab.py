@@ -5,9 +5,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'leftPLUSMINUSleftTIMESDIVIDErightUMINUSINT FLOAT PLUS MINUS TIMES DIVIDE EQUALS LPAREN RPAREN ID COMMENT STRING EQUALSTO MORE LESS MOREEQUAL LESSEQUAL NOTEQUAL BREAK CASE CHAN CONST CONTINUE DEFAULT DEFER ELSE FALLTHROUGH FOR FUNC GO GOTO IF IMPORT INTERFACE MAP PACKAGE RANGE RETURN SELECT STRUCT SWITCH TYPE VARstatement : expr_listexpr_list : expression\n                 | expression expr_listexpression : expression PLUS expression\n                  | expression MINUS expression\n                  | expression TIMES expression\n                  | expression DIVIDE expressionexpression : MINUS expression %prec UMINUSexpression : INTexpression : FLOATexpression : LPAREN expression RPAREN'
+_lr_signature = 'nonassocLESSMOREleftPLUSMINUSleftTIMESDIVIDErightUMINUSINT FLOAT PLUS MINUS TIMES DIVIDE EQUALS LPAREN RPAREN ID COMMENT STRING EQUALSTO MORE LESS MOREEQUAL LESSEQUAL NOTEQUAL CONTINUE FALLTHROUGH SPRINT CONST GOTO DEFER VAR TRUE RETURN IF MAIN TYPE FOR FUNC STRUCT RANGE SWITCH ELSE IMPORT DEFAULT CHAN PACKAGE BREAK CASE SSCAN INTERFACE SELECT GO FALSE MAPexpressionaAR : expressionAR PLUS expressionAR\n                     | expressionAR MINUS expressionAR\n                     | expressionAR TIMES expressionAR\n                     | expressionAR DIVIDE expressionARexpressionAR : MINUS expressionAR %prec UMINUSexpressionAR : INTexpressionAR : FLOATexpressionAR : LPAREN expressionAR RPARENexpressionAR : IDexpressionBo : expressionBo MORE expressionBo\n                    | expressionBo LESS expressionBo\n                    | expressionBo MOREEQUAL expressionBo\n                    | expressionBo LESSEQUAL expressionBo\n                    | expressionBo NOTEQUAL expressionBo\n                    | expressionBo EQUALSTO expressionBoexpressionBo : TRUE\n                    | FALSEexpressionBo : LPAREN expressionBo RPARENexpressionBo : ID'
     
-_lr_action_items = {'MINUS':([0,3,4,5,6,7,9,10,11,12,13,14,15,16,17,18,19,20,21,],[4,10,4,-9,-10,4,4,4,4,4,-8,19,-4,-5,-6,-7,4,-11,-5,]),'INT':([0,3,4,5,6,7,9,10,11,12,13,15,16,17,18,19,20,21,],[5,5,5,-9,-10,5,5,5,5,5,-8,-4,-5,-6,-7,5,-11,-5,]),'FLOAT':([0,3,4,5,6,7,9,10,11,12,13,15,16,17,18,19,20,21,],[6,6,6,-9,-10,6,6,6,6,6,-8,-4,-5,-6,-7,6,-11,-5,]),'LPAREN':([0,3,4,5,6,7,9,10,11,12,13,15,16,17,18,19,20,21,],[7,7,7,-9,-10,7,7,7,7,7,-8,-4,-5,-6,-7,7,-11,-5,]),'$end':([1,2,3,5,6,8,13,15,16,17,18,20,21,],[0,-1,-2,-9,-10,-3,-8,-4,-5,-6,-7,-11,-5,]),'PLUS':([3,5,6,13,14,15,16,17,18,20,21,],[9,-9,-10,-8,9,-4,-5,-6,-7,-11,-5,]),'TIMES':([3,5,6,13,14,15,16,17,18,20,21,],[11,-9,-10,-8,11,11,11,-6,-7,-11,11,]),'DIVIDE':([3,5,6,13,14,15,16,17,18,20,21,],[12,-9,-10,-8,12,12,12,-6,-7,-11,12,]),'RPAREN':([5,6,13,14,15,17,18,20,21,],[-9,-10,-8,20,-4,-6,-7,-11,-5,]),}
+_lr_action_items = {'MINUS':([0,1,3,4,5,6,7,8,10,11,12,13,14,],[1,1,1,-7,10,-9,-6,-5,1,1,1,1,-8,]),'ID':([0,1,3,10,11,12,13,],[6,6,6,6,6,6,6,]),'FLOAT':([0,1,3,10,11,12,13,],[4,4,4,4,4,4,4,]),'DIVIDE':([4,5,6,7,8,14,],[-7,12,-9,-6,-5,-8,]),'TIMES':([4,5,6,7,8,14,],[-7,11,-9,-6,-5,-8,]),'LPAREN':([0,1,3,10,11,12,13,],[3,3,3,3,3,3,3,]),'PLUS':([4,5,6,7,8,14,],[-7,13,-9,-6,-5,-8,]),'RPAREN':([4,6,7,8,9,14,],[-7,-9,-6,-5,14,-8,]),'$end':([2,4,6,7,8,14,15,16,17,18,],[0,-7,-9,-6,-5,-8,-2,-3,-4,-1,]),'INT':([0,1,3,10,11,12,13,],[7,7,7,7,7,7,7,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -16,7 +16,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'statement':([0,],[1,]),'expr_list':([0,3,],[2,8,]),'expression':([0,3,4,7,9,10,11,12,19,],[3,3,13,14,15,16,17,18,21,]),}
+_lr_goto_items = {'expressionAR':([0,1,3,10,11,12,13,],[5,8,9,15,16,17,18,]),'expressionaAR':([0,],[2,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -25,16 +25,24 @@ for _k, _v in _lr_goto_items.items():
        _lr_goto[_x][_k] = _y
 del _lr_goto_items
 _lr_productions = [
-  ("S' -> statement","S'",1,None,None,None),
-  ('statement -> expr_list','statement',1,'p_statement_expr','plintax.py',28),
-  ('expr_list -> expression','expr_list',1,'p_expr_list','plintax.py',34),
-  ('expr_list -> expression expr_list','expr_list',2,'p_expr_list','plintax.py',35),
-  ('expression -> expression PLUS expression','expression',3,'p_expression_binop','plintax.py',44),
-  ('expression -> expression MINUS expression','expression',3,'p_expression_binop','plintax.py',45),
-  ('expression -> expression TIMES expression','expression',3,'p_expression_binop','plintax.py',46),
-  ('expression -> expression DIVIDE expression','expression',3,'p_expression_binop','plintax.py',47),
-  ('expression -> MINUS expression','expression',2,'p_expression_inverse','plintax.py',60),
-  ('expression -> INT','expression',1,'p_expression_int','plintax.py',64),
-  ('expression -> FLOAT','expression',1,'p_expression_float','plintax.py',69),
-  ('expression -> LPAREN expression RPAREN','expression',3,'p_expression_group','plintax.py',73),
+  ("S' -> expressionaAR","S'",1,None,None,None),
+  ('expressionaAR -> expressionAR PLUS expressionAR','expressionaAR',3,'p_expressionAR_binop','plintax.py',44),
+  ('expressionaAR -> expressionAR MINUS expressionAR','expressionaAR',3,'p_expressionAR_binop','plintax.py',45),
+  ('expressionaAR -> expressionAR TIMES expressionAR','expressionaAR',3,'p_expressionAR_binop','plintax.py',46),
+  ('expressionaAR -> expressionAR DIVIDE expressionAR','expressionaAR',3,'p_expressionAR_binop','plintax.py',47),
+  ('expressionAR -> MINUS expressionAR','expressionAR',2,'p_expressionAR_inverse','plintax.py',58),
+  ('expressionAR -> INT','expressionAR',1,'p_expressionAR_int','plintax.py',63),
+  ('expressionAR -> FLOAT','expressionAR',1,'p_expressionAR_float','plintax.py',68),
+  ('expressionAR -> LPAREN expressionAR RPAREN','expressionAR',3,'p_expressionAR_group','plintax.py',73),
+  ('expressionAR -> ID','expressionAR',1,'p_expressionAR_var','plintax.py',78),
+  ('expressionBo -> expressionBo MORE expressionBo','expressionBo',3,'p_expressionBo_binop','plintax.py',85),
+  ('expressionBo -> expressionBo LESS expressionBo','expressionBo',3,'p_expressionBo_binop','plintax.py',86),
+  ('expressionBo -> expressionBo MOREEQUAL expressionBo','expressionBo',3,'p_expressionBo_binop','plintax.py',87),
+  ('expressionBo -> expressionBo LESSEQUAL expressionBo','expressionBo',3,'p_expressionBo_binop','plintax.py',88),
+  ('expressionBo -> expressionBo NOTEQUAL expressionBo','expressionBo',3,'p_expressionBo_binop','plintax.py',89),
+  ('expressionBo -> expressionBo EQUALSTO expressionBo','expressionBo',3,'p_expressionBo_binop','plintax.py',90),
+  ('expressionBo -> TRUE','expressionBo',1,'p_expressionBo_int','plintax.py',114),
+  ('expressionBo -> FALSE','expressionBo',1,'p_expressionBo_int','plintax.py',115),
+  ('expressionBo -> LPAREN expressionBo RPAREN','expressionBo',3,'p_expressionBo_group','plintax.py',123),
+  ('expressionBo -> ID','expressionBo',1,'p_expressionBo_var','plintax.py',128),
 ]

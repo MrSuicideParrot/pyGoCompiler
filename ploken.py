@@ -51,6 +51,8 @@ tokens = [
     'EQUALS',
     'LPAREN',
     'RPAREN',
+    'LCURLBRACKET',
+    'RCURLBRACKET',
     'ID',
     'COMMENT',
     'STRING',
@@ -72,6 +74,8 @@ t_TIMES = r'\*'
 t_DIVIDE = r'/'
 t_LPAREN = r'\('
 t_RPAREN = r'\)'
+t_LCURLBRACKET = r'\{'
+t_RCURLBRACKET = r'\}'
 t_EQUALSTO = r'=='
 t_MOREEQUAL = r'>='
 t_LESSEQUAL = r'<='
