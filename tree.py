@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 
-from binarytree import Node, pprint
+class Node:
+    pass
 
 
 class Programa(Node):
     def __init__(self, lista):
-        self.left = lista
+        self.children = []
+        self.children.append(lista)
 
 
 class ListCommand(Node):
@@ -16,8 +18,9 @@ class ListCommand(Node):
         :param right: Resto da lista de comandos
         :type right: ListCommand
         """
-        self.left = left
-        self.right = right
+        self.children = []
+        self.children.append(left)
+        self.children.append(right)
 
 
 class ExprAr(Node):
@@ -28,8 +31,9 @@ class ExprAr(Node):
         :type right: ExprAr | Number | Identifier
         """
         self.value = ('OPERATOR_AR', operator)
-        self.left = left
-        self.right = right
+        self.children = []
+        self.children.append(left)
+        self.children.append(right)
 
 
 class ExprBo(Node):
@@ -40,9 +44,9 @@ class ExprBo(Node):
         :type right: ExprBo | Number | Identifier
         """
         self.tag = ('OPERATOR_AR', operator)
-        self.left = left
-        self.right = right
-
+        self.children = []
+        self.children.append(left)
+        self.children.append(right)
 
 class Identifier(Node):
     def __init__(self, value):
@@ -62,33 +66,29 @@ class Boolean(Node):
 class Branch(Node):
     def __init__(self, condicao, ifbody, elsebody=None):
         self.value = ('BRANCH',)
-        self.left = condicao
-        self.right = BranchBody(ifbody, elsebody)
-
-
-class BranchBody(Node):
-    def __init__(self, ifbody, elsebody):
-        self.value = ('BRANCHOTIONS',)
-        self.left = ifbody
-        self.right = elsebody
+        self.children = []
+        self.children.append(condicao)
+        self.children.append(ifbody)
+        self.children.append(elsebody)
 
 
 class For(Node):
     def __init__(self, condicao, body):
         self.value = ('FOR',)
-        self.left = condicao
-        self.right = body
-
+        self.children = []
+        self.children.append(condicao)
+        self.children.append(body)
 
 class Group(Node):
     def __init__(self, valor):
         self.value = ('GROUP',)
-        self.left = valor
-        self.right = None
+        self.children = []
+        self.children.append(valor)
 
 
 class Assignment(Node):
     def __init__(self, ID, valor):
         self.value = ('EQUALS', '=')
-        self.left = ID
-        self.right = valor
+        self.children = []
+        self.children.append(ID)
+        self.children.append(valor)

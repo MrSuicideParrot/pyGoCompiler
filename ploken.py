@@ -56,6 +56,7 @@ tokens = [
     'ID',
     'COMMENT',
     'STRING',
+    'ASSIGN',
 
 
     # Boolean operators
@@ -82,7 +83,9 @@ t_LESSEQUAL = r'<='
 t_NOTEQUAL = r'!='
 t_MORE = r'>'
 t_LESS = r'<'
+t_ASSIGN = r':='
 t_EQUALS = r'='
+
 
 
 # regular expression rule to Float numbers

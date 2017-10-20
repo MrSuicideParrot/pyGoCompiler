@@ -13,29 +13,41 @@ precedence = (
 
 variaveis = {}
 
-"""
-def p_statement_assignment(p):
-    '''statement : ID EQUALS expressionAR'''
-    #p[0]=tree.Assignment('=',p[1],p[3])
-    pass"""
-
-
 
 #tive que desativar isto
-"""def p_statement_expr(t):
+def p_statement_expr(t):
     'statement : list'
-    t[0] = t[1]"""
+    t[0] = t[1]
 
 
-"""def p_list(p):
+def p_list(p):
     '''list : inst
             | inst list'''
     if len(p) == 2:
         p[0] = ListCommand(p[1])
     else:
-        p[0] = ListCommand(p[1] + p[2])"""
+        p[0] = ListCommand(p[1] + p[2])
 
-#def p_inst(p):
+
+def p_inst_assignment(p):
+    '''inst : ID ASSIGN expressionAR
+            | ID ASSIGN expressionBo'''
+    p[0]=Assignment(p[2],p[1],p[3])
+
+
+# Faltam os for mais complicados
+def p_inst_For(p):
+    '''inst : FOR expressionBo LCURLBRACKET list RCURLBRACKET'''
+    p[0] = For(p[2],p[4])
+
+
+def p_inst_If(p):
+    '''inst : IF expressionBo LCURLBRACKET list RCURLBRACKET ELSE LCURLBRACKET list RCURLBRACKET
+            | IF expressionBo LCURLBRACKET list RCURLBRACKET'''
+    if p.len == 10:
+        p[0] = Branch(p[2], p[4], p[9])
+    else:
+        p[0] = Branch(p[2], p[4])
 
 
 #---------------------------------------------------------
