@@ -92,3 +92,18 @@ class Assignment(Node):
         self.children = []
         self.children.append(ID)
         self.children.append(valor)
+
+
+class Func(Node):
+    def __init__(self, tipo, argv, lista):
+        """"
+        :param tipo: Nome da função
+        :type str
+        :param argv: Lista de argumentos da função
+        :type list()
+        :param lista: Próximas instruções
+        :type ListCommand
+        """
+        self.value = ('FUNC', tipo)
+        self.children = argv
+        self.children = lista

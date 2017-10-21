@@ -13,7 +13,6 @@ Unused terminals:
     DEFAULT
     DEFER
     FALLTHROUGH
-    FUNC
     GO
     GOTO
     IMPORT
@@ -27,14 +26,13 @@ Unused terminals:
     SWITCH
     TYPE
     VAR
-    MAIN
     SPRINT
     SSCAN
 
 Grammar
 
 Rule 0     S' -> statement
-Rule 1     statement -> list
+Rule 1     statement -> FUNC MAIN LPAREN RPAREN LCURLBRACKET list RCURLBRACKET
 Rule 2     list -> inst
 Rule 3     list -> inst list
 Rule 4     inst -> ID ASSIGN expressionAR
@@ -42,25 +40,25 @@ Rule 5     inst -> ID ASSIGN expressionBo
 Rule 6     inst -> FOR expressionBo LCURLBRACKET list RCURLBRACKET
 Rule 7     inst -> IF expressionBo LCURLBRACKET list RCURLBRACKET ELSE LCURLBRACKET list RCURLBRACKET
 Rule 8     inst -> IF expressionBo LCURLBRACKET list RCURLBRACKET
-Rule 9     expressionaAR -> expressionAR PLUS expressionAR
-Rule 10    expressionaAR -> expressionAR MINUS expressionAR
-Rule 11    expressionaAR -> expressionAR TIMES expressionAR
-Rule 12    expressionaAR -> expressionAR DIVIDE expressionAR
-Rule 13    expressionAR -> MINUS expressionAR
-Rule 14    expressionAR -> INT
-Rule 15    expressionAR -> FLOAT
-Rule 16    expressionAR -> LPAREN expressionAR RPAREN
-Rule 17    expressionAR -> ID
+Rule 9     inst -> expressionAR
+Rule 10    inst -> expressionBo
+Rule 11    expressionAR -> expressionAR PLUS expressionAR
+Rule 12    expressionAR -> expressionAR MINUS expressionAR
+Rule 13    expressionAR -> expressionAR TIMES expressionAR
+Rule 14    expressionAR -> expressionAR DIVIDE expressionAR
+Rule 15    expressionAR -> INT
+Rule 16    expressionAR -> FLOAT
+Rule 17    expressionAR -> LPAREN expressionAR RPAREN
 Rule 18    expressionBo -> expressionBo MORE expressionBo
 Rule 19    expressionBo -> expressionBo LESS expressionBo
 Rule 20    expressionBo -> expressionBo MOREEQUAL expressionBo
 Rule 21    expressionBo -> expressionBo LESSEQUAL expressionBo
 Rule 22    expressionBo -> expressionBo NOTEQUAL expressionBo
 Rule 23    expressionBo -> expressionBo EQUALSTO expressionBo
-Rule 24    expressionBo -> TRUE
-Rule 25    expressionBo -> FALSE
-Rule 26    expressionBo -> LPAREN expressionBo RPAREN
-Rule 27    expressionBo -> ID
+Rule 24    expressionBo -> ID
+Rule 25    expressionBo -> TRUE
+Rule 26    expressionBo -> FALSE
+Rule 27    expressionBo -> LPAREN expressionBo RPAREN
 
 Terminals, with rules where they appear
 
@@ -73,55 +71,54 @@ CONST                :
 CONTINUE             : 
 DEFAULT              : 
 DEFER                : 
-DIVIDE               : 12
+DIVIDE               : 14
 ELSE                 : 7
 EQUALS               : 
 EQUALSTO             : 23
 FALLTHROUGH          : 
-FALSE                : 25
-FLOAT                : 15
+FALSE                : 26
+FLOAT                : 16
 FOR                  : 6
-FUNC                 : 
+FUNC                 : 1
 GO                   : 
 GOTO                 : 
-ID                   : 4 5 17 27
+ID                   : 4 5 24
 IF                   : 7 8
 IMPORT               : 
-INT                  : 14
+INT                  : 15
 INTERFACE            : 
-LCURLBRACKET         : 6 7 7 8
+LCURLBRACKET         : 1 6 7 7 8
 LESS                 : 19
 LESSEQUAL            : 21
-LPAREN               : 16 26
-MAIN                 : 
+LPAREN               : 1 17 27
+MAIN                 : 1
 MAP                  : 
-MINUS                : 10 13
+MINUS                : 12
 MORE                 : 18
 MOREEQUAL            : 20
 NOTEQUAL             : 22
 PACKAGE              : 
-PLUS                 : 9
+PLUS                 : 11
 RANGE                : 
-RCURLBRACKET         : 6 7 7 8
+RCURLBRACKET         : 1 6 7 7 8
 RETURN               : 
-RPAREN               : 16 26
+RPAREN               : 1 17 27
 SELECT               : 
 SPRINT               : 
 SSCAN                : 
 STRING               : 
 STRUCT               : 
 SWITCH               : 
-TIMES                : 11
-TRUE                 : 24
+TIMES                : 13
+TRUE                 : 25
 TYPE                 : 
 VAR                  : 
 error                : 
 
 Nonterminals, with rules where they appear
 
-expressionAR         : 4 9 9 10 10 11 11 12 12 13 16
-expressionBo         : 5 6 7 8 18 18 19 19 20 20 21 21 22 22 23 23 26
-expressionaAR        : 
+expressionAR         : 4 9 11 11 12 12 13 13 14 14 17
+expressionBo         : 5 6 7 8 10 18 18 19 19 20 20 21 21 22 22 23 23 27
 inst                 : 2 3
 list                 : 1 3 6 7 7 8
 statement            : 0
@@ -131,22 +128,11 @@ Parsing method: LALR
 state 0
 
     (0) S' -> . statement
-    (1) statement -> . list
-    (2) list -> . inst
-    (3) list -> . inst list
-    (4) inst -> . ID ASSIGN expressionAR
-    (5) inst -> . ID ASSIGN expressionBo
-    (6) inst -> . FOR expressionBo LCURLBRACKET list RCURLBRACKET
-    (7) inst -> . IF expressionBo LCURLBRACKET list RCURLBRACKET ELSE LCURLBRACKET list RCURLBRACKET
-    (8) inst -> . IF expressionBo LCURLBRACKET list RCURLBRACKET
+    (1) statement -> . FUNC MAIN LPAREN RPAREN LCURLBRACKET list RCURLBRACKET
 
-    ID              shift and go to state 4
-    FOR             shift and go to state 5
-    IF              shift and go to state 6
+    FUNC            shift and go to state 2
 
     statement                      shift and go to state 1
-    list                           shift and go to state 2
-    inst                           shift and go to state 3
 
 state 1
 
@@ -156,12 +142,116 @@ state 1
 
 state 2
 
-    (1) statement -> list .
+    (1) statement -> FUNC . MAIN LPAREN RPAREN LCURLBRACKET list RCURLBRACKET
 
-    $end            reduce using rule 1 (statement -> list .)
+    MAIN            shift and go to state 3
 
 
 state 3
+
+    (1) statement -> FUNC MAIN . LPAREN RPAREN LCURLBRACKET list RCURLBRACKET
+
+    LPAREN          shift and go to state 4
+
+
+state 4
+
+    (1) statement -> FUNC MAIN LPAREN . RPAREN LCURLBRACKET list RCURLBRACKET
+
+    RPAREN          shift and go to state 5
+
+
+state 5
+
+    (1) statement -> FUNC MAIN LPAREN RPAREN . LCURLBRACKET list RCURLBRACKET
+
+    LCURLBRACKET    shift and go to state 6
+
+
+state 6
+
+    (1) statement -> FUNC MAIN LPAREN RPAREN LCURLBRACKET . list RCURLBRACKET
+    (2) list -> . inst
+    (3) list -> . inst list
+    (4) inst -> . ID ASSIGN expressionAR
+    (5) inst -> . ID ASSIGN expressionBo
+    (6) inst -> . FOR expressionBo LCURLBRACKET list RCURLBRACKET
+    (7) inst -> . IF expressionBo LCURLBRACKET list RCURLBRACKET ELSE LCURLBRACKET list RCURLBRACKET
+    (8) inst -> . IF expressionBo LCURLBRACKET list RCURLBRACKET
+    (9) inst -> . expressionAR
+    (10) inst -> . expressionBo
+    (11) expressionAR -> . expressionAR PLUS expressionAR
+    (12) expressionAR -> . expressionAR MINUS expressionAR
+    (13) expressionAR -> . expressionAR TIMES expressionAR
+    (14) expressionAR -> . expressionAR DIVIDE expressionAR
+    (15) expressionAR -> . INT
+    (16) expressionAR -> . FLOAT
+    (17) expressionAR -> . LPAREN expressionAR RPAREN
+    (18) expressionBo -> . expressionBo MORE expressionBo
+    (19) expressionBo -> . expressionBo LESS expressionBo
+    (20) expressionBo -> . expressionBo MOREEQUAL expressionBo
+    (21) expressionBo -> . expressionBo LESSEQUAL expressionBo
+    (22) expressionBo -> . expressionBo NOTEQUAL expressionBo
+    (23) expressionBo -> . expressionBo EQUALSTO expressionBo
+    (24) expressionBo -> . ID
+    (25) expressionBo -> . TRUE
+    (26) expressionBo -> . FALSE
+    (27) expressionBo -> . LPAREN expressionBo RPAREN
+
+    ID              shift and go to state 10
+    FOR             shift and go to state 13
+    IF              shift and go to state 14
+    INT             shift and go to state 15
+    FLOAT           shift and go to state 16
+    LPAREN          shift and go to state 7
+    TRUE            shift and go to state 17
+    FALSE           shift and go to state 18
+
+    list                           shift and go to state 8
+    inst                           shift and go to state 9
+    expressionAR                   shift and go to state 11
+    expressionBo                   shift and go to state 12
+
+state 7
+
+    (17) expressionAR -> LPAREN . expressionAR RPAREN
+    (27) expressionBo -> LPAREN . expressionBo RPAREN
+    (11) expressionAR -> . expressionAR PLUS expressionAR
+    (12) expressionAR -> . expressionAR MINUS expressionAR
+    (13) expressionAR -> . expressionAR TIMES expressionAR
+    (14) expressionAR -> . expressionAR DIVIDE expressionAR
+    (15) expressionAR -> . INT
+    (16) expressionAR -> . FLOAT
+    (17) expressionAR -> . LPAREN expressionAR RPAREN
+    (18) expressionBo -> . expressionBo MORE expressionBo
+    (19) expressionBo -> . expressionBo LESS expressionBo
+    (20) expressionBo -> . expressionBo MOREEQUAL expressionBo
+    (21) expressionBo -> . expressionBo LESSEQUAL expressionBo
+    (22) expressionBo -> . expressionBo NOTEQUAL expressionBo
+    (23) expressionBo -> . expressionBo EQUALSTO expressionBo
+    (24) expressionBo -> . ID
+    (25) expressionBo -> . TRUE
+    (26) expressionBo -> . FALSE
+    (27) expressionBo -> . LPAREN expressionBo RPAREN
+
+    INT             shift and go to state 15
+    FLOAT           shift and go to state 16
+    LPAREN          shift and go to state 7
+    ID              shift and go to state 21
+    TRUE            shift and go to state 17
+    FALSE           shift and go to state 18
+
+    expressionAR                   shift and go to state 19
+    expressionBo                   shift and go to state 20
+
+state 8
+
+    (1) statement -> FUNC MAIN LPAREN RPAREN LCURLBRACKET list . RCURLBRACKET
+
+    RCURLBRACKET    shift and go to state 22
+
+
+state 9
 
     (2) list -> inst .
     (3) list -> inst . list
@@ -172,25 +262,116 @@ state 3
     (6) inst -> . FOR expressionBo LCURLBRACKET list RCURLBRACKET
     (7) inst -> . IF expressionBo LCURLBRACKET list RCURLBRACKET ELSE LCURLBRACKET list RCURLBRACKET
     (8) inst -> . IF expressionBo LCURLBRACKET list RCURLBRACKET
+    (9) inst -> . expressionAR
+    (10) inst -> . expressionBo
+    (11) expressionAR -> . expressionAR PLUS expressionAR
+    (12) expressionAR -> . expressionAR MINUS expressionAR
+    (13) expressionAR -> . expressionAR TIMES expressionAR
+    (14) expressionAR -> . expressionAR DIVIDE expressionAR
+    (15) expressionAR -> . INT
+    (16) expressionAR -> . FLOAT
+    (17) expressionAR -> . LPAREN expressionAR RPAREN
+    (18) expressionBo -> . expressionBo MORE expressionBo
+    (19) expressionBo -> . expressionBo LESS expressionBo
+    (20) expressionBo -> . expressionBo MOREEQUAL expressionBo
+    (21) expressionBo -> . expressionBo LESSEQUAL expressionBo
+    (22) expressionBo -> . expressionBo NOTEQUAL expressionBo
+    (23) expressionBo -> . expressionBo EQUALSTO expressionBo
+    (24) expressionBo -> . ID
+    (25) expressionBo -> . TRUE
+    (26) expressionBo -> . FALSE
+    (27) expressionBo -> . LPAREN expressionBo RPAREN
 
-    $end            reduce using rule 2 (list -> inst .)
     RCURLBRACKET    reduce using rule 2 (list -> inst .)
-    ID              shift and go to state 4
-    FOR             shift and go to state 5
-    IF              shift and go to state 6
+    ID              shift and go to state 10
+    FOR             shift and go to state 13
+    IF              shift and go to state 14
+    INT             shift and go to state 15
+    FLOAT           shift and go to state 16
+    LPAREN          shift and go to state 7
+    TRUE            shift and go to state 17
+    FALSE           shift and go to state 18
 
-    inst                           shift and go to state 3
-    list                           shift and go to state 7
+    inst                           shift and go to state 9
+    list                           shift and go to state 23
+    expressionAR                   shift and go to state 11
+    expressionBo                   shift and go to state 12
 
-state 4
+state 10
 
     (4) inst -> ID . ASSIGN expressionAR
     (5) inst -> ID . ASSIGN expressionBo
+    (24) expressionBo -> ID .
 
-    ASSIGN          shift and go to state 8
+    ASSIGN          shift and go to state 24
+    MORE            reduce using rule 24 (expressionBo -> ID .)
+    LESS            reduce using rule 24 (expressionBo -> ID .)
+    MOREEQUAL       reduce using rule 24 (expressionBo -> ID .)
+    LESSEQUAL       reduce using rule 24 (expressionBo -> ID .)
+    NOTEQUAL        reduce using rule 24 (expressionBo -> ID .)
+    EQUALSTO        reduce using rule 24 (expressionBo -> ID .)
+    ID              reduce using rule 24 (expressionBo -> ID .)
+    FOR             reduce using rule 24 (expressionBo -> ID .)
+    IF              reduce using rule 24 (expressionBo -> ID .)
+    INT             reduce using rule 24 (expressionBo -> ID .)
+    FLOAT           reduce using rule 24 (expressionBo -> ID .)
+    LPAREN          reduce using rule 24 (expressionBo -> ID .)
+    TRUE            reduce using rule 24 (expressionBo -> ID .)
+    FALSE           reduce using rule 24 (expressionBo -> ID .)
+    RCURLBRACKET    reduce using rule 24 (expressionBo -> ID .)
 
 
-state 5
+state 11
+
+    (9) inst -> expressionAR .
+    (11) expressionAR -> expressionAR . PLUS expressionAR
+    (12) expressionAR -> expressionAR . MINUS expressionAR
+    (13) expressionAR -> expressionAR . TIMES expressionAR
+    (14) expressionAR -> expressionAR . DIVIDE expressionAR
+
+    ID              reduce using rule 9 (inst -> expressionAR .)
+    FOR             reduce using rule 9 (inst -> expressionAR .)
+    IF              reduce using rule 9 (inst -> expressionAR .)
+    INT             reduce using rule 9 (inst -> expressionAR .)
+    FLOAT           reduce using rule 9 (inst -> expressionAR .)
+    LPAREN          reduce using rule 9 (inst -> expressionAR .)
+    TRUE            reduce using rule 9 (inst -> expressionAR .)
+    FALSE           reduce using rule 9 (inst -> expressionAR .)
+    RCURLBRACKET    reduce using rule 9 (inst -> expressionAR .)
+    PLUS            shift and go to state 25
+    MINUS           shift and go to state 26
+    TIMES           shift and go to state 27
+    DIVIDE          shift and go to state 28
+
+
+state 12
+
+    (10) inst -> expressionBo .
+    (18) expressionBo -> expressionBo . MORE expressionBo
+    (19) expressionBo -> expressionBo . LESS expressionBo
+    (20) expressionBo -> expressionBo . MOREEQUAL expressionBo
+    (21) expressionBo -> expressionBo . LESSEQUAL expressionBo
+    (22) expressionBo -> expressionBo . NOTEQUAL expressionBo
+    (23) expressionBo -> expressionBo . EQUALSTO expressionBo
+
+    ID              reduce using rule 10 (inst -> expressionBo .)
+    FOR             reduce using rule 10 (inst -> expressionBo .)
+    IF              reduce using rule 10 (inst -> expressionBo .)
+    INT             reduce using rule 10 (inst -> expressionBo .)
+    FLOAT           reduce using rule 10 (inst -> expressionBo .)
+    LPAREN          reduce using rule 10 (inst -> expressionBo .)
+    TRUE            reduce using rule 10 (inst -> expressionBo .)
+    FALSE           reduce using rule 10 (inst -> expressionBo .)
+    RCURLBRACKET    reduce using rule 10 (inst -> expressionBo .)
+    MORE            shift and go to state 29
+    LESS            shift and go to state 30
+    MOREEQUAL       shift and go to state 31
+    LESSEQUAL       shift and go to state 32
+    NOTEQUAL        shift and go to state 33
+    EQUALSTO        shift and go to state 34
+
+
+state 13
 
     (6) inst -> FOR . expressionBo LCURLBRACKET list RCURLBRACKET
     (18) expressionBo -> . expressionBo MORE expressionBo
@@ -199,19 +380,19 @@ state 5
     (21) expressionBo -> . expressionBo LESSEQUAL expressionBo
     (22) expressionBo -> . expressionBo NOTEQUAL expressionBo
     (23) expressionBo -> . expressionBo EQUALSTO expressionBo
-    (24) expressionBo -> . TRUE
-    (25) expressionBo -> . FALSE
-    (26) expressionBo -> . LPAREN expressionBo RPAREN
-    (27) expressionBo -> . ID
+    (24) expressionBo -> . ID
+    (25) expressionBo -> . TRUE
+    (26) expressionBo -> . FALSE
+    (27) expressionBo -> . LPAREN expressionBo RPAREN
 
-    TRUE            shift and go to state 10
-    FALSE           shift and go to state 11
-    LPAREN          shift and go to state 12
-    ID              shift and go to state 13
+    ID              shift and go to state 21
+    TRUE            shift and go to state 17
+    FALSE           shift and go to state 18
+    LPAREN          shift and go to state 36
 
-    expressionBo                   shift and go to state 9
+    expressionBo                   shift and go to state 35
 
-state 6
+state 14
 
     (7) inst -> IF . expressionBo LCURLBRACKET list RCURLBRACKET ELSE LCURLBRACKET list RCURLBRACKET
     (8) inst -> IF . expressionBo LCURLBRACKET list RCURLBRACKET
@@ -221,58 +402,402 @@ state 6
     (21) expressionBo -> . expressionBo LESSEQUAL expressionBo
     (22) expressionBo -> . expressionBo NOTEQUAL expressionBo
     (23) expressionBo -> . expressionBo EQUALSTO expressionBo
-    (24) expressionBo -> . TRUE
-    (25) expressionBo -> . FALSE
-    (26) expressionBo -> . LPAREN expressionBo RPAREN
-    (27) expressionBo -> . ID
+    (24) expressionBo -> . ID
+    (25) expressionBo -> . TRUE
+    (26) expressionBo -> . FALSE
+    (27) expressionBo -> . LPAREN expressionBo RPAREN
 
-    TRUE            shift and go to state 10
-    FALSE           shift and go to state 11
-    LPAREN          shift and go to state 12
-    ID              shift and go to state 13
+    ID              shift and go to state 21
+    TRUE            shift and go to state 17
+    FALSE           shift and go to state 18
+    LPAREN          shift and go to state 36
 
-    expressionBo                   shift and go to state 14
+    expressionBo                   shift and go to state 37
 
-state 7
+state 15
+
+    (15) expressionAR -> INT .
+
+    PLUS            reduce using rule 15 (expressionAR -> INT .)
+    MINUS           reduce using rule 15 (expressionAR -> INT .)
+    TIMES           reduce using rule 15 (expressionAR -> INT .)
+    DIVIDE          reduce using rule 15 (expressionAR -> INT .)
+    ID              reduce using rule 15 (expressionAR -> INT .)
+    FOR             reduce using rule 15 (expressionAR -> INT .)
+    IF              reduce using rule 15 (expressionAR -> INT .)
+    INT             reduce using rule 15 (expressionAR -> INT .)
+    FLOAT           reduce using rule 15 (expressionAR -> INT .)
+    LPAREN          reduce using rule 15 (expressionAR -> INT .)
+    TRUE            reduce using rule 15 (expressionAR -> INT .)
+    FALSE           reduce using rule 15 (expressionAR -> INT .)
+    RCURLBRACKET    reduce using rule 15 (expressionAR -> INT .)
+    RPAREN          reduce using rule 15 (expressionAR -> INT .)
+
+
+state 16
+
+    (16) expressionAR -> FLOAT .
+
+    PLUS            reduce using rule 16 (expressionAR -> FLOAT .)
+    MINUS           reduce using rule 16 (expressionAR -> FLOAT .)
+    TIMES           reduce using rule 16 (expressionAR -> FLOAT .)
+    DIVIDE          reduce using rule 16 (expressionAR -> FLOAT .)
+    ID              reduce using rule 16 (expressionAR -> FLOAT .)
+    FOR             reduce using rule 16 (expressionAR -> FLOAT .)
+    IF              reduce using rule 16 (expressionAR -> FLOAT .)
+    INT             reduce using rule 16 (expressionAR -> FLOAT .)
+    FLOAT           reduce using rule 16 (expressionAR -> FLOAT .)
+    LPAREN          reduce using rule 16 (expressionAR -> FLOAT .)
+    TRUE            reduce using rule 16 (expressionAR -> FLOAT .)
+    FALSE           reduce using rule 16 (expressionAR -> FLOAT .)
+    RCURLBRACKET    reduce using rule 16 (expressionAR -> FLOAT .)
+    RPAREN          reduce using rule 16 (expressionAR -> FLOAT .)
+
+
+state 17
+
+    (25) expressionBo -> TRUE .
+
+    MORE            reduce using rule 25 (expressionBo -> TRUE .)
+    LESS            reduce using rule 25 (expressionBo -> TRUE .)
+    MOREEQUAL       reduce using rule 25 (expressionBo -> TRUE .)
+    LESSEQUAL       reduce using rule 25 (expressionBo -> TRUE .)
+    NOTEQUAL        reduce using rule 25 (expressionBo -> TRUE .)
+    EQUALSTO        reduce using rule 25 (expressionBo -> TRUE .)
+    ID              reduce using rule 25 (expressionBo -> TRUE .)
+    FOR             reduce using rule 25 (expressionBo -> TRUE .)
+    IF              reduce using rule 25 (expressionBo -> TRUE .)
+    INT             reduce using rule 25 (expressionBo -> TRUE .)
+    FLOAT           reduce using rule 25 (expressionBo -> TRUE .)
+    LPAREN          reduce using rule 25 (expressionBo -> TRUE .)
+    TRUE            reduce using rule 25 (expressionBo -> TRUE .)
+    FALSE           reduce using rule 25 (expressionBo -> TRUE .)
+    RCURLBRACKET    reduce using rule 25 (expressionBo -> TRUE .)
+    RPAREN          reduce using rule 25 (expressionBo -> TRUE .)
+    LCURLBRACKET    reduce using rule 25 (expressionBo -> TRUE .)
+
+
+state 18
+
+    (26) expressionBo -> FALSE .
+
+    MORE            reduce using rule 26 (expressionBo -> FALSE .)
+    LESS            reduce using rule 26 (expressionBo -> FALSE .)
+    MOREEQUAL       reduce using rule 26 (expressionBo -> FALSE .)
+    LESSEQUAL       reduce using rule 26 (expressionBo -> FALSE .)
+    NOTEQUAL        reduce using rule 26 (expressionBo -> FALSE .)
+    EQUALSTO        reduce using rule 26 (expressionBo -> FALSE .)
+    ID              reduce using rule 26 (expressionBo -> FALSE .)
+    FOR             reduce using rule 26 (expressionBo -> FALSE .)
+    IF              reduce using rule 26 (expressionBo -> FALSE .)
+    INT             reduce using rule 26 (expressionBo -> FALSE .)
+    FLOAT           reduce using rule 26 (expressionBo -> FALSE .)
+    LPAREN          reduce using rule 26 (expressionBo -> FALSE .)
+    TRUE            reduce using rule 26 (expressionBo -> FALSE .)
+    FALSE           reduce using rule 26 (expressionBo -> FALSE .)
+    RCURLBRACKET    reduce using rule 26 (expressionBo -> FALSE .)
+    RPAREN          reduce using rule 26 (expressionBo -> FALSE .)
+    LCURLBRACKET    reduce using rule 26 (expressionBo -> FALSE .)
+
+
+state 19
+
+    (17) expressionAR -> LPAREN expressionAR . RPAREN
+    (11) expressionAR -> expressionAR . PLUS expressionAR
+    (12) expressionAR -> expressionAR . MINUS expressionAR
+    (13) expressionAR -> expressionAR . TIMES expressionAR
+    (14) expressionAR -> expressionAR . DIVIDE expressionAR
+
+    RPAREN          shift and go to state 38
+    PLUS            shift and go to state 25
+    MINUS           shift and go to state 26
+    TIMES           shift and go to state 27
+    DIVIDE          shift and go to state 28
+
+
+state 20
+
+    (27) expressionBo -> LPAREN expressionBo . RPAREN
+    (18) expressionBo -> expressionBo . MORE expressionBo
+    (19) expressionBo -> expressionBo . LESS expressionBo
+    (20) expressionBo -> expressionBo . MOREEQUAL expressionBo
+    (21) expressionBo -> expressionBo . LESSEQUAL expressionBo
+    (22) expressionBo -> expressionBo . NOTEQUAL expressionBo
+    (23) expressionBo -> expressionBo . EQUALSTO expressionBo
+
+    RPAREN          shift and go to state 39
+    MORE            shift and go to state 29
+    LESS            shift and go to state 30
+    MOREEQUAL       shift and go to state 31
+    LESSEQUAL       shift and go to state 32
+    NOTEQUAL        shift and go to state 33
+    EQUALSTO        shift and go to state 34
+
+
+state 21
+
+    (24) expressionBo -> ID .
+
+    RPAREN          reduce using rule 24 (expressionBo -> ID .)
+    MORE            reduce using rule 24 (expressionBo -> ID .)
+    LESS            reduce using rule 24 (expressionBo -> ID .)
+    MOREEQUAL       reduce using rule 24 (expressionBo -> ID .)
+    LESSEQUAL       reduce using rule 24 (expressionBo -> ID .)
+    NOTEQUAL        reduce using rule 24 (expressionBo -> ID .)
+    EQUALSTO        reduce using rule 24 (expressionBo -> ID .)
+    LCURLBRACKET    reduce using rule 24 (expressionBo -> ID .)
+    ID              reduce using rule 24 (expressionBo -> ID .)
+    FOR             reduce using rule 24 (expressionBo -> ID .)
+    IF              reduce using rule 24 (expressionBo -> ID .)
+    INT             reduce using rule 24 (expressionBo -> ID .)
+    FLOAT           reduce using rule 24 (expressionBo -> ID .)
+    LPAREN          reduce using rule 24 (expressionBo -> ID .)
+    TRUE            reduce using rule 24 (expressionBo -> ID .)
+    FALSE           reduce using rule 24 (expressionBo -> ID .)
+    RCURLBRACKET    reduce using rule 24 (expressionBo -> ID .)
+
+
+state 22
+
+    (1) statement -> FUNC MAIN LPAREN RPAREN LCURLBRACKET list RCURLBRACKET .
+
+    $end            reduce using rule 1 (statement -> FUNC MAIN LPAREN RPAREN LCURLBRACKET list RCURLBRACKET .)
+
+
+state 23
 
     (3) list -> inst list .
 
-    $end            reduce using rule 3 (list -> inst list .)
     RCURLBRACKET    reduce using rule 3 (list -> inst list .)
 
 
-state 8
+state 24
 
     (4) inst -> ID ASSIGN . expressionAR
     (5) inst -> ID ASSIGN . expressionBo
-    (13) expressionAR -> . MINUS expressionAR
-    (14) expressionAR -> . INT
-    (15) expressionAR -> . FLOAT
-    (16) expressionAR -> . LPAREN expressionAR RPAREN
-    (17) expressionAR -> . ID
+    (11) expressionAR -> . expressionAR PLUS expressionAR
+    (12) expressionAR -> . expressionAR MINUS expressionAR
+    (13) expressionAR -> . expressionAR TIMES expressionAR
+    (14) expressionAR -> . expressionAR DIVIDE expressionAR
+    (15) expressionAR -> . INT
+    (16) expressionAR -> . FLOAT
+    (17) expressionAR -> . LPAREN expressionAR RPAREN
     (18) expressionBo -> . expressionBo MORE expressionBo
     (19) expressionBo -> . expressionBo LESS expressionBo
     (20) expressionBo -> . expressionBo MOREEQUAL expressionBo
     (21) expressionBo -> . expressionBo LESSEQUAL expressionBo
     (22) expressionBo -> . expressionBo NOTEQUAL expressionBo
     (23) expressionBo -> . expressionBo EQUALSTO expressionBo
-    (24) expressionBo -> . TRUE
-    (25) expressionBo -> . FALSE
-    (26) expressionBo -> . LPAREN expressionBo RPAREN
-    (27) expressionBo -> . ID
+    (24) expressionBo -> . ID
+    (25) expressionBo -> . TRUE
+    (26) expressionBo -> . FALSE
+    (27) expressionBo -> . LPAREN expressionBo RPAREN
 
-    MINUS           shift and go to state 18
-    INT             shift and go to state 19
-    FLOAT           shift and go to state 20
-    LPAREN          shift and go to state 21
-    ID              shift and go to state 15
-    TRUE            shift and go to state 10
-    FALSE           shift and go to state 11
+    INT             shift and go to state 15
+    FLOAT           shift and go to state 16
+    LPAREN          shift and go to state 7
+    ID              shift and go to state 21
+    TRUE            shift and go to state 17
+    FALSE           shift and go to state 18
 
-    expressionAR                   shift and go to state 16
-    expressionBo                   shift and go to state 17
+    expressionAR                   shift and go to state 40
+    expressionBo                   shift and go to state 41
 
-state 9
+state 25
+
+    (11) expressionAR -> expressionAR PLUS . expressionAR
+    (11) expressionAR -> . expressionAR PLUS expressionAR
+    (12) expressionAR -> . expressionAR MINUS expressionAR
+    (13) expressionAR -> . expressionAR TIMES expressionAR
+    (14) expressionAR -> . expressionAR DIVIDE expressionAR
+    (15) expressionAR -> . INT
+    (16) expressionAR -> . FLOAT
+    (17) expressionAR -> . LPAREN expressionAR RPAREN
+
+    INT             shift and go to state 15
+    FLOAT           shift and go to state 16
+    LPAREN          shift and go to state 43
+
+    expressionAR                   shift and go to state 42
+
+state 26
+
+    (12) expressionAR -> expressionAR MINUS . expressionAR
+    (11) expressionAR -> . expressionAR PLUS expressionAR
+    (12) expressionAR -> . expressionAR MINUS expressionAR
+    (13) expressionAR -> . expressionAR TIMES expressionAR
+    (14) expressionAR -> . expressionAR DIVIDE expressionAR
+    (15) expressionAR -> . INT
+    (16) expressionAR -> . FLOAT
+    (17) expressionAR -> . LPAREN expressionAR RPAREN
+
+    INT             shift and go to state 15
+    FLOAT           shift and go to state 16
+    LPAREN          shift and go to state 43
+
+    expressionAR                   shift and go to state 44
+
+state 27
+
+    (13) expressionAR -> expressionAR TIMES . expressionAR
+    (11) expressionAR -> . expressionAR PLUS expressionAR
+    (12) expressionAR -> . expressionAR MINUS expressionAR
+    (13) expressionAR -> . expressionAR TIMES expressionAR
+    (14) expressionAR -> . expressionAR DIVIDE expressionAR
+    (15) expressionAR -> . INT
+    (16) expressionAR -> . FLOAT
+    (17) expressionAR -> . LPAREN expressionAR RPAREN
+
+    INT             shift and go to state 15
+    FLOAT           shift and go to state 16
+    LPAREN          shift and go to state 43
+
+    expressionAR                   shift and go to state 45
+
+state 28
+
+    (14) expressionAR -> expressionAR DIVIDE . expressionAR
+    (11) expressionAR -> . expressionAR PLUS expressionAR
+    (12) expressionAR -> . expressionAR MINUS expressionAR
+    (13) expressionAR -> . expressionAR TIMES expressionAR
+    (14) expressionAR -> . expressionAR DIVIDE expressionAR
+    (15) expressionAR -> . INT
+    (16) expressionAR -> . FLOAT
+    (17) expressionAR -> . LPAREN expressionAR RPAREN
+
+    INT             shift and go to state 15
+    FLOAT           shift and go to state 16
+    LPAREN          shift and go to state 43
+
+    expressionAR                   shift and go to state 46
+
+state 29
+
+    (18) expressionBo -> expressionBo MORE . expressionBo
+    (18) expressionBo -> . expressionBo MORE expressionBo
+    (19) expressionBo -> . expressionBo LESS expressionBo
+    (20) expressionBo -> . expressionBo MOREEQUAL expressionBo
+    (21) expressionBo -> . expressionBo LESSEQUAL expressionBo
+    (22) expressionBo -> . expressionBo NOTEQUAL expressionBo
+    (23) expressionBo -> . expressionBo EQUALSTO expressionBo
+    (24) expressionBo -> . ID
+    (25) expressionBo -> . TRUE
+    (26) expressionBo -> . FALSE
+    (27) expressionBo -> . LPAREN expressionBo RPAREN
+
+    ID              shift and go to state 21
+    TRUE            shift and go to state 17
+    FALSE           shift and go to state 18
+    LPAREN          shift and go to state 36
+
+    expressionBo                   shift and go to state 47
+
+state 30
+
+    (19) expressionBo -> expressionBo LESS . expressionBo
+    (18) expressionBo -> . expressionBo MORE expressionBo
+    (19) expressionBo -> . expressionBo LESS expressionBo
+    (20) expressionBo -> . expressionBo MOREEQUAL expressionBo
+    (21) expressionBo -> . expressionBo LESSEQUAL expressionBo
+    (22) expressionBo -> . expressionBo NOTEQUAL expressionBo
+    (23) expressionBo -> . expressionBo EQUALSTO expressionBo
+    (24) expressionBo -> . ID
+    (25) expressionBo -> . TRUE
+    (26) expressionBo -> . FALSE
+    (27) expressionBo -> . LPAREN expressionBo RPAREN
+
+    ID              shift and go to state 21
+    TRUE            shift and go to state 17
+    FALSE           shift and go to state 18
+    LPAREN          shift and go to state 36
+
+    expressionBo                   shift and go to state 48
+
+state 31
+
+    (20) expressionBo -> expressionBo MOREEQUAL . expressionBo
+    (18) expressionBo -> . expressionBo MORE expressionBo
+    (19) expressionBo -> . expressionBo LESS expressionBo
+    (20) expressionBo -> . expressionBo MOREEQUAL expressionBo
+    (21) expressionBo -> . expressionBo LESSEQUAL expressionBo
+    (22) expressionBo -> . expressionBo NOTEQUAL expressionBo
+    (23) expressionBo -> . expressionBo EQUALSTO expressionBo
+    (24) expressionBo -> . ID
+    (25) expressionBo -> . TRUE
+    (26) expressionBo -> . FALSE
+    (27) expressionBo -> . LPAREN expressionBo RPAREN
+
+    ID              shift and go to state 21
+    TRUE            shift and go to state 17
+    FALSE           shift and go to state 18
+    LPAREN          shift and go to state 36
+
+    expressionBo                   shift and go to state 49
+
+state 32
+
+    (21) expressionBo -> expressionBo LESSEQUAL . expressionBo
+    (18) expressionBo -> . expressionBo MORE expressionBo
+    (19) expressionBo -> . expressionBo LESS expressionBo
+    (20) expressionBo -> . expressionBo MOREEQUAL expressionBo
+    (21) expressionBo -> . expressionBo LESSEQUAL expressionBo
+    (22) expressionBo -> . expressionBo NOTEQUAL expressionBo
+    (23) expressionBo -> . expressionBo EQUALSTO expressionBo
+    (24) expressionBo -> . ID
+    (25) expressionBo -> . TRUE
+    (26) expressionBo -> . FALSE
+    (27) expressionBo -> . LPAREN expressionBo RPAREN
+
+    ID              shift and go to state 21
+    TRUE            shift and go to state 17
+    FALSE           shift and go to state 18
+    LPAREN          shift and go to state 36
+
+    expressionBo                   shift and go to state 50
+
+state 33
+
+    (22) expressionBo -> expressionBo NOTEQUAL . expressionBo
+    (18) expressionBo -> . expressionBo MORE expressionBo
+    (19) expressionBo -> . expressionBo LESS expressionBo
+    (20) expressionBo -> . expressionBo MOREEQUAL expressionBo
+    (21) expressionBo -> . expressionBo LESSEQUAL expressionBo
+    (22) expressionBo -> . expressionBo NOTEQUAL expressionBo
+    (23) expressionBo -> . expressionBo EQUALSTO expressionBo
+    (24) expressionBo -> . ID
+    (25) expressionBo -> . TRUE
+    (26) expressionBo -> . FALSE
+    (27) expressionBo -> . LPAREN expressionBo RPAREN
+
+    ID              shift and go to state 21
+    TRUE            shift and go to state 17
+    FALSE           shift and go to state 18
+    LPAREN          shift and go to state 36
+
+    expressionBo                   shift and go to state 51
+
+state 34
+
+    (23) expressionBo -> expressionBo EQUALSTO . expressionBo
+    (18) expressionBo -> . expressionBo MORE expressionBo
+    (19) expressionBo -> . expressionBo LESS expressionBo
+    (20) expressionBo -> . expressionBo MOREEQUAL expressionBo
+    (21) expressionBo -> . expressionBo LESSEQUAL expressionBo
+    (22) expressionBo -> . expressionBo NOTEQUAL expressionBo
+    (23) expressionBo -> . expressionBo EQUALSTO expressionBo
+    (24) expressionBo -> . ID
+    (25) expressionBo -> . TRUE
+    (26) expressionBo -> . FALSE
+    (27) expressionBo -> . LPAREN expressionBo RPAREN
+
+    ID              shift and go to state 21
+    TRUE            shift and go to state 17
+    FALSE           shift and go to state 18
+    LPAREN          shift and go to state 36
+
+    expressionBo                   shift and go to state 52
+
+state 35
 
     (6) inst -> FOR expressionBo . LCURLBRACKET list RCURLBRACKET
     (18) expressionBo -> expressionBo . MORE expressionBo
@@ -282,94 +807,37 @@ state 9
     (22) expressionBo -> expressionBo . NOTEQUAL expressionBo
     (23) expressionBo -> expressionBo . EQUALSTO expressionBo
 
-    LCURLBRACKET    shift and go to state 22
-    MORE            shift and go to state 23
-    LESS            shift and go to state 24
-    MOREEQUAL       shift and go to state 25
-    LESSEQUAL       shift and go to state 26
-    NOTEQUAL        shift and go to state 27
-    EQUALSTO        shift and go to state 28
+    LCURLBRACKET    shift and go to state 53
+    MORE            shift and go to state 29
+    LESS            shift and go to state 30
+    MOREEQUAL       shift and go to state 31
+    LESSEQUAL       shift and go to state 32
+    NOTEQUAL        shift and go to state 33
+    EQUALSTO        shift and go to state 34
 
 
-state 10
+state 36
 
-    (24) expressionBo -> TRUE .
-
-    LCURLBRACKET    reduce using rule 24 (expressionBo -> TRUE .)
-    MORE            reduce using rule 24 (expressionBo -> TRUE .)
-    LESS            reduce using rule 24 (expressionBo -> TRUE .)
-    MOREEQUAL       reduce using rule 24 (expressionBo -> TRUE .)
-    LESSEQUAL       reduce using rule 24 (expressionBo -> TRUE .)
-    NOTEQUAL        reduce using rule 24 (expressionBo -> TRUE .)
-    EQUALSTO        reduce using rule 24 (expressionBo -> TRUE .)
-    ID              reduce using rule 24 (expressionBo -> TRUE .)
-    FOR             reduce using rule 24 (expressionBo -> TRUE .)
-    IF              reduce using rule 24 (expressionBo -> TRUE .)
-    $end            reduce using rule 24 (expressionBo -> TRUE .)
-    RCURLBRACKET    reduce using rule 24 (expressionBo -> TRUE .)
-    RPAREN          reduce using rule 24 (expressionBo -> TRUE .)
-
-
-state 11
-
-    (25) expressionBo -> FALSE .
-
-    LCURLBRACKET    reduce using rule 25 (expressionBo -> FALSE .)
-    MORE            reduce using rule 25 (expressionBo -> FALSE .)
-    LESS            reduce using rule 25 (expressionBo -> FALSE .)
-    MOREEQUAL       reduce using rule 25 (expressionBo -> FALSE .)
-    LESSEQUAL       reduce using rule 25 (expressionBo -> FALSE .)
-    NOTEQUAL        reduce using rule 25 (expressionBo -> FALSE .)
-    EQUALSTO        reduce using rule 25 (expressionBo -> FALSE .)
-    ID              reduce using rule 25 (expressionBo -> FALSE .)
-    FOR             reduce using rule 25 (expressionBo -> FALSE .)
-    IF              reduce using rule 25 (expressionBo -> FALSE .)
-    $end            reduce using rule 25 (expressionBo -> FALSE .)
-    RCURLBRACKET    reduce using rule 25 (expressionBo -> FALSE .)
-    RPAREN          reduce using rule 25 (expressionBo -> FALSE .)
-
-
-state 12
-
-    (26) expressionBo -> LPAREN . expressionBo RPAREN
+    (27) expressionBo -> LPAREN . expressionBo RPAREN
     (18) expressionBo -> . expressionBo MORE expressionBo
     (19) expressionBo -> . expressionBo LESS expressionBo
     (20) expressionBo -> . expressionBo MOREEQUAL expressionBo
     (21) expressionBo -> . expressionBo LESSEQUAL expressionBo
     (22) expressionBo -> . expressionBo NOTEQUAL expressionBo
     (23) expressionBo -> . expressionBo EQUALSTO expressionBo
-    (24) expressionBo -> . TRUE
-    (25) expressionBo -> . FALSE
-    (26) expressionBo -> . LPAREN expressionBo RPAREN
-    (27) expressionBo -> . ID
+    (24) expressionBo -> . ID
+    (25) expressionBo -> . TRUE
+    (26) expressionBo -> . FALSE
+    (27) expressionBo -> . LPAREN expressionBo RPAREN
 
-    TRUE            shift and go to state 10
-    FALSE           shift and go to state 11
-    LPAREN          shift and go to state 12
-    ID              shift and go to state 13
+    ID              shift and go to state 21
+    TRUE            shift and go to state 17
+    FALSE           shift and go to state 18
+    LPAREN          shift and go to state 36
 
-    expressionBo                   shift and go to state 29
+    expressionBo                   shift and go to state 20
 
-state 13
-
-    (27) expressionBo -> ID .
-
-    LCURLBRACKET    reduce using rule 27 (expressionBo -> ID .)
-    MORE            reduce using rule 27 (expressionBo -> ID .)
-    LESS            reduce using rule 27 (expressionBo -> ID .)
-    MOREEQUAL       reduce using rule 27 (expressionBo -> ID .)
-    LESSEQUAL       reduce using rule 27 (expressionBo -> ID .)
-    NOTEQUAL        reduce using rule 27 (expressionBo -> ID .)
-    EQUALSTO        reduce using rule 27 (expressionBo -> ID .)
-    RPAREN          reduce using rule 27 (expressionBo -> ID .)
-    ID              reduce using rule 27 (expressionBo -> ID .)
-    FOR             reduce using rule 27 (expressionBo -> ID .)
-    IF              reduce using rule 27 (expressionBo -> ID .)
-    $end            reduce using rule 27 (expressionBo -> ID .)
-    RCURLBRACKET    reduce using rule 27 (expressionBo -> ID .)
-
-
-state 14
+state 37
 
     (7) inst -> IF expressionBo . LCURLBRACKET list RCURLBRACKET ELSE LCURLBRACKET list RCURLBRACKET
     (8) inst -> IF expressionBo . LCURLBRACKET list RCURLBRACKET
@@ -380,59 +848,82 @@ state 14
     (22) expressionBo -> expressionBo . NOTEQUAL expressionBo
     (23) expressionBo -> expressionBo . EQUALSTO expressionBo
 
-    LCURLBRACKET    shift and go to state 30
-    MORE            shift and go to state 23
-    LESS            shift and go to state 24
-    MOREEQUAL       shift and go to state 25
-    LESSEQUAL       shift and go to state 26
-    NOTEQUAL        shift and go to state 27
-    EQUALSTO        shift and go to state 28
+    LCURLBRACKET    shift and go to state 54
+    MORE            shift and go to state 29
+    LESS            shift and go to state 30
+    MOREEQUAL       shift and go to state 31
+    LESSEQUAL       shift and go to state 32
+    NOTEQUAL        shift and go to state 33
+    EQUALSTO        shift and go to state 34
 
 
-state 15
+state 38
 
-    (17) expressionAR -> ID .
-    (27) expressionBo -> ID .
+    (17) expressionAR -> LPAREN expressionAR RPAREN .
 
-  ! reduce/reduce conflict for ID resolved using rule 17 (expressionAR -> ID .)
-  ! reduce/reduce conflict for FOR resolved using rule 17 (expressionAR -> ID .)
-  ! reduce/reduce conflict for IF resolved using rule 17 (expressionAR -> ID .)
-  ! reduce/reduce conflict for $end resolved using rule 17 (expressionAR -> ID .)
-  ! reduce/reduce conflict for RCURLBRACKET resolved using rule 17 (expressionAR -> ID .)
-  ! reduce/reduce conflict for RPAREN resolved using rule 17 (expressionAR -> ID .)
-    ID              reduce using rule 17 (expressionAR -> ID .)
-    FOR             reduce using rule 17 (expressionAR -> ID .)
-    IF              reduce using rule 17 (expressionAR -> ID .)
-    $end            reduce using rule 17 (expressionAR -> ID .)
-    RCURLBRACKET    reduce using rule 17 (expressionAR -> ID .)
-    RPAREN          reduce using rule 17 (expressionAR -> ID .)
-    MORE            reduce using rule 27 (expressionBo -> ID .)
-    LESS            reduce using rule 27 (expressionBo -> ID .)
-    MOREEQUAL       reduce using rule 27 (expressionBo -> ID .)
-    LESSEQUAL       reduce using rule 27 (expressionBo -> ID .)
-    NOTEQUAL        reduce using rule 27 (expressionBo -> ID .)
-    EQUALSTO        reduce using rule 27 (expressionBo -> ID .)
-
-  ! ID              [ reduce using rule 27 (expressionBo -> ID .) ]
-  ! FOR             [ reduce using rule 27 (expressionBo -> ID .) ]
-  ! IF              [ reduce using rule 27 (expressionBo -> ID .) ]
-  ! $end            [ reduce using rule 27 (expressionBo -> ID .) ]
-  ! RCURLBRACKET    [ reduce using rule 27 (expressionBo -> ID .) ]
-  ! RPAREN          [ reduce using rule 27 (expressionBo -> ID .) ]
+    PLUS            reduce using rule 17 (expressionAR -> LPAREN expressionAR RPAREN .)
+    MINUS           reduce using rule 17 (expressionAR -> LPAREN expressionAR RPAREN .)
+    TIMES           reduce using rule 17 (expressionAR -> LPAREN expressionAR RPAREN .)
+    DIVIDE          reduce using rule 17 (expressionAR -> LPAREN expressionAR RPAREN .)
+    ID              reduce using rule 17 (expressionAR -> LPAREN expressionAR RPAREN .)
+    FOR             reduce using rule 17 (expressionAR -> LPAREN expressionAR RPAREN .)
+    IF              reduce using rule 17 (expressionAR -> LPAREN expressionAR RPAREN .)
+    INT             reduce using rule 17 (expressionAR -> LPAREN expressionAR RPAREN .)
+    FLOAT           reduce using rule 17 (expressionAR -> LPAREN expressionAR RPAREN .)
+    LPAREN          reduce using rule 17 (expressionAR -> LPAREN expressionAR RPAREN .)
+    TRUE            reduce using rule 17 (expressionAR -> LPAREN expressionAR RPAREN .)
+    FALSE           reduce using rule 17 (expressionAR -> LPAREN expressionAR RPAREN .)
+    RCURLBRACKET    reduce using rule 17 (expressionAR -> LPAREN expressionAR RPAREN .)
+    RPAREN          reduce using rule 17 (expressionAR -> LPAREN expressionAR RPAREN .)
 
 
-state 16
+state 39
+
+    (27) expressionBo -> LPAREN expressionBo RPAREN .
+
+    MORE            reduce using rule 27 (expressionBo -> LPAREN expressionBo RPAREN .)
+    LESS            reduce using rule 27 (expressionBo -> LPAREN expressionBo RPAREN .)
+    MOREEQUAL       reduce using rule 27 (expressionBo -> LPAREN expressionBo RPAREN .)
+    LESSEQUAL       reduce using rule 27 (expressionBo -> LPAREN expressionBo RPAREN .)
+    NOTEQUAL        reduce using rule 27 (expressionBo -> LPAREN expressionBo RPAREN .)
+    EQUALSTO        reduce using rule 27 (expressionBo -> LPAREN expressionBo RPAREN .)
+    ID              reduce using rule 27 (expressionBo -> LPAREN expressionBo RPAREN .)
+    FOR             reduce using rule 27 (expressionBo -> LPAREN expressionBo RPAREN .)
+    IF              reduce using rule 27 (expressionBo -> LPAREN expressionBo RPAREN .)
+    INT             reduce using rule 27 (expressionBo -> LPAREN expressionBo RPAREN .)
+    FLOAT           reduce using rule 27 (expressionBo -> LPAREN expressionBo RPAREN .)
+    LPAREN          reduce using rule 27 (expressionBo -> LPAREN expressionBo RPAREN .)
+    TRUE            reduce using rule 27 (expressionBo -> LPAREN expressionBo RPAREN .)
+    FALSE           reduce using rule 27 (expressionBo -> LPAREN expressionBo RPAREN .)
+    RCURLBRACKET    reduce using rule 27 (expressionBo -> LPAREN expressionBo RPAREN .)
+    RPAREN          reduce using rule 27 (expressionBo -> LPAREN expressionBo RPAREN .)
+    LCURLBRACKET    reduce using rule 27 (expressionBo -> LPAREN expressionBo RPAREN .)
+
+
+state 40
 
     (4) inst -> ID ASSIGN expressionAR .
+    (11) expressionAR -> expressionAR . PLUS expressionAR
+    (12) expressionAR -> expressionAR . MINUS expressionAR
+    (13) expressionAR -> expressionAR . TIMES expressionAR
+    (14) expressionAR -> expressionAR . DIVIDE expressionAR
 
     ID              reduce using rule 4 (inst -> ID ASSIGN expressionAR .)
     FOR             reduce using rule 4 (inst -> ID ASSIGN expressionAR .)
     IF              reduce using rule 4 (inst -> ID ASSIGN expressionAR .)
-    $end            reduce using rule 4 (inst -> ID ASSIGN expressionAR .)
+    INT             reduce using rule 4 (inst -> ID ASSIGN expressionAR .)
+    FLOAT           reduce using rule 4 (inst -> ID ASSIGN expressionAR .)
+    LPAREN          reduce using rule 4 (inst -> ID ASSIGN expressionAR .)
+    TRUE            reduce using rule 4 (inst -> ID ASSIGN expressionAR .)
+    FALSE           reduce using rule 4 (inst -> ID ASSIGN expressionAR .)
     RCURLBRACKET    reduce using rule 4 (inst -> ID ASSIGN expressionAR .)
+    PLUS            shift and go to state 25
+    MINUS           shift and go to state 26
+    TIMES           shift and go to state 27
+    DIVIDE          shift and go to state 28
 
 
-state 17
+state 41
 
     (5) inst -> ID ASSIGN expressionBo .
     (18) expressionBo -> expressionBo . MORE expressionBo
@@ -445,89 +936,370 @@ state 17
     ID              reduce using rule 5 (inst -> ID ASSIGN expressionBo .)
     FOR             reduce using rule 5 (inst -> ID ASSIGN expressionBo .)
     IF              reduce using rule 5 (inst -> ID ASSIGN expressionBo .)
-    $end            reduce using rule 5 (inst -> ID ASSIGN expressionBo .)
+    INT             reduce using rule 5 (inst -> ID ASSIGN expressionBo .)
+    FLOAT           reduce using rule 5 (inst -> ID ASSIGN expressionBo .)
+    LPAREN          reduce using rule 5 (inst -> ID ASSIGN expressionBo .)
+    TRUE            reduce using rule 5 (inst -> ID ASSIGN expressionBo .)
+    FALSE           reduce using rule 5 (inst -> ID ASSIGN expressionBo .)
     RCURLBRACKET    reduce using rule 5 (inst -> ID ASSIGN expressionBo .)
-    MORE            shift and go to state 23
-    LESS            shift and go to state 24
-    MOREEQUAL       shift and go to state 25
-    LESSEQUAL       shift and go to state 26
-    NOTEQUAL        shift and go to state 27
-    EQUALSTO        shift and go to state 28
+    MORE            shift and go to state 29
+    LESS            shift and go to state 30
+    MOREEQUAL       shift and go to state 31
+    LESSEQUAL       shift and go to state 32
+    NOTEQUAL        shift and go to state 33
+    EQUALSTO        shift and go to state 34
 
 
-state 18
+state 42
 
-    (13) expressionAR -> MINUS . expressionAR
-    (13) expressionAR -> . MINUS expressionAR
-    (14) expressionAR -> . INT
-    (15) expressionAR -> . FLOAT
-    (16) expressionAR -> . LPAREN expressionAR RPAREN
-    (17) expressionAR -> . ID
+    (11) expressionAR -> expressionAR PLUS expressionAR .
+    (11) expressionAR -> expressionAR . PLUS expressionAR
+    (12) expressionAR -> expressionAR . MINUS expressionAR
+    (13) expressionAR -> expressionAR . TIMES expressionAR
+    (14) expressionAR -> expressionAR . DIVIDE expressionAR
 
-    MINUS           shift and go to state 18
-    INT             shift and go to state 19
-    FLOAT           shift and go to state 20
-    LPAREN          shift and go to state 32
-    ID              shift and go to state 33
+    PLUS            reduce using rule 11 (expressionAR -> expressionAR PLUS expressionAR .)
+    MINUS           reduce using rule 11 (expressionAR -> expressionAR PLUS expressionAR .)
+    ID              reduce using rule 11 (expressionAR -> expressionAR PLUS expressionAR .)
+    FOR             reduce using rule 11 (expressionAR -> expressionAR PLUS expressionAR .)
+    IF              reduce using rule 11 (expressionAR -> expressionAR PLUS expressionAR .)
+    INT             reduce using rule 11 (expressionAR -> expressionAR PLUS expressionAR .)
+    FLOAT           reduce using rule 11 (expressionAR -> expressionAR PLUS expressionAR .)
+    LPAREN          reduce using rule 11 (expressionAR -> expressionAR PLUS expressionAR .)
+    TRUE            reduce using rule 11 (expressionAR -> expressionAR PLUS expressionAR .)
+    FALSE           reduce using rule 11 (expressionAR -> expressionAR PLUS expressionAR .)
+    RCURLBRACKET    reduce using rule 11 (expressionAR -> expressionAR PLUS expressionAR .)
+    RPAREN          reduce using rule 11 (expressionAR -> expressionAR PLUS expressionAR .)
+    TIMES           shift and go to state 27
+    DIVIDE          shift and go to state 28
 
-    expressionAR                   shift and go to state 31
-
-state 19
-
-    (14) expressionAR -> INT .
-
-    ID              reduce using rule 14 (expressionAR -> INT .)
-    FOR             reduce using rule 14 (expressionAR -> INT .)
-    IF              reduce using rule 14 (expressionAR -> INT .)
-    $end            reduce using rule 14 (expressionAR -> INT .)
-    RCURLBRACKET    reduce using rule 14 (expressionAR -> INT .)
-    RPAREN          reduce using rule 14 (expressionAR -> INT .)
-
-
-state 20
-
-    (15) expressionAR -> FLOAT .
-
-    ID              reduce using rule 15 (expressionAR -> FLOAT .)
-    FOR             reduce using rule 15 (expressionAR -> FLOAT .)
-    IF              reduce using rule 15 (expressionAR -> FLOAT .)
-    $end            reduce using rule 15 (expressionAR -> FLOAT .)
-    RCURLBRACKET    reduce using rule 15 (expressionAR -> FLOAT .)
-    RPAREN          reduce using rule 15 (expressionAR -> FLOAT .)
+  ! TIMES           [ reduce using rule 11 (expressionAR -> expressionAR PLUS expressionAR .) ]
+  ! DIVIDE          [ reduce using rule 11 (expressionAR -> expressionAR PLUS expressionAR .) ]
+  ! PLUS            [ shift and go to state 25 ]
+  ! MINUS           [ shift and go to state 26 ]
 
 
-state 21
+state 43
 
-    (16) expressionAR -> LPAREN . expressionAR RPAREN
-    (26) expressionBo -> LPAREN . expressionBo RPAREN
-    (13) expressionAR -> . MINUS expressionAR
-    (14) expressionAR -> . INT
-    (15) expressionAR -> . FLOAT
-    (16) expressionAR -> . LPAREN expressionAR RPAREN
-    (17) expressionAR -> . ID
-    (18) expressionBo -> . expressionBo MORE expressionBo
-    (19) expressionBo -> . expressionBo LESS expressionBo
-    (20) expressionBo -> . expressionBo MOREEQUAL expressionBo
-    (21) expressionBo -> . expressionBo LESSEQUAL expressionBo
-    (22) expressionBo -> . expressionBo NOTEQUAL expressionBo
-    (23) expressionBo -> . expressionBo EQUALSTO expressionBo
-    (24) expressionBo -> . TRUE
-    (25) expressionBo -> . FALSE
-    (26) expressionBo -> . LPAREN expressionBo RPAREN
-    (27) expressionBo -> . ID
+    (17) expressionAR -> LPAREN . expressionAR RPAREN
+    (11) expressionAR -> . expressionAR PLUS expressionAR
+    (12) expressionAR -> . expressionAR MINUS expressionAR
+    (13) expressionAR -> . expressionAR TIMES expressionAR
+    (14) expressionAR -> . expressionAR DIVIDE expressionAR
+    (15) expressionAR -> . INT
+    (16) expressionAR -> . FLOAT
+    (17) expressionAR -> . LPAREN expressionAR RPAREN
 
-    MINUS           shift and go to state 18
-    INT             shift and go to state 19
-    FLOAT           shift and go to state 20
-    LPAREN          shift and go to state 21
-    ID              shift and go to state 15
-    TRUE            shift and go to state 10
-    FALSE           shift and go to state 11
+    INT             shift and go to state 15
+    FLOAT           shift and go to state 16
+    LPAREN          shift and go to state 43
 
-    expressionAR                   shift and go to state 34
-    expressionBo                   shift and go to state 29
+    expressionAR                   shift and go to state 19
 
-state 22
+state 44
+
+    (12) expressionAR -> expressionAR MINUS expressionAR .
+    (11) expressionAR -> expressionAR . PLUS expressionAR
+    (12) expressionAR -> expressionAR . MINUS expressionAR
+    (13) expressionAR -> expressionAR . TIMES expressionAR
+    (14) expressionAR -> expressionAR . DIVIDE expressionAR
+
+    PLUS            reduce using rule 12 (expressionAR -> expressionAR MINUS expressionAR .)
+    MINUS           reduce using rule 12 (expressionAR -> expressionAR MINUS expressionAR .)
+    ID              reduce using rule 12 (expressionAR -> expressionAR MINUS expressionAR .)
+    FOR             reduce using rule 12 (expressionAR -> expressionAR MINUS expressionAR .)
+    IF              reduce using rule 12 (expressionAR -> expressionAR MINUS expressionAR .)
+    INT             reduce using rule 12 (expressionAR -> expressionAR MINUS expressionAR .)
+    FLOAT           reduce using rule 12 (expressionAR -> expressionAR MINUS expressionAR .)
+    LPAREN          reduce using rule 12 (expressionAR -> expressionAR MINUS expressionAR .)
+    TRUE            reduce using rule 12 (expressionAR -> expressionAR MINUS expressionAR .)
+    FALSE           reduce using rule 12 (expressionAR -> expressionAR MINUS expressionAR .)
+    RCURLBRACKET    reduce using rule 12 (expressionAR -> expressionAR MINUS expressionAR .)
+    RPAREN          reduce using rule 12 (expressionAR -> expressionAR MINUS expressionAR .)
+    TIMES           shift and go to state 27
+    DIVIDE          shift and go to state 28
+
+  ! TIMES           [ reduce using rule 12 (expressionAR -> expressionAR MINUS expressionAR .) ]
+  ! DIVIDE          [ reduce using rule 12 (expressionAR -> expressionAR MINUS expressionAR .) ]
+  ! PLUS            [ shift and go to state 25 ]
+  ! MINUS           [ shift and go to state 26 ]
+
+
+state 45
+
+    (13) expressionAR -> expressionAR TIMES expressionAR .
+    (11) expressionAR -> expressionAR . PLUS expressionAR
+    (12) expressionAR -> expressionAR . MINUS expressionAR
+    (13) expressionAR -> expressionAR . TIMES expressionAR
+    (14) expressionAR -> expressionAR . DIVIDE expressionAR
+
+    PLUS            reduce using rule 13 (expressionAR -> expressionAR TIMES expressionAR .)
+    MINUS           reduce using rule 13 (expressionAR -> expressionAR TIMES expressionAR .)
+    TIMES           reduce using rule 13 (expressionAR -> expressionAR TIMES expressionAR .)
+    DIVIDE          reduce using rule 13 (expressionAR -> expressionAR TIMES expressionAR .)
+    ID              reduce using rule 13 (expressionAR -> expressionAR TIMES expressionAR .)
+    FOR             reduce using rule 13 (expressionAR -> expressionAR TIMES expressionAR .)
+    IF              reduce using rule 13 (expressionAR -> expressionAR TIMES expressionAR .)
+    INT             reduce using rule 13 (expressionAR -> expressionAR TIMES expressionAR .)
+    FLOAT           reduce using rule 13 (expressionAR -> expressionAR TIMES expressionAR .)
+    LPAREN          reduce using rule 13 (expressionAR -> expressionAR TIMES expressionAR .)
+    TRUE            reduce using rule 13 (expressionAR -> expressionAR TIMES expressionAR .)
+    FALSE           reduce using rule 13 (expressionAR -> expressionAR TIMES expressionAR .)
+    RCURLBRACKET    reduce using rule 13 (expressionAR -> expressionAR TIMES expressionAR .)
+    RPAREN          reduce using rule 13 (expressionAR -> expressionAR TIMES expressionAR .)
+
+  ! PLUS            [ shift and go to state 25 ]
+  ! MINUS           [ shift and go to state 26 ]
+  ! TIMES           [ shift and go to state 27 ]
+  ! DIVIDE          [ shift and go to state 28 ]
+
+
+state 46
+
+    (14) expressionAR -> expressionAR DIVIDE expressionAR .
+    (11) expressionAR -> expressionAR . PLUS expressionAR
+    (12) expressionAR -> expressionAR . MINUS expressionAR
+    (13) expressionAR -> expressionAR . TIMES expressionAR
+    (14) expressionAR -> expressionAR . DIVIDE expressionAR
+
+    PLUS            reduce using rule 14 (expressionAR -> expressionAR DIVIDE expressionAR .)
+    MINUS           reduce using rule 14 (expressionAR -> expressionAR DIVIDE expressionAR .)
+    TIMES           reduce using rule 14 (expressionAR -> expressionAR DIVIDE expressionAR .)
+    DIVIDE          reduce using rule 14 (expressionAR -> expressionAR DIVIDE expressionAR .)
+    ID              reduce using rule 14 (expressionAR -> expressionAR DIVIDE expressionAR .)
+    FOR             reduce using rule 14 (expressionAR -> expressionAR DIVIDE expressionAR .)
+    IF              reduce using rule 14 (expressionAR -> expressionAR DIVIDE expressionAR .)
+    INT             reduce using rule 14 (expressionAR -> expressionAR DIVIDE expressionAR .)
+    FLOAT           reduce using rule 14 (expressionAR -> expressionAR DIVIDE expressionAR .)
+    LPAREN          reduce using rule 14 (expressionAR -> expressionAR DIVIDE expressionAR .)
+    TRUE            reduce using rule 14 (expressionAR -> expressionAR DIVIDE expressionAR .)
+    FALSE           reduce using rule 14 (expressionAR -> expressionAR DIVIDE expressionAR .)
+    RCURLBRACKET    reduce using rule 14 (expressionAR -> expressionAR DIVIDE expressionAR .)
+    RPAREN          reduce using rule 14 (expressionAR -> expressionAR DIVIDE expressionAR .)
+
+  ! PLUS            [ shift and go to state 25 ]
+  ! MINUS           [ shift and go to state 26 ]
+  ! TIMES           [ shift and go to state 27 ]
+  ! DIVIDE          [ shift and go to state 28 ]
+
+
+state 47
+
+    (18) expressionBo -> expressionBo MORE expressionBo .
+    (18) expressionBo -> expressionBo . MORE expressionBo
+    (19) expressionBo -> expressionBo . LESS expressionBo
+    (20) expressionBo -> expressionBo . MOREEQUAL expressionBo
+    (21) expressionBo -> expressionBo . LESSEQUAL expressionBo
+    (22) expressionBo -> expressionBo . NOTEQUAL expressionBo
+    (23) expressionBo -> expressionBo . EQUALSTO expressionBo
+
+    MORE            reduce using rule 18 (expressionBo -> expressionBo MORE expressionBo .)
+    LESS            reduce using rule 18 (expressionBo -> expressionBo MORE expressionBo .)
+    MOREEQUAL       reduce using rule 18 (expressionBo -> expressionBo MORE expressionBo .)
+    LESSEQUAL       reduce using rule 18 (expressionBo -> expressionBo MORE expressionBo .)
+    NOTEQUAL        reduce using rule 18 (expressionBo -> expressionBo MORE expressionBo .)
+    EQUALSTO        reduce using rule 18 (expressionBo -> expressionBo MORE expressionBo .)
+    ID              reduce using rule 18 (expressionBo -> expressionBo MORE expressionBo .)
+    FOR             reduce using rule 18 (expressionBo -> expressionBo MORE expressionBo .)
+    IF              reduce using rule 18 (expressionBo -> expressionBo MORE expressionBo .)
+    INT             reduce using rule 18 (expressionBo -> expressionBo MORE expressionBo .)
+    FLOAT           reduce using rule 18 (expressionBo -> expressionBo MORE expressionBo .)
+    LPAREN          reduce using rule 18 (expressionBo -> expressionBo MORE expressionBo .)
+    TRUE            reduce using rule 18 (expressionBo -> expressionBo MORE expressionBo .)
+    FALSE           reduce using rule 18 (expressionBo -> expressionBo MORE expressionBo .)
+    RCURLBRACKET    reduce using rule 18 (expressionBo -> expressionBo MORE expressionBo .)
+    RPAREN          reduce using rule 18 (expressionBo -> expressionBo MORE expressionBo .)
+    LCURLBRACKET    reduce using rule 18 (expressionBo -> expressionBo MORE expressionBo .)
+
+  ! MORE            [ shift and go to state 29 ]
+  ! LESS            [ shift and go to state 30 ]
+  ! MOREEQUAL       [ shift and go to state 31 ]
+  ! LESSEQUAL       [ shift and go to state 32 ]
+  ! NOTEQUAL        [ shift and go to state 33 ]
+  ! EQUALSTO        [ shift and go to state 34 ]
+
+
+state 48
+
+    (19) expressionBo -> expressionBo LESS expressionBo .
+    (18) expressionBo -> expressionBo . MORE expressionBo
+    (19) expressionBo -> expressionBo . LESS expressionBo
+    (20) expressionBo -> expressionBo . MOREEQUAL expressionBo
+    (21) expressionBo -> expressionBo . LESSEQUAL expressionBo
+    (22) expressionBo -> expressionBo . NOTEQUAL expressionBo
+    (23) expressionBo -> expressionBo . EQUALSTO expressionBo
+
+    MORE            reduce using rule 19 (expressionBo -> expressionBo LESS expressionBo .)
+    LESS            reduce using rule 19 (expressionBo -> expressionBo LESS expressionBo .)
+    MOREEQUAL       reduce using rule 19 (expressionBo -> expressionBo LESS expressionBo .)
+    LESSEQUAL       reduce using rule 19 (expressionBo -> expressionBo LESS expressionBo .)
+    NOTEQUAL        reduce using rule 19 (expressionBo -> expressionBo LESS expressionBo .)
+    EQUALSTO        reduce using rule 19 (expressionBo -> expressionBo LESS expressionBo .)
+    ID              reduce using rule 19 (expressionBo -> expressionBo LESS expressionBo .)
+    FOR             reduce using rule 19 (expressionBo -> expressionBo LESS expressionBo .)
+    IF              reduce using rule 19 (expressionBo -> expressionBo LESS expressionBo .)
+    INT             reduce using rule 19 (expressionBo -> expressionBo LESS expressionBo .)
+    FLOAT           reduce using rule 19 (expressionBo -> expressionBo LESS expressionBo .)
+    LPAREN          reduce using rule 19 (expressionBo -> expressionBo LESS expressionBo .)
+    TRUE            reduce using rule 19 (expressionBo -> expressionBo LESS expressionBo .)
+    FALSE           reduce using rule 19 (expressionBo -> expressionBo LESS expressionBo .)
+    RCURLBRACKET    reduce using rule 19 (expressionBo -> expressionBo LESS expressionBo .)
+    RPAREN          reduce using rule 19 (expressionBo -> expressionBo LESS expressionBo .)
+    LCURLBRACKET    reduce using rule 19 (expressionBo -> expressionBo LESS expressionBo .)
+
+  ! MORE            [ shift and go to state 29 ]
+  ! LESS            [ shift and go to state 30 ]
+  ! MOREEQUAL       [ shift and go to state 31 ]
+  ! LESSEQUAL       [ shift and go to state 32 ]
+  ! NOTEQUAL        [ shift and go to state 33 ]
+  ! EQUALSTO        [ shift and go to state 34 ]
+
+
+state 49
+
+    (20) expressionBo -> expressionBo MOREEQUAL expressionBo .
+    (18) expressionBo -> expressionBo . MORE expressionBo
+    (19) expressionBo -> expressionBo . LESS expressionBo
+    (20) expressionBo -> expressionBo . MOREEQUAL expressionBo
+    (21) expressionBo -> expressionBo . LESSEQUAL expressionBo
+    (22) expressionBo -> expressionBo . NOTEQUAL expressionBo
+    (23) expressionBo -> expressionBo . EQUALSTO expressionBo
+
+    MORE            reduce using rule 20 (expressionBo -> expressionBo MOREEQUAL expressionBo .)
+    LESS            reduce using rule 20 (expressionBo -> expressionBo MOREEQUAL expressionBo .)
+    MOREEQUAL       reduce using rule 20 (expressionBo -> expressionBo MOREEQUAL expressionBo .)
+    LESSEQUAL       reduce using rule 20 (expressionBo -> expressionBo MOREEQUAL expressionBo .)
+    NOTEQUAL        reduce using rule 20 (expressionBo -> expressionBo MOREEQUAL expressionBo .)
+    EQUALSTO        reduce using rule 20 (expressionBo -> expressionBo MOREEQUAL expressionBo .)
+    ID              reduce using rule 20 (expressionBo -> expressionBo MOREEQUAL expressionBo .)
+    FOR             reduce using rule 20 (expressionBo -> expressionBo MOREEQUAL expressionBo .)
+    IF              reduce using rule 20 (expressionBo -> expressionBo MOREEQUAL expressionBo .)
+    INT             reduce using rule 20 (expressionBo -> expressionBo MOREEQUAL expressionBo .)
+    FLOAT           reduce using rule 20 (expressionBo -> expressionBo MOREEQUAL expressionBo .)
+    LPAREN          reduce using rule 20 (expressionBo -> expressionBo MOREEQUAL expressionBo .)
+    TRUE            reduce using rule 20 (expressionBo -> expressionBo MOREEQUAL expressionBo .)
+    FALSE           reduce using rule 20 (expressionBo -> expressionBo MOREEQUAL expressionBo .)
+    RCURLBRACKET    reduce using rule 20 (expressionBo -> expressionBo MOREEQUAL expressionBo .)
+    RPAREN          reduce using rule 20 (expressionBo -> expressionBo MOREEQUAL expressionBo .)
+    LCURLBRACKET    reduce using rule 20 (expressionBo -> expressionBo MOREEQUAL expressionBo .)
+
+  ! MORE            [ shift and go to state 29 ]
+  ! LESS            [ shift and go to state 30 ]
+  ! MOREEQUAL       [ shift and go to state 31 ]
+  ! LESSEQUAL       [ shift and go to state 32 ]
+  ! NOTEQUAL        [ shift and go to state 33 ]
+  ! EQUALSTO        [ shift and go to state 34 ]
+
+
+state 50
+
+    (21) expressionBo -> expressionBo LESSEQUAL expressionBo .
+    (18) expressionBo -> expressionBo . MORE expressionBo
+    (19) expressionBo -> expressionBo . LESS expressionBo
+    (20) expressionBo -> expressionBo . MOREEQUAL expressionBo
+    (21) expressionBo -> expressionBo . LESSEQUAL expressionBo
+    (22) expressionBo -> expressionBo . NOTEQUAL expressionBo
+    (23) expressionBo -> expressionBo . EQUALSTO expressionBo
+
+    MORE            reduce using rule 21 (expressionBo -> expressionBo LESSEQUAL expressionBo .)
+    LESS            reduce using rule 21 (expressionBo -> expressionBo LESSEQUAL expressionBo .)
+    MOREEQUAL       reduce using rule 21 (expressionBo -> expressionBo LESSEQUAL expressionBo .)
+    LESSEQUAL       reduce using rule 21 (expressionBo -> expressionBo LESSEQUAL expressionBo .)
+    NOTEQUAL        reduce using rule 21 (expressionBo -> expressionBo LESSEQUAL expressionBo .)
+    EQUALSTO        reduce using rule 21 (expressionBo -> expressionBo LESSEQUAL expressionBo .)
+    ID              reduce using rule 21 (expressionBo -> expressionBo LESSEQUAL expressionBo .)
+    FOR             reduce using rule 21 (expressionBo -> expressionBo LESSEQUAL expressionBo .)
+    IF              reduce using rule 21 (expressionBo -> expressionBo LESSEQUAL expressionBo .)
+    INT             reduce using rule 21 (expressionBo -> expressionBo LESSEQUAL expressionBo .)
+    FLOAT           reduce using rule 21 (expressionBo -> expressionBo LESSEQUAL expressionBo .)
+    LPAREN          reduce using rule 21 (expressionBo -> expressionBo LESSEQUAL expressionBo .)
+    TRUE            reduce using rule 21 (expressionBo -> expressionBo LESSEQUAL expressionBo .)
+    FALSE           reduce using rule 21 (expressionBo -> expressionBo LESSEQUAL expressionBo .)
+    RCURLBRACKET    reduce using rule 21 (expressionBo -> expressionBo LESSEQUAL expressionBo .)
+    RPAREN          reduce using rule 21 (expressionBo -> expressionBo LESSEQUAL expressionBo .)
+    LCURLBRACKET    reduce using rule 21 (expressionBo -> expressionBo LESSEQUAL expressionBo .)
+
+  ! MORE            [ shift and go to state 29 ]
+  ! LESS            [ shift and go to state 30 ]
+  ! MOREEQUAL       [ shift and go to state 31 ]
+  ! LESSEQUAL       [ shift and go to state 32 ]
+  ! NOTEQUAL        [ shift and go to state 33 ]
+  ! EQUALSTO        [ shift and go to state 34 ]
+
+
+state 51
+
+    (22) expressionBo -> expressionBo NOTEQUAL expressionBo .
+    (18) expressionBo -> expressionBo . MORE expressionBo
+    (19) expressionBo -> expressionBo . LESS expressionBo
+    (20) expressionBo -> expressionBo . MOREEQUAL expressionBo
+    (21) expressionBo -> expressionBo . LESSEQUAL expressionBo
+    (22) expressionBo -> expressionBo . NOTEQUAL expressionBo
+    (23) expressionBo -> expressionBo . EQUALSTO expressionBo
+
+    MORE            reduce using rule 22 (expressionBo -> expressionBo NOTEQUAL expressionBo .)
+    LESS            reduce using rule 22 (expressionBo -> expressionBo NOTEQUAL expressionBo .)
+    MOREEQUAL       reduce using rule 22 (expressionBo -> expressionBo NOTEQUAL expressionBo .)
+    LESSEQUAL       reduce using rule 22 (expressionBo -> expressionBo NOTEQUAL expressionBo .)
+    NOTEQUAL        reduce using rule 22 (expressionBo -> expressionBo NOTEQUAL expressionBo .)
+    EQUALSTO        reduce using rule 22 (expressionBo -> expressionBo NOTEQUAL expressionBo .)
+    ID              reduce using rule 22 (expressionBo -> expressionBo NOTEQUAL expressionBo .)
+    FOR             reduce using rule 22 (expressionBo -> expressionBo NOTEQUAL expressionBo .)
+    IF              reduce using rule 22 (expressionBo -> expressionBo NOTEQUAL expressionBo .)
+    INT             reduce using rule 22 (expressionBo -> expressionBo NOTEQUAL expressionBo .)
+    FLOAT           reduce using rule 22 (expressionBo -> expressionBo NOTEQUAL expressionBo .)
+    LPAREN          reduce using rule 22 (expressionBo -> expressionBo NOTEQUAL expressionBo .)
+    TRUE            reduce using rule 22 (expressionBo -> expressionBo NOTEQUAL expressionBo .)
+    FALSE           reduce using rule 22 (expressionBo -> expressionBo NOTEQUAL expressionBo .)
+    RCURLBRACKET    reduce using rule 22 (expressionBo -> expressionBo NOTEQUAL expressionBo .)
+    RPAREN          reduce using rule 22 (expressionBo -> expressionBo NOTEQUAL expressionBo .)
+    LCURLBRACKET    reduce using rule 22 (expressionBo -> expressionBo NOTEQUAL expressionBo .)
+
+  ! MORE            [ shift and go to state 29 ]
+  ! LESS            [ shift and go to state 30 ]
+  ! MOREEQUAL       [ shift and go to state 31 ]
+  ! LESSEQUAL       [ shift and go to state 32 ]
+  ! NOTEQUAL        [ shift and go to state 33 ]
+  ! EQUALSTO        [ shift and go to state 34 ]
+
+
+state 52
+
+    (23) expressionBo -> expressionBo EQUALSTO expressionBo .
+    (18) expressionBo -> expressionBo . MORE expressionBo
+    (19) expressionBo -> expressionBo . LESS expressionBo
+    (20) expressionBo -> expressionBo . MOREEQUAL expressionBo
+    (21) expressionBo -> expressionBo . LESSEQUAL expressionBo
+    (22) expressionBo -> expressionBo . NOTEQUAL expressionBo
+    (23) expressionBo -> expressionBo . EQUALSTO expressionBo
+
+    MORE            reduce using rule 23 (expressionBo -> expressionBo EQUALSTO expressionBo .)
+    LESS            reduce using rule 23 (expressionBo -> expressionBo EQUALSTO expressionBo .)
+    MOREEQUAL       reduce using rule 23 (expressionBo -> expressionBo EQUALSTO expressionBo .)
+    LESSEQUAL       reduce using rule 23 (expressionBo -> expressionBo EQUALSTO expressionBo .)
+    NOTEQUAL        reduce using rule 23 (expressionBo -> expressionBo EQUALSTO expressionBo .)
+    EQUALSTO        reduce using rule 23 (expressionBo -> expressionBo EQUALSTO expressionBo .)
+    ID              reduce using rule 23 (expressionBo -> expressionBo EQUALSTO expressionBo .)
+    FOR             reduce using rule 23 (expressionBo -> expressionBo EQUALSTO expressionBo .)
+    IF              reduce using rule 23 (expressionBo -> expressionBo EQUALSTO expressionBo .)
+    INT             reduce using rule 23 (expressionBo -> expressionBo EQUALSTO expressionBo .)
+    FLOAT           reduce using rule 23 (expressionBo -> expressionBo EQUALSTO expressionBo .)
+    LPAREN          reduce using rule 23 (expressionBo -> expressionBo EQUALSTO expressionBo .)
+    TRUE            reduce using rule 23 (expressionBo -> expressionBo EQUALSTO expressionBo .)
+    FALSE           reduce using rule 23 (expressionBo -> expressionBo EQUALSTO expressionBo .)
+    RCURLBRACKET    reduce using rule 23 (expressionBo -> expressionBo EQUALSTO expressionBo .)
+    RPAREN          reduce using rule 23 (expressionBo -> expressionBo EQUALSTO expressionBo .)
+    LCURLBRACKET    reduce using rule 23 (expressionBo -> expressionBo EQUALSTO expressionBo .)
+
+  ! MORE            [ shift and go to state 29 ]
+  ! LESS            [ shift and go to state 30 ]
+  ! MOREEQUAL       [ shift and go to state 31 ]
+  ! LESSEQUAL       [ shift and go to state 32 ]
+  ! NOTEQUAL        [ shift and go to state 33 ]
+  ! EQUALSTO        [ shift and go to state 34 ]
+
+
+state 53
 
     (6) inst -> FOR expressionBo LCURLBRACKET . list RCURLBRACKET
     (2) list -> . inst
@@ -537,160 +1309,41 @@ state 22
     (6) inst -> . FOR expressionBo LCURLBRACKET list RCURLBRACKET
     (7) inst -> . IF expressionBo LCURLBRACKET list RCURLBRACKET ELSE LCURLBRACKET list RCURLBRACKET
     (8) inst -> . IF expressionBo LCURLBRACKET list RCURLBRACKET
-
-    ID              shift and go to state 4
-    FOR             shift and go to state 5
-    IF              shift and go to state 6
-
-    list                           shift and go to state 35
-    inst                           shift and go to state 3
-
-state 23
-
-    (18) expressionBo -> expressionBo MORE . expressionBo
+    (9) inst -> . expressionAR
+    (10) inst -> . expressionBo
+    (11) expressionAR -> . expressionAR PLUS expressionAR
+    (12) expressionAR -> . expressionAR MINUS expressionAR
+    (13) expressionAR -> . expressionAR TIMES expressionAR
+    (14) expressionAR -> . expressionAR DIVIDE expressionAR
+    (15) expressionAR -> . INT
+    (16) expressionAR -> . FLOAT
+    (17) expressionAR -> . LPAREN expressionAR RPAREN
     (18) expressionBo -> . expressionBo MORE expressionBo
     (19) expressionBo -> . expressionBo LESS expressionBo
     (20) expressionBo -> . expressionBo MOREEQUAL expressionBo
     (21) expressionBo -> . expressionBo LESSEQUAL expressionBo
     (22) expressionBo -> . expressionBo NOTEQUAL expressionBo
     (23) expressionBo -> . expressionBo EQUALSTO expressionBo
-    (24) expressionBo -> . TRUE
-    (25) expressionBo -> . FALSE
-    (26) expressionBo -> . LPAREN expressionBo RPAREN
-    (27) expressionBo -> . ID
+    (24) expressionBo -> . ID
+    (25) expressionBo -> . TRUE
+    (26) expressionBo -> . FALSE
+    (27) expressionBo -> . LPAREN expressionBo RPAREN
 
-    TRUE            shift and go to state 10
-    FALSE           shift and go to state 11
-    LPAREN          shift and go to state 12
-    ID              shift and go to state 13
+    ID              shift and go to state 10
+    FOR             shift and go to state 13
+    IF              shift and go to state 14
+    INT             shift and go to state 15
+    FLOAT           shift and go to state 16
+    LPAREN          shift and go to state 7
+    TRUE            shift and go to state 17
+    FALSE           shift and go to state 18
 
-    expressionBo                   shift and go to state 36
+    expressionBo                   shift and go to state 12
+    list                           shift and go to state 55
+    inst                           shift and go to state 9
+    expressionAR                   shift and go to state 11
 
-state 24
-
-    (19) expressionBo -> expressionBo LESS . expressionBo
-    (18) expressionBo -> . expressionBo MORE expressionBo
-    (19) expressionBo -> . expressionBo LESS expressionBo
-    (20) expressionBo -> . expressionBo MOREEQUAL expressionBo
-    (21) expressionBo -> . expressionBo LESSEQUAL expressionBo
-    (22) expressionBo -> . expressionBo NOTEQUAL expressionBo
-    (23) expressionBo -> . expressionBo EQUALSTO expressionBo
-    (24) expressionBo -> . TRUE
-    (25) expressionBo -> . FALSE
-    (26) expressionBo -> . LPAREN expressionBo RPAREN
-    (27) expressionBo -> . ID
-
-    TRUE            shift and go to state 10
-    FALSE           shift and go to state 11
-    LPAREN          shift and go to state 12
-    ID              shift and go to state 13
-
-    expressionBo                   shift and go to state 37
-
-state 25
-
-    (20) expressionBo -> expressionBo MOREEQUAL . expressionBo
-    (18) expressionBo -> . expressionBo MORE expressionBo
-    (19) expressionBo -> . expressionBo LESS expressionBo
-    (20) expressionBo -> . expressionBo MOREEQUAL expressionBo
-    (21) expressionBo -> . expressionBo LESSEQUAL expressionBo
-    (22) expressionBo -> . expressionBo NOTEQUAL expressionBo
-    (23) expressionBo -> . expressionBo EQUALSTO expressionBo
-    (24) expressionBo -> . TRUE
-    (25) expressionBo -> . FALSE
-    (26) expressionBo -> . LPAREN expressionBo RPAREN
-    (27) expressionBo -> . ID
-
-    TRUE            shift and go to state 10
-    FALSE           shift and go to state 11
-    LPAREN          shift and go to state 12
-    ID              shift and go to state 13
-
-    expressionBo                   shift and go to state 38
-
-state 26
-
-    (21) expressionBo -> expressionBo LESSEQUAL . expressionBo
-    (18) expressionBo -> . expressionBo MORE expressionBo
-    (19) expressionBo -> . expressionBo LESS expressionBo
-    (20) expressionBo -> . expressionBo MOREEQUAL expressionBo
-    (21) expressionBo -> . expressionBo LESSEQUAL expressionBo
-    (22) expressionBo -> . expressionBo NOTEQUAL expressionBo
-    (23) expressionBo -> . expressionBo EQUALSTO expressionBo
-    (24) expressionBo -> . TRUE
-    (25) expressionBo -> . FALSE
-    (26) expressionBo -> . LPAREN expressionBo RPAREN
-    (27) expressionBo -> . ID
-
-    TRUE            shift and go to state 10
-    FALSE           shift and go to state 11
-    LPAREN          shift and go to state 12
-    ID              shift and go to state 13
-
-    expressionBo                   shift and go to state 39
-
-state 27
-
-    (22) expressionBo -> expressionBo NOTEQUAL . expressionBo
-    (18) expressionBo -> . expressionBo MORE expressionBo
-    (19) expressionBo -> . expressionBo LESS expressionBo
-    (20) expressionBo -> . expressionBo MOREEQUAL expressionBo
-    (21) expressionBo -> . expressionBo LESSEQUAL expressionBo
-    (22) expressionBo -> . expressionBo NOTEQUAL expressionBo
-    (23) expressionBo -> . expressionBo EQUALSTO expressionBo
-    (24) expressionBo -> . TRUE
-    (25) expressionBo -> . FALSE
-    (26) expressionBo -> . LPAREN expressionBo RPAREN
-    (27) expressionBo -> . ID
-
-    TRUE            shift and go to state 10
-    FALSE           shift and go to state 11
-    LPAREN          shift and go to state 12
-    ID              shift and go to state 13
-
-    expressionBo                   shift and go to state 40
-
-state 28
-
-    (23) expressionBo -> expressionBo EQUALSTO . expressionBo
-    (18) expressionBo -> . expressionBo MORE expressionBo
-    (19) expressionBo -> . expressionBo LESS expressionBo
-    (20) expressionBo -> . expressionBo MOREEQUAL expressionBo
-    (21) expressionBo -> . expressionBo LESSEQUAL expressionBo
-    (22) expressionBo -> . expressionBo NOTEQUAL expressionBo
-    (23) expressionBo -> . expressionBo EQUALSTO expressionBo
-    (24) expressionBo -> . TRUE
-    (25) expressionBo -> . FALSE
-    (26) expressionBo -> . LPAREN expressionBo RPAREN
-    (27) expressionBo -> . ID
-
-    TRUE            shift and go to state 10
-    FALSE           shift and go to state 11
-    LPAREN          shift and go to state 12
-    ID              shift and go to state 13
-
-    expressionBo                   shift and go to state 41
-
-state 29
-
-    (26) expressionBo -> LPAREN expressionBo . RPAREN
-    (18) expressionBo -> expressionBo . MORE expressionBo
-    (19) expressionBo -> expressionBo . LESS expressionBo
-    (20) expressionBo -> expressionBo . MOREEQUAL expressionBo
-    (21) expressionBo -> expressionBo . LESSEQUAL expressionBo
-    (22) expressionBo -> expressionBo . NOTEQUAL expressionBo
-    (23) expressionBo -> expressionBo . EQUALSTO expressionBo
-
-    RPAREN          shift and go to state 42
-    MORE            shift and go to state 23
-    LESS            shift and go to state 24
-    MOREEQUAL       shift and go to state 25
-    LESSEQUAL       shift and go to state 26
-    NOTEQUAL        shift and go to state 27
-    EQUALSTO        shift and go to state 28
-
-
-state 30
+state 54
 
     (7) inst -> IF expressionBo LCURLBRACKET . list RCURLBRACKET ELSE LCURLBRACKET list RCURLBRACKET
     (8) inst -> IF expressionBo LCURLBRACKET . list RCURLBRACKET
@@ -701,356 +1354,95 @@ state 30
     (6) inst -> . FOR expressionBo LCURLBRACKET list RCURLBRACKET
     (7) inst -> . IF expressionBo LCURLBRACKET list RCURLBRACKET ELSE LCURLBRACKET list RCURLBRACKET
     (8) inst -> . IF expressionBo LCURLBRACKET list RCURLBRACKET
+    (9) inst -> . expressionAR
+    (10) inst -> . expressionBo
+    (11) expressionAR -> . expressionAR PLUS expressionAR
+    (12) expressionAR -> . expressionAR MINUS expressionAR
+    (13) expressionAR -> . expressionAR TIMES expressionAR
+    (14) expressionAR -> . expressionAR DIVIDE expressionAR
+    (15) expressionAR -> . INT
+    (16) expressionAR -> . FLOAT
+    (17) expressionAR -> . LPAREN expressionAR RPAREN
+    (18) expressionBo -> . expressionBo MORE expressionBo
+    (19) expressionBo -> . expressionBo LESS expressionBo
+    (20) expressionBo -> . expressionBo MOREEQUAL expressionBo
+    (21) expressionBo -> . expressionBo LESSEQUAL expressionBo
+    (22) expressionBo -> . expressionBo NOTEQUAL expressionBo
+    (23) expressionBo -> . expressionBo EQUALSTO expressionBo
+    (24) expressionBo -> . ID
+    (25) expressionBo -> . TRUE
+    (26) expressionBo -> . FALSE
+    (27) expressionBo -> . LPAREN expressionBo RPAREN
 
-    ID              shift and go to state 4
-    FOR             shift and go to state 5
-    IF              shift and go to state 6
+    ID              shift and go to state 10
+    FOR             shift and go to state 13
+    IF              shift and go to state 14
+    INT             shift and go to state 15
+    FLOAT           shift and go to state 16
+    LPAREN          shift and go to state 7
+    TRUE            shift and go to state 17
+    FALSE           shift and go to state 18
 
-    list                           shift and go to state 43
-    inst                           shift and go to state 3
+    expressionBo                   shift and go to state 12
+    list                           shift and go to state 56
+    inst                           shift and go to state 9
+    expressionAR                   shift and go to state 11
 
-state 31
-
-    (13) expressionAR -> MINUS expressionAR .
-
-    ID              reduce using rule 13 (expressionAR -> MINUS expressionAR .)
-    FOR             reduce using rule 13 (expressionAR -> MINUS expressionAR .)
-    IF              reduce using rule 13 (expressionAR -> MINUS expressionAR .)
-    $end            reduce using rule 13 (expressionAR -> MINUS expressionAR .)
-    RCURLBRACKET    reduce using rule 13 (expressionAR -> MINUS expressionAR .)
-    RPAREN          reduce using rule 13 (expressionAR -> MINUS expressionAR .)
-
-
-state 32
-
-    (16) expressionAR -> LPAREN . expressionAR RPAREN
-    (13) expressionAR -> . MINUS expressionAR
-    (14) expressionAR -> . INT
-    (15) expressionAR -> . FLOAT
-    (16) expressionAR -> . LPAREN expressionAR RPAREN
-    (17) expressionAR -> . ID
-
-    MINUS           shift and go to state 18
-    INT             shift and go to state 19
-    FLOAT           shift and go to state 20
-    LPAREN          shift and go to state 32
-    ID              shift and go to state 33
-
-    expressionAR                   shift and go to state 34
-
-state 33
-
-    (17) expressionAR -> ID .
-
-    ID              reduce using rule 17 (expressionAR -> ID .)
-    FOR             reduce using rule 17 (expressionAR -> ID .)
-    IF              reduce using rule 17 (expressionAR -> ID .)
-    $end            reduce using rule 17 (expressionAR -> ID .)
-    RCURLBRACKET    reduce using rule 17 (expressionAR -> ID .)
-    RPAREN          reduce using rule 17 (expressionAR -> ID .)
-
-
-state 34
-
-    (16) expressionAR -> LPAREN expressionAR . RPAREN
-
-    RPAREN          shift and go to state 44
-
-
-state 35
+state 55
 
     (6) inst -> FOR expressionBo LCURLBRACKET list . RCURLBRACKET
 
-    RCURLBRACKET    shift and go to state 45
+    RCURLBRACKET    shift and go to state 57
 
 
-state 36
-
-    (18) expressionBo -> expressionBo MORE expressionBo .
-    (18) expressionBo -> expressionBo . MORE expressionBo
-    (19) expressionBo -> expressionBo . LESS expressionBo
-    (20) expressionBo -> expressionBo . MOREEQUAL expressionBo
-    (21) expressionBo -> expressionBo . LESSEQUAL expressionBo
-    (22) expressionBo -> expressionBo . NOTEQUAL expressionBo
-    (23) expressionBo -> expressionBo . EQUALSTO expressionBo
-
-    LCURLBRACKET    reduce using rule 18 (expressionBo -> expressionBo MORE expressionBo .)
-    MORE            reduce using rule 18 (expressionBo -> expressionBo MORE expressionBo .)
-    LESS            reduce using rule 18 (expressionBo -> expressionBo MORE expressionBo .)
-    MOREEQUAL       reduce using rule 18 (expressionBo -> expressionBo MORE expressionBo .)
-    LESSEQUAL       reduce using rule 18 (expressionBo -> expressionBo MORE expressionBo .)
-    NOTEQUAL        reduce using rule 18 (expressionBo -> expressionBo MORE expressionBo .)
-    EQUALSTO        reduce using rule 18 (expressionBo -> expressionBo MORE expressionBo .)
-    ID              reduce using rule 18 (expressionBo -> expressionBo MORE expressionBo .)
-    FOR             reduce using rule 18 (expressionBo -> expressionBo MORE expressionBo .)
-    IF              reduce using rule 18 (expressionBo -> expressionBo MORE expressionBo .)
-    $end            reduce using rule 18 (expressionBo -> expressionBo MORE expressionBo .)
-    RCURLBRACKET    reduce using rule 18 (expressionBo -> expressionBo MORE expressionBo .)
-    RPAREN          reduce using rule 18 (expressionBo -> expressionBo MORE expressionBo .)
-
-  ! MORE            [ shift and go to state 23 ]
-  ! LESS            [ shift and go to state 24 ]
-  ! MOREEQUAL       [ shift and go to state 25 ]
-  ! LESSEQUAL       [ shift and go to state 26 ]
-  ! NOTEQUAL        [ shift and go to state 27 ]
-  ! EQUALSTO        [ shift and go to state 28 ]
-
-
-state 37
-
-    (19) expressionBo -> expressionBo LESS expressionBo .
-    (18) expressionBo -> expressionBo . MORE expressionBo
-    (19) expressionBo -> expressionBo . LESS expressionBo
-    (20) expressionBo -> expressionBo . MOREEQUAL expressionBo
-    (21) expressionBo -> expressionBo . LESSEQUAL expressionBo
-    (22) expressionBo -> expressionBo . NOTEQUAL expressionBo
-    (23) expressionBo -> expressionBo . EQUALSTO expressionBo
-
-    LCURLBRACKET    reduce using rule 19 (expressionBo -> expressionBo LESS expressionBo .)
-    MORE            reduce using rule 19 (expressionBo -> expressionBo LESS expressionBo .)
-    LESS            reduce using rule 19 (expressionBo -> expressionBo LESS expressionBo .)
-    MOREEQUAL       reduce using rule 19 (expressionBo -> expressionBo LESS expressionBo .)
-    LESSEQUAL       reduce using rule 19 (expressionBo -> expressionBo LESS expressionBo .)
-    NOTEQUAL        reduce using rule 19 (expressionBo -> expressionBo LESS expressionBo .)
-    EQUALSTO        reduce using rule 19 (expressionBo -> expressionBo LESS expressionBo .)
-    ID              reduce using rule 19 (expressionBo -> expressionBo LESS expressionBo .)
-    FOR             reduce using rule 19 (expressionBo -> expressionBo LESS expressionBo .)
-    IF              reduce using rule 19 (expressionBo -> expressionBo LESS expressionBo .)
-    $end            reduce using rule 19 (expressionBo -> expressionBo LESS expressionBo .)
-    RCURLBRACKET    reduce using rule 19 (expressionBo -> expressionBo LESS expressionBo .)
-    RPAREN          reduce using rule 19 (expressionBo -> expressionBo LESS expressionBo .)
-
-  ! MORE            [ shift and go to state 23 ]
-  ! LESS            [ shift and go to state 24 ]
-  ! MOREEQUAL       [ shift and go to state 25 ]
-  ! LESSEQUAL       [ shift and go to state 26 ]
-  ! NOTEQUAL        [ shift and go to state 27 ]
-  ! EQUALSTO        [ shift and go to state 28 ]
-
-
-state 38
-
-    (20) expressionBo -> expressionBo MOREEQUAL expressionBo .
-    (18) expressionBo -> expressionBo . MORE expressionBo
-    (19) expressionBo -> expressionBo . LESS expressionBo
-    (20) expressionBo -> expressionBo . MOREEQUAL expressionBo
-    (21) expressionBo -> expressionBo . LESSEQUAL expressionBo
-    (22) expressionBo -> expressionBo . NOTEQUAL expressionBo
-    (23) expressionBo -> expressionBo . EQUALSTO expressionBo
-
-  ! shift/reduce conflict for MORE resolved as shift
-  ! shift/reduce conflict for LESS resolved as shift
-  ! shift/reduce conflict for MOREEQUAL resolved as shift
-  ! shift/reduce conflict for LESSEQUAL resolved as shift
-  ! shift/reduce conflict for NOTEQUAL resolved as shift
-  ! shift/reduce conflict for EQUALSTO resolved as shift
-    LCURLBRACKET    reduce using rule 20 (expressionBo -> expressionBo MOREEQUAL expressionBo .)
-    ID              reduce using rule 20 (expressionBo -> expressionBo MOREEQUAL expressionBo .)
-    FOR             reduce using rule 20 (expressionBo -> expressionBo MOREEQUAL expressionBo .)
-    IF              reduce using rule 20 (expressionBo -> expressionBo MOREEQUAL expressionBo .)
-    $end            reduce using rule 20 (expressionBo -> expressionBo MOREEQUAL expressionBo .)
-    RCURLBRACKET    reduce using rule 20 (expressionBo -> expressionBo MOREEQUAL expressionBo .)
-    RPAREN          reduce using rule 20 (expressionBo -> expressionBo MOREEQUAL expressionBo .)
-    MORE            shift and go to state 23
-    LESS            shift and go to state 24
-    MOREEQUAL       shift and go to state 25
-    LESSEQUAL       shift and go to state 26
-    NOTEQUAL        shift and go to state 27
-    EQUALSTO        shift and go to state 28
-
-  ! MORE            [ reduce using rule 20 (expressionBo -> expressionBo MOREEQUAL expressionBo .) ]
-  ! LESS            [ reduce using rule 20 (expressionBo -> expressionBo MOREEQUAL expressionBo .) ]
-  ! MOREEQUAL       [ reduce using rule 20 (expressionBo -> expressionBo MOREEQUAL expressionBo .) ]
-  ! LESSEQUAL       [ reduce using rule 20 (expressionBo -> expressionBo MOREEQUAL expressionBo .) ]
-  ! NOTEQUAL        [ reduce using rule 20 (expressionBo -> expressionBo MOREEQUAL expressionBo .) ]
-  ! EQUALSTO        [ reduce using rule 20 (expressionBo -> expressionBo MOREEQUAL expressionBo .) ]
-
-
-state 39
-
-    (21) expressionBo -> expressionBo LESSEQUAL expressionBo .
-    (18) expressionBo -> expressionBo . MORE expressionBo
-    (19) expressionBo -> expressionBo . LESS expressionBo
-    (20) expressionBo -> expressionBo . MOREEQUAL expressionBo
-    (21) expressionBo -> expressionBo . LESSEQUAL expressionBo
-    (22) expressionBo -> expressionBo . NOTEQUAL expressionBo
-    (23) expressionBo -> expressionBo . EQUALSTO expressionBo
-
-  ! shift/reduce conflict for MORE resolved as shift
-  ! shift/reduce conflict for LESS resolved as shift
-  ! shift/reduce conflict for MOREEQUAL resolved as shift
-  ! shift/reduce conflict for LESSEQUAL resolved as shift
-  ! shift/reduce conflict for NOTEQUAL resolved as shift
-  ! shift/reduce conflict for EQUALSTO resolved as shift
-    LCURLBRACKET    reduce using rule 21 (expressionBo -> expressionBo LESSEQUAL expressionBo .)
-    ID              reduce using rule 21 (expressionBo -> expressionBo LESSEQUAL expressionBo .)
-    FOR             reduce using rule 21 (expressionBo -> expressionBo LESSEQUAL expressionBo .)
-    IF              reduce using rule 21 (expressionBo -> expressionBo LESSEQUAL expressionBo .)
-    $end            reduce using rule 21 (expressionBo -> expressionBo LESSEQUAL expressionBo .)
-    RCURLBRACKET    reduce using rule 21 (expressionBo -> expressionBo LESSEQUAL expressionBo .)
-    RPAREN          reduce using rule 21 (expressionBo -> expressionBo LESSEQUAL expressionBo .)
-    MORE            shift and go to state 23
-    LESS            shift and go to state 24
-    MOREEQUAL       shift and go to state 25
-    LESSEQUAL       shift and go to state 26
-    NOTEQUAL        shift and go to state 27
-    EQUALSTO        shift and go to state 28
-
-  ! MORE            [ reduce using rule 21 (expressionBo -> expressionBo LESSEQUAL expressionBo .) ]
-  ! LESS            [ reduce using rule 21 (expressionBo -> expressionBo LESSEQUAL expressionBo .) ]
-  ! MOREEQUAL       [ reduce using rule 21 (expressionBo -> expressionBo LESSEQUAL expressionBo .) ]
-  ! LESSEQUAL       [ reduce using rule 21 (expressionBo -> expressionBo LESSEQUAL expressionBo .) ]
-  ! NOTEQUAL        [ reduce using rule 21 (expressionBo -> expressionBo LESSEQUAL expressionBo .) ]
-  ! EQUALSTO        [ reduce using rule 21 (expressionBo -> expressionBo LESSEQUAL expressionBo .) ]
-
-
-state 40
-
-    (22) expressionBo -> expressionBo NOTEQUAL expressionBo .
-    (18) expressionBo -> expressionBo . MORE expressionBo
-    (19) expressionBo -> expressionBo . LESS expressionBo
-    (20) expressionBo -> expressionBo . MOREEQUAL expressionBo
-    (21) expressionBo -> expressionBo . LESSEQUAL expressionBo
-    (22) expressionBo -> expressionBo . NOTEQUAL expressionBo
-    (23) expressionBo -> expressionBo . EQUALSTO expressionBo
-
-  ! shift/reduce conflict for MORE resolved as shift
-  ! shift/reduce conflict for LESS resolved as shift
-  ! shift/reduce conflict for MOREEQUAL resolved as shift
-  ! shift/reduce conflict for LESSEQUAL resolved as shift
-  ! shift/reduce conflict for NOTEQUAL resolved as shift
-  ! shift/reduce conflict for EQUALSTO resolved as shift
-    LCURLBRACKET    reduce using rule 22 (expressionBo -> expressionBo NOTEQUAL expressionBo .)
-    ID              reduce using rule 22 (expressionBo -> expressionBo NOTEQUAL expressionBo .)
-    FOR             reduce using rule 22 (expressionBo -> expressionBo NOTEQUAL expressionBo .)
-    IF              reduce using rule 22 (expressionBo -> expressionBo NOTEQUAL expressionBo .)
-    $end            reduce using rule 22 (expressionBo -> expressionBo NOTEQUAL expressionBo .)
-    RCURLBRACKET    reduce using rule 22 (expressionBo -> expressionBo NOTEQUAL expressionBo .)
-    RPAREN          reduce using rule 22 (expressionBo -> expressionBo NOTEQUAL expressionBo .)
-    MORE            shift and go to state 23
-    LESS            shift and go to state 24
-    MOREEQUAL       shift and go to state 25
-    LESSEQUAL       shift and go to state 26
-    NOTEQUAL        shift and go to state 27
-    EQUALSTO        shift and go to state 28
-
-  ! MORE            [ reduce using rule 22 (expressionBo -> expressionBo NOTEQUAL expressionBo .) ]
-  ! LESS            [ reduce using rule 22 (expressionBo -> expressionBo NOTEQUAL expressionBo .) ]
-  ! MOREEQUAL       [ reduce using rule 22 (expressionBo -> expressionBo NOTEQUAL expressionBo .) ]
-  ! LESSEQUAL       [ reduce using rule 22 (expressionBo -> expressionBo NOTEQUAL expressionBo .) ]
-  ! NOTEQUAL        [ reduce using rule 22 (expressionBo -> expressionBo NOTEQUAL expressionBo .) ]
-  ! EQUALSTO        [ reduce using rule 22 (expressionBo -> expressionBo NOTEQUAL expressionBo .) ]
-
-
-state 41
-
-    (23) expressionBo -> expressionBo EQUALSTO expressionBo .
-    (18) expressionBo -> expressionBo . MORE expressionBo
-    (19) expressionBo -> expressionBo . LESS expressionBo
-    (20) expressionBo -> expressionBo . MOREEQUAL expressionBo
-    (21) expressionBo -> expressionBo . LESSEQUAL expressionBo
-    (22) expressionBo -> expressionBo . NOTEQUAL expressionBo
-    (23) expressionBo -> expressionBo . EQUALSTO expressionBo
-
-  ! shift/reduce conflict for MORE resolved as shift
-  ! shift/reduce conflict for LESS resolved as shift
-  ! shift/reduce conflict for MOREEQUAL resolved as shift
-  ! shift/reduce conflict for LESSEQUAL resolved as shift
-  ! shift/reduce conflict for NOTEQUAL resolved as shift
-  ! shift/reduce conflict for EQUALSTO resolved as shift
-    LCURLBRACKET    reduce using rule 23 (expressionBo -> expressionBo EQUALSTO expressionBo .)
-    ID              reduce using rule 23 (expressionBo -> expressionBo EQUALSTO expressionBo .)
-    FOR             reduce using rule 23 (expressionBo -> expressionBo EQUALSTO expressionBo .)
-    IF              reduce using rule 23 (expressionBo -> expressionBo EQUALSTO expressionBo .)
-    $end            reduce using rule 23 (expressionBo -> expressionBo EQUALSTO expressionBo .)
-    RCURLBRACKET    reduce using rule 23 (expressionBo -> expressionBo EQUALSTO expressionBo .)
-    RPAREN          reduce using rule 23 (expressionBo -> expressionBo EQUALSTO expressionBo .)
-    MORE            shift and go to state 23
-    LESS            shift and go to state 24
-    MOREEQUAL       shift and go to state 25
-    LESSEQUAL       shift and go to state 26
-    NOTEQUAL        shift and go to state 27
-    EQUALSTO        shift and go to state 28
-
-  ! MORE            [ reduce using rule 23 (expressionBo -> expressionBo EQUALSTO expressionBo .) ]
-  ! LESS            [ reduce using rule 23 (expressionBo -> expressionBo EQUALSTO expressionBo .) ]
-  ! MOREEQUAL       [ reduce using rule 23 (expressionBo -> expressionBo EQUALSTO expressionBo .) ]
-  ! LESSEQUAL       [ reduce using rule 23 (expressionBo -> expressionBo EQUALSTO expressionBo .) ]
-  ! NOTEQUAL        [ reduce using rule 23 (expressionBo -> expressionBo EQUALSTO expressionBo .) ]
-  ! EQUALSTO        [ reduce using rule 23 (expressionBo -> expressionBo EQUALSTO expressionBo .) ]
-
-
-state 42
-
-    (26) expressionBo -> LPAREN expressionBo RPAREN .
-
-    LCURLBRACKET    reduce using rule 26 (expressionBo -> LPAREN expressionBo RPAREN .)
-    MORE            reduce using rule 26 (expressionBo -> LPAREN expressionBo RPAREN .)
-    LESS            reduce using rule 26 (expressionBo -> LPAREN expressionBo RPAREN .)
-    MOREEQUAL       reduce using rule 26 (expressionBo -> LPAREN expressionBo RPAREN .)
-    LESSEQUAL       reduce using rule 26 (expressionBo -> LPAREN expressionBo RPAREN .)
-    NOTEQUAL        reduce using rule 26 (expressionBo -> LPAREN expressionBo RPAREN .)
-    EQUALSTO        reduce using rule 26 (expressionBo -> LPAREN expressionBo RPAREN .)
-    ID              reduce using rule 26 (expressionBo -> LPAREN expressionBo RPAREN .)
-    FOR             reduce using rule 26 (expressionBo -> LPAREN expressionBo RPAREN .)
-    IF              reduce using rule 26 (expressionBo -> LPAREN expressionBo RPAREN .)
-    $end            reduce using rule 26 (expressionBo -> LPAREN expressionBo RPAREN .)
-    RCURLBRACKET    reduce using rule 26 (expressionBo -> LPAREN expressionBo RPAREN .)
-    RPAREN          reduce using rule 26 (expressionBo -> LPAREN expressionBo RPAREN .)
-
-
-state 43
+state 56
 
     (7) inst -> IF expressionBo LCURLBRACKET list . RCURLBRACKET ELSE LCURLBRACKET list RCURLBRACKET
     (8) inst -> IF expressionBo LCURLBRACKET list . RCURLBRACKET
 
-    RCURLBRACKET    shift and go to state 46
+    RCURLBRACKET    shift and go to state 58
 
 
-state 44
-
-    (16) expressionAR -> LPAREN expressionAR RPAREN .
-
-    ID              reduce using rule 16 (expressionAR -> LPAREN expressionAR RPAREN .)
-    FOR             reduce using rule 16 (expressionAR -> LPAREN expressionAR RPAREN .)
-    IF              reduce using rule 16 (expressionAR -> LPAREN expressionAR RPAREN .)
-    $end            reduce using rule 16 (expressionAR -> LPAREN expressionAR RPAREN .)
-    RCURLBRACKET    reduce using rule 16 (expressionAR -> LPAREN expressionAR RPAREN .)
-    RPAREN          reduce using rule 16 (expressionAR -> LPAREN expressionAR RPAREN .)
-
-
-state 45
+state 57
 
     (6) inst -> FOR expressionBo LCURLBRACKET list RCURLBRACKET .
 
     ID              reduce using rule 6 (inst -> FOR expressionBo LCURLBRACKET list RCURLBRACKET .)
     FOR             reduce using rule 6 (inst -> FOR expressionBo LCURLBRACKET list RCURLBRACKET .)
     IF              reduce using rule 6 (inst -> FOR expressionBo LCURLBRACKET list RCURLBRACKET .)
-    $end            reduce using rule 6 (inst -> FOR expressionBo LCURLBRACKET list RCURLBRACKET .)
+    INT             reduce using rule 6 (inst -> FOR expressionBo LCURLBRACKET list RCURLBRACKET .)
+    FLOAT           reduce using rule 6 (inst -> FOR expressionBo LCURLBRACKET list RCURLBRACKET .)
+    LPAREN          reduce using rule 6 (inst -> FOR expressionBo LCURLBRACKET list RCURLBRACKET .)
+    TRUE            reduce using rule 6 (inst -> FOR expressionBo LCURLBRACKET list RCURLBRACKET .)
+    FALSE           reduce using rule 6 (inst -> FOR expressionBo LCURLBRACKET list RCURLBRACKET .)
     RCURLBRACKET    reduce using rule 6 (inst -> FOR expressionBo LCURLBRACKET list RCURLBRACKET .)
 
 
-state 46
+state 58
 
     (7) inst -> IF expressionBo LCURLBRACKET list RCURLBRACKET . ELSE LCURLBRACKET list RCURLBRACKET
     (8) inst -> IF expressionBo LCURLBRACKET list RCURLBRACKET .
 
-    ELSE            shift and go to state 47
+    ELSE            shift and go to state 59
     ID              reduce using rule 8 (inst -> IF expressionBo LCURLBRACKET list RCURLBRACKET .)
     FOR             reduce using rule 8 (inst -> IF expressionBo LCURLBRACKET list RCURLBRACKET .)
     IF              reduce using rule 8 (inst -> IF expressionBo LCURLBRACKET list RCURLBRACKET .)
-    $end            reduce using rule 8 (inst -> IF expressionBo LCURLBRACKET list RCURLBRACKET .)
+    INT             reduce using rule 8 (inst -> IF expressionBo LCURLBRACKET list RCURLBRACKET .)
+    FLOAT           reduce using rule 8 (inst -> IF expressionBo LCURLBRACKET list RCURLBRACKET .)
+    LPAREN          reduce using rule 8 (inst -> IF expressionBo LCURLBRACKET list RCURLBRACKET .)
+    TRUE            reduce using rule 8 (inst -> IF expressionBo LCURLBRACKET list RCURLBRACKET .)
+    FALSE           reduce using rule 8 (inst -> IF expressionBo LCURLBRACKET list RCURLBRACKET .)
     RCURLBRACKET    reduce using rule 8 (inst -> IF expressionBo LCURLBRACKET list RCURLBRACKET .)
 
 
-state 47
+state 59
 
     (7) inst -> IF expressionBo LCURLBRACKET list RCURLBRACKET ELSE . LCURLBRACKET list RCURLBRACKET
 
-    LCURLBRACKET    shift and go to state 48
+    LCURLBRACKET    shift and go to state 60
 
 
-state 48
+state 60
 
     (7) inst -> IF expressionBo LCURLBRACKET list RCURLBRACKET ELSE LCURLBRACKET . list RCURLBRACKET
     (2) list -> . inst
@@ -1060,57 +1452,58 @@ state 48
     (6) inst -> . FOR expressionBo LCURLBRACKET list RCURLBRACKET
     (7) inst -> . IF expressionBo LCURLBRACKET list RCURLBRACKET ELSE LCURLBRACKET list RCURLBRACKET
     (8) inst -> . IF expressionBo LCURLBRACKET list RCURLBRACKET
+    (9) inst -> . expressionAR
+    (10) inst -> . expressionBo
+    (11) expressionAR -> . expressionAR PLUS expressionAR
+    (12) expressionAR -> . expressionAR MINUS expressionAR
+    (13) expressionAR -> . expressionAR TIMES expressionAR
+    (14) expressionAR -> . expressionAR DIVIDE expressionAR
+    (15) expressionAR -> . INT
+    (16) expressionAR -> . FLOAT
+    (17) expressionAR -> . LPAREN expressionAR RPAREN
+    (18) expressionBo -> . expressionBo MORE expressionBo
+    (19) expressionBo -> . expressionBo LESS expressionBo
+    (20) expressionBo -> . expressionBo MOREEQUAL expressionBo
+    (21) expressionBo -> . expressionBo LESSEQUAL expressionBo
+    (22) expressionBo -> . expressionBo NOTEQUAL expressionBo
+    (23) expressionBo -> . expressionBo EQUALSTO expressionBo
+    (24) expressionBo -> . ID
+    (25) expressionBo -> . TRUE
+    (26) expressionBo -> . FALSE
+    (27) expressionBo -> . LPAREN expressionBo RPAREN
 
-    ID              shift and go to state 4
-    FOR             shift and go to state 5
-    IF              shift and go to state 6
+    ID              shift and go to state 10
+    FOR             shift and go to state 13
+    IF              shift and go to state 14
+    INT             shift and go to state 15
+    FLOAT           shift and go to state 16
+    LPAREN          shift and go to state 7
+    TRUE            shift and go to state 17
+    FALSE           shift and go to state 18
 
-    list                           shift and go to state 49
-    inst                           shift and go to state 3
+    expressionBo                   shift and go to state 12
+    list                           shift and go to state 61
+    inst                           shift and go to state 9
+    expressionAR                   shift and go to state 11
 
-state 49
+state 61
 
     (7) inst -> IF expressionBo LCURLBRACKET list RCURLBRACKET ELSE LCURLBRACKET list . RCURLBRACKET
 
-    RCURLBRACKET    shift and go to state 50
+    RCURLBRACKET    shift and go to state 62
 
 
-state 50
+state 62
 
     (7) inst -> IF expressionBo LCURLBRACKET list RCURLBRACKET ELSE LCURLBRACKET list RCURLBRACKET .
 
     ID              reduce using rule 7 (inst -> IF expressionBo LCURLBRACKET list RCURLBRACKET ELSE LCURLBRACKET list RCURLBRACKET .)
     FOR             reduce using rule 7 (inst -> IF expressionBo LCURLBRACKET list RCURLBRACKET ELSE LCURLBRACKET list RCURLBRACKET .)
     IF              reduce using rule 7 (inst -> IF expressionBo LCURLBRACKET list RCURLBRACKET ELSE LCURLBRACKET list RCURLBRACKET .)
-    $end            reduce using rule 7 (inst -> IF expressionBo LCURLBRACKET list RCURLBRACKET ELSE LCURLBRACKET list RCURLBRACKET .)
+    INT             reduce using rule 7 (inst -> IF expressionBo LCURLBRACKET list RCURLBRACKET ELSE LCURLBRACKET list RCURLBRACKET .)
+    FLOAT           reduce using rule 7 (inst -> IF expressionBo LCURLBRACKET list RCURLBRACKET ELSE LCURLBRACKET list RCURLBRACKET .)
+    LPAREN          reduce using rule 7 (inst -> IF expressionBo LCURLBRACKET list RCURLBRACKET ELSE LCURLBRACKET list RCURLBRACKET .)
+    TRUE            reduce using rule 7 (inst -> IF expressionBo LCURLBRACKET list RCURLBRACKET ELSE LCURLBRACKET list RCURLBRACKET .)
+    FALSE           reduce using rule 7 (inst -> IF expressionBo LCURLBRACKET list RCURLBRACKET ELSE LCURLBRACKET list RCURLBRACKET .)
     RCURLBRACKET    reduce using rule 7 (inst -> IF expressionBo LCURLBRACKET list RCURLBRACKET ELSE LCURLBRACKET list RCURLBRACKET .)
 
-WARNING: 
-WARNING: Conflicts:
-WARNING: 
-WARNING: shift/reduce conflict for MORE in state 38 resolved as shift
-WARNING: shift/reduce conflict for LESS in state 38 resolved as shift
-WARNING: shift/reduce conflict for MOREEQUAL in state 38 resolved as shift
-WARNING: shift/reduce conflict for LESSEQUAL in state 38 resolved as shift
-WARNING: shift/reduce conflict for NOTEQUAL in state 38 resolved as shift
-WARNING: shift/reduce conflict for EQUALSTO in state 38 resolved as shift
-WARNING: shift/reduce conflict for MORE in state 39 resolved as shift
-WARNING: shift/reduce conflict for LESS in state 39 resolved as shift
-WARNING: shift/reduce conflict for MOREEQUAL in state 39 resolved as shift
-WARNING: shift/reduce conflict for LESSEQUAL in state 39 resolved as shift
-WARNING: shift/reduce conflict for NOTEQUAL in state 39 resolved as shift
-WARNING: shift/reduce conflict for EQUALSTO in state 39 resolved as shift
-WARNING: shift/reduce conflict for MORE in state 40 resolved as shift
-WARNING: shift/reduce conflict for LESS in state 40 resolved as shift
-WARNING: shift/reduce conflict for MOREEQUAL in state 40 resolved as shift
-WARNING: shift/reduce conflict for LESSEQUAL in state 40 resolved as shift
-WARNING: shift/reduce conflict for NOTEQUAL in state 40 resolved as shift
-WARNING: shift/reduce conflict for EQUALSTO in state 40 resolved as shift
-WARNING: shift/reduce conflict for MORE in state 41 resolved as shift
-WARNING: shift/reduce conflict for LESS in state 41 resolved as shift
-WARNING: shift/reduce conflict for MOREEQUAL in state 41 resolved as shift
-WARNING: shift/reduce conflict for LESSEQUAL in state 41 resolved as shift
-WARNING: shift/reduce conflict for NOTEQUAL in state 41 resolved as shift
-WARNING: shift/reduce conflict for EQUALSTO in state 41 resolved as shift
-WARNING: reduce/reduce conflict in state 15 resolved using rule (expressionAR -> ID)
-WARNING: rejected rule (expressionBo -> ID) in state 15

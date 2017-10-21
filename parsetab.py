@@ -5,9 +5,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'nonassocLESSMOREleftPLUSMINUSleftTIMESDIVIDErightUMINUSINT FLOAT PLUS MINUS TIMES DIVIDE EQUALS LPAREN RPAREN LCURLBRACKET RCURLBRACKET ID COMMENT STRING ASSIGN EQUALSTO MORE LESS MOREEQUAL LESSEQUAL NOTEQUAL BREAK CASE CHAN CONST CONTINUE DEFAULT DEFER ELSE FALLTHROUGH FOR FUNC GO GOTO IF IMPORT INTERFACE MAP PACKAGE RANGE RETURN SELECT STRUCT SWITCH TYPE VAR MAIN SPRINT SSCAN TRUE FALSEstatement : listlist : inst\n            | inst listinst : ID ASSIGN expressionAR\n            | ID ASSIGN expressionBoinst : FOR expressionBo LCURLBRACKET list RCURLBRACKETinst : IF expressionBo LCURLBRACKET list RCURLBRACKET ELSE LCURLBRACKET list RCURLBRACKET\n            | IF expressionBo LCURLBRACKET list RCURLBRACKETexpressionaAR : expressionAR PLUS expressionAR\n                     | expressionAR MINUS expressionAR\n                     | expressionAR TIMES expressionAR\n                     | expressionAR DIVIDE expressionARexpressionAR : MINUS expressionAR %prec UMINUSexpressionAR : INTexpressionAR : FLOATexpressionAR : LPAREN expressionAR RPARENexpressionAR : IDexpressionBo : expressionBo MORE expressionBo\n                    | expressionBo LESS expressionBo\n                    | expressionBo MOREEQUAL expressionBo\n                    | expressionBo LESSEQUAL expressionBo\n                    | expressionBo NOTEQUAL expressionBo\n                    | expressionBo EQUALSTO expressionBoexpressionBo : TRUE\n                    | FALSEexpressionBo : LPAREN expressionBo RPARENexpressionBo : ID'
+_lr_signature = 'nonassocLESSMOREEQUALSTOMOREEQUALLESSEQUALNOTEQUALleftPLUSMINUSleftTIMESDIVIDEINT FLOAT PLUS MINUS TIMES DIVIDE EQUALS LPAREN RPAREN LCURLBRACKET RCURLBRACKET ID COMMENT STRING ASSIGN EQUALSTO MORE LESS MOREEQUAL LESSEQUAL NOTEQUAL BREAK CASE CHAN CONST CONTINUE DEFAULT DEFER ELSE FALLTHROUGH FOR FUNC GO GOTO IF IMPORT INTERFACE MAP PACKAGE RANGE RETURN SELECT STRUCT SWITCH TYPE VAR MAIN SPRINT SSCAN TRUE FALSEstatement : FUNC MAIN LPAREN RPAREN LCURLBRACKET list RCURLBRACKETlist : inst\n            | inst listinst : ID ASSIGN expressionAR\n            | ID ASSIGN expressionBoinst : FOR expressionBo LCURLBRACKET list RCURLBRACKETinst : IF expressionBo LCURLBRACKET list RCURLBRACKET ELSE LCURLBRACKET list RCURLBRACKET\n            | IF expressionBo LCURLBRACKET list RCURLBRACKETinst : expressionAR\n            | expressionBoexpressionAR : expressionAR PLUS expressionAR\n                     | expressionAR MINUS expressionAR\n                     | expressionAR TIMES expressionAR\n                     | expressionAR DIVIDE expressionARexpressionAR : INTexpressionAR : FLOATexpressionAR : LPAREN expressionAR RPARENexpressionBo : expressionBo MORE expressionBo\n                    | expressionBo LESS expressionBo\n                    | expressionBo MOREEQUAL expressionBo\n                    | expressionBo LESSEQUAL expressionBo\n                    | expressionBo NOTEQUAL expressionBo\n                    | expressionBo EQUALSTO expressionBo\n                    | IDexpressionBo : TRUE\n                    | FALSEexpressionBo : LPAREN expressionBo RPAREN'
     
-_lr_action_items = {'ID':([0,3,5,6,8,10,11,12,13,15,16,17,18,19,20,21,22,23,24,25,26,27,28,30,31,32,33,36,37,38,39,40,41,42,44,45,46,48,50,],[4,4,13,13,15,-24,-25,13,-27,-17,-4,-5,33,-14,-15,15,4,13,13,13,13,13,13,4,-13,33,-17,-18,-19,-20,-21,-22,-23,-26,-16,-6,-8,4,-7,]),'FOR':([0,3,10,11,13,15,16,17,19,20,22,30,31,33,36,37,38,39,40,41,42,44,45,46,48,50,],[5,5,-24,-25,-27,-17,-4,-5,-14,-15,5,5,-13,-17,-18,-19,-20,-21,-22,-23,-26,-16,-6,-8,5,-7,]),'IF':([0,3,10,11,13,15,16,17,19,20,22,30,31,33,36,37,38,39,40,41,42,44,45,46,48,50,],[6,6,-24,-25,-27,-17,-4,-5,-14,-15,6,6,-13,-17,-18,-19,-20,-21,-22,-23,-26,-16,-6,-8,6,-7,]),'$end':([1,2,3,7,10,11,13,15,16,17,19,20,31,33,36,37,38,39,40,41,42,44,45,46,50,],[0,-1,-2,-3,-24,-25,-27,-17,-4,-5,-14,-15,-13,-17,-18,-19,-20,-21,-22,-23,-26,-16,-6,-8,-7,]),'RCURLBRACKET':([3,7,10,11,13,15,16,17,19,20,31,33,35,36,37,38,39,40,41,42,43,44,45,46,49,50,],[-2,-3,-24,-25,-27,-17,-4,-5,-14,-15,-13,-17,45,-18,-19,-20,-21,-22,-23,-26,46,-16,-6,-8,50,-7,]),'ASSIGN':([4,],[8,]),'TRUE':([5,6,8,12,21,23,24,25,26,27,28,],[10,10,10,10,10,10,10,10,10,10,10,]),'FALSE':([5,6,8,12,21,23,24,25,26,27,28,],[11,11,11,11,11,11,11,11,11,11,11,]),'LPAREN':([5,6,8,12,18,21,23,24,25,26,27,28,32,],[12,12,21,12,32,21,12,12,12,12,12,12,32,]),'MINUS':([8,18,21,32,],[18,18,18,18,]),'INT':([8,18,21,32,],[19,19,19,19,]),'FLOAT':([8,18,21,32,],[20,20,20,20,]),'LCURLBRACKET':([9,10,11,13,14,36,37,38,39,40,41,42,47,],[22,-24,-25,-27,30,-18,-19,-20,-21,-22,-23,-26,48,]),'MORE':([9,10,11,13,14,15,17,29,36,37,38,39,40,41,42,],[23,-24,-25,-27,23,-27,23,23,None,None,23,23,23,23,-26,]),'LESS':([9,10,11,13,14,15,17,29,36,37,38,39,40,41,42,],[24,-24,-25,-27,24,-27,24,24,None,None,24,24,24,24,-26,]),'MOREEQUAL':([9,10,11,13,14,15,17,29,36,37,38,39,40,41,42,],[25,-24,-25,-27,25,-27,25,25,-18,-19,25,25,25,25,-26,]),'LESSEQUAL':([9,10,11,13,14,15,17,29,36,37,38,39,40,41,42,],[26,-24,-25,-27,26,-27,26,26,-18,-19,26,26,26,26,-26,]),'NOTEQUAL':([9,10,11,13,14,15,17,29,36,37,38,39,40,41,42,],[27,-24,-25,-27,27,-27,27,27,-18,-19,27,27,27,27,-26,]),'EQUALSTO':([9,10,11,13,14,15,17,29,36,37,38,39,40,41,42,],[28,-24,-25,-27,28,-27,28,28,-18,-19,28,28,28,28,-26,]),'RPAREN':([10,11,13,15,19,20,29,31,33,34,36,37,38,39,40,41,42,44,],[-24,-25,-27,-17,-14,-15,42,-13,-17,44,-18,-19,-20,-21,-22,-23,-26,-16,]),'ELSE':([46,],[47,]),}
+_lr_action_items = {'FUNC':([0,],[2,]),'$end':([1,22,],[0,-1,]),'MAIN':([2,],[3,]),'LPAREN':([3,6,7,9,10,11,12,13,14,15,16,17,18,21,24,25,26,27,28,29,30,31,32,33,34,36,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,57,58,60,62,],[4,7,7,7,-24,-9,-10,36,36,-15,-16,-25,-26,-24,7,43,43,43,43,36,36,36,36,36,36,36,-17,-27,-4,-5,-11,43,-12,-13,-14,-18,-19,-20,-21,-22,-23,7,7,-6,-8,7,-7,]),'RPAREN':([4,15,16,17,18,19,20,21,38,39,42,44,45,46,47,48,49,50,51,52,],[5,-15,-16,-25,-26,38,39,-24,-17,-27,-11,-12,-13,-14,-18,-19,-20,-21,-22,-23,]),'LCURLBRACKET':([5,17,18,21,35,37,39,47,48,49,50,51,52,59,],[6,-25,-26,-24,53,54,-27,-18,-19,-20,-21,-22,-23,60,]),'ID':([6,7,9,10,11,12,13,14,15,16,17,18,21,24,29,30,31,32,33,34,36,38,39,40,41,42,44,45,46,47,48,49,50,51,52,53,54,57,58,60,62,],[10,21,10,-24,-9,-10,21,21,-15,-16,-25,-26,-24,21,21,21,21,21,21,21,21,-17,-27,-4,-5,-11,-12,-13,-14,-18,-19,-20,-21,-22,-23,10,10,-6,-8,10,-7,]),'FOR':([6,9,10,11,12,15,16,17,18,21,38,39,40,41,42,44,45,46,47,48,49,50,51,52,53,54,57,58,60,62,],[13,13,-24,-9,-10,-15,-16,-25,-26,-24,-17,-27,-4,-5,-11,-12,-13,-14,-18,-19,-20,-21,-22,-23,13,13,-6,-8,13,-7,]),'IF':([6,9,10,11,12,15,16,17,18,21,38,39,40,41,42,44,45,46,47,48,49,50,51,52,53,54,57,58,60,62,],[14,14,-24,-9,-10,-15,-16,-25,-26,-24,-17,-27,-4,-5,-11,-12,-13,-14,-18,-19,-20,-21,-22,-23,14,14,-6,-8,14,-7,]),'INT':([6,7,9,10,11,12,15,16,17,18,21,24,25,26,27,28,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,57,58,60,62,],[15,15,15,-24,-9,-10,-15,-16,-25,-26,-24,15,15,15,15,15,-17,-27,-4,-5,-11,15,-12,-13,-14,-18,-19,-20,-21,-22,-23,15,15,-6,-8,15,-7,]),'FLOAT':([6,7,9,10,11,12,15,16,17,18,21,24,25,26,27,28,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,57,58,60,62,],[16,16,16,-24,-9,-10,-15,-16,-25,-26,-24,16,16,16,16,16,-17,-27,-4,-5,-11,16,-12,-13,-14,-18,-19,-20,-21,-22,-23,16,16,-6,-8,16,-7,]),'TRUE':([6,7,9,10,11,12,13,14,15,16,17,18,21,24,29,30,31,32,33,34,36,38,39,40,41,42,44,45,46,47,48,49,50,51,52,53,54,57,58,60,62,],[17,17,17,-24,-9,-10,17,17,-15,-16,-25,-26,-24,17,17,17,17,17,17,17,17,-17,-27,-4,-5,-11,-12,-13,-14,-18,-19,-20,-21,-22,-23,17,17,-6,-8,17,-7,]),'FALSE':([6,7,9,10,11,12,13,14,15,16,17,18,21,24,29,30,31,32,33,34,36,38,39,40,41,42,44,45,46,47,48,49,50,51,52,53,54,57,58,60,62,],[18,18,18,-24,-9,-10,18,18,-15,-16,-25,-26,-24,18,18,18,18,18,18,18,18,-17,-27,-4,-5,-11,-12,-13,-14,-18,-19,-20,-21,-22,-23,18,18,-6,-8,18,-7,]),'RCURLBRACKET':([8,9,10,11,12,15,16,17,18,21,23,38,39,40,41,42,44,45,46,47,48,49,50,51,52,55,56,57,58,61,62,],[22,-2,-24,-9,-10,-15,-16,-25,-26,-24,-3,-17,-27,-4,-5,-11,-12,-13,-14,-18,-19,-20,-21,-22,-23,57,58,-6,-8,62,-7,]),'ASSIGN':([10,],[24,]),'MORE':([10,12,17,18,20,21,35,37,39,41,47,48,49,50,51,52,],[-24,29,-25,-26,29,-24,29,29,-27,29,None,None,None,None,None,None,]),'LESS':([10,12,17,18,20,21,35,37,39,41,47,48,49,50,51,52,],[-24,30,-25,-26,30,-24,30,30,-27,30,None,None,None,None,None,None,]),'MOREEQUAL':([10,12,17,18,20,21,35,37,39,41,47,48,49,50,51,52,],[-24,31,-25,-26,31,-24,31,31,-27,31,None,None,None,None,None,None,]),'LESSEQUAL':([10,12,17,18,20,21,35,37,39,41,47,48,49,50,51,52,],[-24,32,-25,-26,32,-24,32,32,-27,32,None,None,None,None,None,None,]),'NOTEQUAL':([10,12,17,18,20,21,35,37,39,41,47,48,49,50,51,52,],[-24,33,-25,-26,33,-24,33,33,-27,33,None,None,None,None,None,None,]),'EQUALSTO':([10,12,17,18,20,21,35,37,39,41,47,48,49,50,51,52,],[-24,34,-25,-26,34,-24,34,34,-27,34,None,None,None,None,None,None,]),'PLUS':([11,15,16,19,38,40,42,44,45,46,],[25,-15,-16,25,-17,25,-11,-12,-13,-14,]),'MINUS':([11,15,16,19,38,40,42,44,45,46,],[26,-15,-16,26,-17,26,-11,-12,-13,-14,]),'TIMES':([11,15,16,19,38,40,42,44,45,46,],[27,-15,-16,27,-17,27,27,27,-13,-14,]),'DIVIDE':([11,15,16,19,38,40,42,44,45,46,],[28,-15,-16,28,-17,28,28,28,-13,-14,]),'ELSE':([58,],[59,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -16,7 +16,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'statement':([0,],[1,]),'list':([0,3,22,30,48,],[2,7,35,43,49,]),'inst':([0,3,22,30,48,],[3,3,3,3,3,]),'expressionBo':([5,6,8,12,21,23,24,25,26,27,28,],[9,14,17,29,29,36,37,38,39,40,41,]),'expressionAR':([8,18,21,32,],[16,31,34,34,]),}
+_lr_goto_items = {'statement':([0,],[1,]),'list':([6,9,53,54,60,],[8,23,55,56,61,]),'inst':([6,9,53,54,60,],[9,9,9,9,9,]),'expressionAR':([6,7,9,24,25,26,27,28,43,53,54,60,],[11,19,11,40,42,44,45,46,19,11,11,11,]),'expressionBo':([6,7,9,13,14,24,29,30,31,32,33,34,36,53,54,60,],[12,20,12,35,37,41,47,48,49,50,51,52,20,12,12,12,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -26,31 +26,31 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> statement","S'",1,None,None,None),
-  ('statement -> list','statement',1,'p_statement_expr','plintax.py',19),
-  ('list -> inst','list',1,'p_list','plintax.py',24),
-  ('list -> inst list','list',2,'p_list','plintax.py',25),
-  ('inst -> ID ASSIGN expressionAR','inst',3,'p_inst_assignment','plintax.py',33),
-  ('inst -> ID ASSIGN expressionBo','inst',3,'p_inst_assignment','plintax.py',34),
-  ('inst -> FOR expressionBo LCURLBRACKET list RCURLBRACKET','inst',5,'p_inst_For','plintax.py',40),
-  ('inst -> IF expressionBo LCURLBRACKET list RCURLBRACKET ELSE LCURLBRACKET list RCURLBRACKET','inst',9,'p_inst_If','plintax.py',45),
-  ('inst -> IF expressionBo LCURLBRACKET list RCURLBRACKET','inst',5,'p_inst_If','plintax.py',46),
-  ('expressionaAR -> expressionAR PLUS expressionAR','expressionaAR',3,'p_expressionAR_binop','plintax.py',56),
-  ('expressionaAR -> expressionAR MINUS expressionAR','expressionaAR',3,'p_expressionAR_binop','plintax.py',57),
-  ('expressionaAR -> expressionAR TIMES expressionAR','expressionaAR',3,'p_expressionAR_binop','plintax.py',58),
-  ('expressionaAR -> expressionAR DIVIDE expressionAR','expressionaAR',3,'p_expressionAR_binop','plintax.py',59),
-  ('expressionAR -> MINUS expressionAR','expressionAR',2,'p_expressionAR_inverse','plintax.py',70),
-  ('expressionAR -> INT','expressionAR',1,'p_expressionAR_int','plintax.py',75),
-  ('expressionAR -> FLOAT','expressionAR',1,'p_expressionAR_float','plintax.py',80),
-  ('expressionAR -> LPAREN expressionAR RPAREN','expressionAR',3,'p_expressionAR_group','plintax.py',85),
-  ('expressionAR -> ID','expressionAR',1,'p_expressionAR_var','plintax.py',90),
-  ('expressionBo -> expressionBo MORE expressionBo','expressionBo',3,'p_expressionBo_binop','plintax.py',97),
-  ('expressionBo -> expressionBo LESS expressionBo','expressionBo',3,'p_expressionBo_binop','plintax.py',98),
-  ('expressionBo -> expressionBo MOREEQUAL expressionBo','expressionBo',3,'p_expressionBo_binop','plintax.py',99),
-  ('expressionBo -> expressionBo LESSEQUAL expressionBo','expressionBo',3,'p_expressionBo_binop','plintax.py',100),
-  ('expressionBo -> expressionBo NOTEQUAL expressionBo','expressionBo',3,'p_expressionBo_binop','plintax.py',101),
-  ('expressionBo -> expressionBo EQUALSTO expressionBo','expressionBo',3,'p_expressionBo_binop','plintax.py',102),
-  ('expressionBo -> TRUE','expressionBo',1,'p_expressionBo_int','plintax.py',126),
-  ('expressionBo -> FALSE','expressionBo',1,'p_expressionBo_int','plintax.py',127),
-  ('expressionBo -> LPAREN expressionBo RPAREN','expressionBo',3,'p_expressionBo_group','plintax.py',135),
-  ('expressionBo -> ID','expressionBo',1,'p_expressionBo_var','plintax.py',140),
+  ('statement -> FUNC MAIN LPAREN RPAREN LCURLBRACKET list RCURLBRACKET','statement',7,'p_statement_expr','plintax.py',20),
+  ('list -> inst','list',1,'p_list','plintax.py',25),
+  ('list -> inst list','list',2,'p_list','plintax.py',26),
+  ('inst -> ID ASSIGN expressionAR','inst',3,'p_inst_assignment','plintax.py',34),
+  ('inst -> ID ASSIGN expressionBo','inst',3,'p_inst_assignment','plintax.py',35),
+  ('inst -> FOR expressionBo LCURLBRACKET list RCURLBRACKET','inst',5,'p_inst_For','plintax.py',41),
+  ('inst -> IF expressionBo LCURLBRACKET list RCURLBRACKET ELSE LCURLBRACKET list RCURLBRACKET','inst',9,'p_inst_If','plintax.py',46),
+  ('inst -> IF expressionBo LCURLBRACKET list RCURLBRACKET','inst',5,'p_inst_If','plintax.py',47),
+  ('inst -> expressionAR','inst',1,'p_inst_expression','plintax.py',54),
+  ('inst -> expressionBo','inst',1,'p_inst_expression','plintax.py',55),
+  ('expressionAR -> expressionAR PLUS expressionAR','expressionAR',3,'p_expressionAR_binop','plintax.py',61),
+  ('expressionAR -> expressionAR MINUS expressionAR','expressionAR',3,'p_expressionAR_binop','plintax.py',62),
+  ('expressionAR -> expressionAR TIMES expressionAR','expressionAR',3,'p_expressionAR_binop','plintax.py',63),
+  ('expressionAR -> expressionAR DIVIDE expressionAR','expressionAR',3,'p_expressionAR_binop','plintax.py',64),
+  ('expressionAR -> INT','expressionAR',1,'p_expressionAR_int','plintax.py',83),
+  ('expressionAR -> FLOAT','expressionAR',1,'p_expressionAR_float','plintax.py',88),
+  ('expressionAR -> LPAREN expressionAR RPAREN','expressionAR',3,'p_expressionAR_group','plintax.py',93),
+  ('expressionBo -> expressionBo MORE expressionBo','expressionBo',3,'p_expressionBo_binop','plintax.py',101),
+  ('expressionBo -> expressionBo LESS expressionBo','expressionBo',3,'p_expressionBo_binop','plintax.py',102),
+  ('expressionBo -> expressionBo MOREEQUAL expressionBo','expressionBo',3,'p_expressionBo_binop','plintax.py',103),
+  ('expressionBo -> expressionBo LESSEQUAL expressionBo','expressionBo',3,'p_expressionBo_binop','plintax.py',104),
+  ('expressionBo -> expressionBo NOTEQUAL expressionBo','expressionBo',3,'p_expressionBo_binop','plintax.py',105),
+  ('expressionBo -> expressionBo EQUALSTO expressionBo','expressionBo',3,'p_expressionBo_binop','plintax.py',106),
+  ('expressionBo -> ID','expressionBo',1,'p_expressionBo_binop','plintax.py',107),
+  ('expressionBo -> TRUE','expressionBo',1,'p_expressionBo_int','plintax.py',133),
+  ('expressionBo -> FALSE','expressionBo',1,'p_expressionBo_int','plintax.py',134),
+  ('expressionBo -> LPAREN expressionBo RPAREN','expressionBo',3,'p_expressionBo_group','plintax.py',142),
 ]
