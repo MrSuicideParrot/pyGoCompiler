@@ -20,11 +20,15 @@ class Elemento():
         :param parent: str
         """
         actual = arvore.create_node(tag=str(self.value), parent=parent)
-        for i in self.children:
-            if(i is Elemento):
-                i.__recpprint(arvore, actual.identifier)
-            else:
-                arvore.create_node(tag=str(i.value),parent= actual.identifier)
+
+        try:
+            for i in self.children:
+                if issubclass(type(i), Elemento):
+                    i.__recpprint(arvore, actual.identifier)
+                else:  # Em principio já não é necessário
+                    arvore.create_node(tag=str(i), parent=actual.identifier)
+        except AttributeError:
+            pass
 
 
 class Programa(Elemento):
@@ -73,6 +77,7 @@ class ExprBo(Elemento):
         self.children.append(left)
         self.children.append(right)
 
+
 class Identifier(Elemento):
     def __init__(self, value):
         self.value = ('ID', value)
@@ -105,6 +110,7 @@ class For(Elemento):
         self.children.append(condicao)
         self.children.append(body)
 
+
 class Group(Elemento):
     def __init__(self, valor):
         self.value = ('GROUP',)
@@ -116,7 +122,7 @@ class Assignment(Elemento):
     def __init__(self, ID, valor):
         self.value = ('EQUALS', ':=')
         self.children = []
-        self.children.append(ID)
+        self.children.append(Identifier(ID))
         self.children.append(valor)
 
 
