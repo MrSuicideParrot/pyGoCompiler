@@ -1,29 +1,54 @@
 # -*- coding: utf-8 -*-
 
-class Node:
-    pass
+from treelib import Tree, Node
 
 
-class Programa(Node):
+class Elemento():
+
+    def pprint(self):
+        tree_print = Tree()
+        parent = tree_print.create_node(tag=str(self.value))
+
+        for i in self.children:
+            i.__recpprint(tree_print, parent.identifier)
+
+        print(tree_print)
+
+    def __recpprint(self, arvore, parent):
+        """
+        :param tree: treelib.Tree
+        :param parent: str
+        """
+        actual = arvore.create_node(tag=str(self.value), parent=parent)
+        for i in self.children:
+            if(i is Elemento):
+                i.__recpprint(arvore, actual.identifier)
+            else:
+                arvore.create_node(tag=str(i.value),parent= actual.identifier)
+
+
+class Programa(Elemento):
     def __init__(self, lista):
         self.children = []
         self.children.append(lista)
 
 
-class ListCommand(Node):
+class ListCommand(Elemento):
     def __init__(self, left, right=None):
         """
         :param left: Elemento da lista de comandos
-        :type left: Node
+        :type left: Elemento
         :param right: Resto da lista de comandos
         :type right: ListCommand
         """
+        self.value = ('LIST',)
         self.children = []
         self.children.append(left)
-        self.children.append(right)
+        if right:
+            self.children.append(right)
 
 
-class ExprAr(Node):
+class ExprAr(Elemento):
     def __init__(self, operator, left, right):
         """
         :type operator: str
@@ -36,7 +61,7 @@ class ExprAr(Node):
         self.children.append(right)
 
 
-class ExprBo(Node):
+class ExprBo(Elemento):
     def __init__(self, operator, left, right):
         """
         :type operator: str
@@ -48,54 +73,55 @@ class ExprBo(Node):
         self.children.append(left)
         self.children.append(right)
 
-class Identifier(Node):
+class Identifier(Elemento):
     def __init__(self, value):
         self.value = ('ID', value)
 
 
-class Number(Node):
+class Number(Elemento):
     def __init__(self, value):
         self.value = ('NUMBER', value)
 
 
-class Boolean(Node):
+class Boolean(Elemento):
     def __init__(self, value):
         self.value = ('BOOL', value)
 
 
-class Branch(Node):
+class Branch(Elemento):
     def __init__(self, condicao, ifbody, elsebody=None):
         self.value = ('BRANCH',)
         self.children = []
         self.children.append(condicao)
         self.children.append(ifbody)
-        self.children.append(elsebody)
+        if elsebody:
+            self.children.append(elsebody)
 
 
-class For(Node):
+class For(Elemento):
     def __init__(self, condicao, body):
         self.value = ('FOR',)
         self.children = []
         self.children.append(condicao)
         self.children.append(body)
 
-class Group(Node):
+class Group(Elemento):
     def __init__(self, valor):
         self.value = ('GROUP',)
         self.children = []
         self.children.append(valor)
 
 
-class Assignment(Node):
+class Assignment(Elemento):
     def __init__(self, ID, valor):
-        self.value = ('EQUALS', '=')
+        self.value = ('EQUALS', ':=')
         self.children = []
         self.children.append(ID)
         self.children.append(valor)
 
 
-class Func(Node):
-    def __init__(self, tipo, argv, lista):
+class Func(Elemento):
+    def __init__(self, tipo, argv, lista=None):
         """"
         :param tipo: Nome da função
         :type str
@@ -105,5 +131,11 @@ class Func(Node):
         :type ListCommand
         """
         self.value = ('FUNC', tipo)
-        self.children = argv
-        self.children = lista
+
+        self.children = []
+
+        if argv:
+            self.children.append(argv)
+
+        if lista:
+            self.children.append(lista)

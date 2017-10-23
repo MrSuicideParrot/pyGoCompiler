@@ -18,7 +18,8 @@ variaveis = {}
 #tive que desativar isto
 def p_statement_expr(t):
     'statement : FUNC MAIN LPAREN RPAREN LCURLBRACKET list RCURLBRACKET'
-    t[0] = Func('MAIN',[],t[6])
+    t[0] = Func('MAIN',None,t[6])
+    t[0].pprint()
 
 
 def p_list(p):
@@ -33,7 +34,7 @@ def p_list(p):
 def p_inst_assignment(p):
     '''inst : ID ASSIGN expressionAR
             | ID ASSIGN expressionBo'''
-    p[0]=Assignment(p[2],p[1],p[3])
+    p[0]=Assignment(p[1],p[3])
 
 
 # Faltam os for mais complicados
@@ -50,10 +51,20 @@ def p_inst_If(p):
     else:
         p[0] = Branch(p[2], p[4])
 
+
 def p_inst_expression(p):
     '''inst : expressionAR
             | expressionBo'''
     p[0] = p[1]
+
+
+#Funções
+"""
+def p_inst_func(p):
+    '''inst : FUNC SPRINT LPAREN RPAREN'''
+    p[0] = 
+    
+"""
 
 #---------------------------------------------------------
 # operações ariteméticas
@@ -152,7 +163,7 @@ parser = yacc.yacc()
 
 
 def main():
-    file = False
+    file = True
     if not file:
         while True:
             try:
@@ -166,8 +177,8 @@ def main():
             if result is not None:
                 print(result)
     else:
-        fd = open("exemplo1.txt", "r")
-        parser.parse(''.join(fd.readlines()))
+        fd = open("example1.go", "r")
+        result = parser.parse(''.join(fd.readlines()))
 
 
 if __name__ == '__main__':
