@@ -57,6 +57,7 @@ tokens = [
     'COMMENT',
     'STRING',
     'ASSIGN',
+    'SEMICOLON',
 
 
     # Boolean operators
@@ -77,6 +78,8 @@ t_LPAREN = r'\('
 t_RPAREN = r'\)'
 t_LCURLBRACKET = r'\{'
 t_RCURLBRACKET = r'\}'
+t_SEMICOLON = r';'
+
 t_EQUALSTO = r'=='
 t_MOREEQUAL = r'>='
 t_LESSEQUAL = r'<='
