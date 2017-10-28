@@ -33,9 +33,20 @@ class Elemento():
 
 class Programa(Elemento):
     def __init__(self, lista):
-        self.children = []
-        self.children.append(lista)
+        self.value = ('ROOT',)
+        self.children = lista
 
+# Estrutura do programa
+class Package(Elemento):
+    def __init__(self, pacote):
+        self.value = ('PACKAGE',pacote)
+        self.children = []
+
+
+class Import(Elemento):
+    def __init__(self,biblio):
+        self.value = ('IMPORT',biblio)
+        self.children = []
 
 class ListCommand(Elemento):
     def __init__(self, left, right=None):
@@ -104,10 +115,19 @@ class Branch(Elemento):
 
 
 class For(Elemento):
-    def __init__(self, condicao, body):
+    def __init__(self, iniciacao=None, condicao=None, incremento=None, body=None):
         self.value = ('FOR',)
         self.children = []
-        self.children.append(condicao)
+
+        if iniciacao:
+            self.children.append(iniciacao)
+
+        if condicao:
+            self.children.append(condicao)
+
+        if incremento:
+            self.children.append(incremento)
+
         self.children.append(body)
 
 
@@ -145,3 +165,6 @@ class Func(Elemento):
 
         if lista:
             self.children.append(lista)
+
+class ListPRI(ListCommand):
+    pass

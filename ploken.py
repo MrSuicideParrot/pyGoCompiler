@@ -32,8 +32,8 @@ reservedw = {
 
     # funcoes
     'main' : 'MAIN',
-    'Sprint' : 'SPRINT',
-    'Sscan':'SSCAN',
+    'fmt.Print' : 'PRINT',
+    'fmt.scan':'SCAN',
 
     # valores booleanos
     'true': 'TRUE',
@@ -58,6 +58,7 @@ tokens = [
     'STRING',
     'ASSIGN',
     'SEMICOLON',
+    'COMMA',
 
 
     # Boolean operators
@@ -79,6 +80,7 @@ t_RPAREN = r'\)'
 t_LCURLBRACKET = r'\{'
 t_RCURLBRACKET = r'\}'
 t_SEMICOLON = r';'
+t_COMMA = r','
 
 t_EQUALSTO = r'=='
 t_MOREEQUAL = r'>='
