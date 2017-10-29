@@ -31,7 +31,7 @@ def p_list(p):
     if len(p) == 2:
         p[0] = ListCommand(p[1])
     else:
-        p[0] = ListCommand(p[1] + p[2])
+        p[0] = ListCommand(p[1], p[2])
 
 def p_assignment(p):
     '''assignment : ID ASSIGN expressionAR
@@ -70,7 +70,7 @@ def p_listID(p):
     if len(p) == 2:
         p[0] = ListPRI(p[1])
     else:
-        p[0] = ListPRI(p[1] + p[2])
+        p[0] = ListPRI(p[1], p[2])
 
 """
 def p_inst_expression(p):
@@ -82,9 +82,9 @@ def p_inst_expression(p):
 #Funções
 
 def p_inst_func(p):
-    '''inst : FUNC PRINT LPAREN listID RPAREN SEMICOLON
-            | FUNC SCAN LPAREN listID RPAREN SEMICOLON'''
-    p[0] = Func(p[2],p[4])
+    '''inst : FMT POINT PRINT LPAREN listID RPAREN SEMICOLON
+            | FMT POINT SCAN LPAREN listID RPAREN SEMICOLON'''
+    p[0] = Func(p[3],p[5])
     
 
 
@@ -140,20 +140,20 @@ def p_expressionBo_binop(p):
                     | expressionBo EQUALSTO expressionBo
                     | expressionAR EQUALSTO expressionAR
                     | ID'''
-
-    if p[2] == '>':
-        p[0] = ExprBo('>', p[1], p[3])
-    elif p[2] == '<':
-        p[0] = ExprBo('<', p[1], p[3])
-    elif p[2] == '>=':
-        p[0] = ExprBo('>=', p[1], p[3])
-    elif p[2] == '<=':
-        p[0] = ExprBo('<=', p[1], p[3])
-    elif p[2] == '!=':
-        p[0] = ExprBo('!=', p[1], p[3])
-    elif p[2] == '==':
-        p[0] = ExprBo('==', p[1], p[3])
-    else:
+    try:
+        if p[2] == '>':
+            p[0] = ExprBo('>', p[1], p[3])
+        elif p[2] == '<':
+            p[0] = ExprBo('<', p[1], p[3])
+        elif p[2] == '>=':
+            p[0] = ExprBo('>=', p[1], p[3])
+        elif p[2] == '<=':
+            p[0] = ExprBo('<=', p[1], p[3])
+        elif p[2] == '!=':
+            p[0] = ExprBo('!=', p[1], p[3])
+        elif p[2] == '==':
+            p[0] = ExprBo('==', p[1], p[3])
+    except IndexError:
         p[0] = Identifier(p[1])
 
 

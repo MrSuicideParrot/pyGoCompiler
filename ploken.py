@@ -32,8 +32,9 @@ reservedw = {
 
     # funcoes
     'main' : 'MAIN',
-    'fmt.Print' : 'PRINT',
-    'fmt.scan':'SCAN',
+    'fmt' : 'FMT',
+    'Print' : 'PRINT',
+    'Scan':'SCAN',
 
     # valores booleanos
     'true': 'TRUE',
@@ -59,6 +60,8 @@ tokens = [
     'ASSIGN',
     'SEMICOLON',
     'COMMA',
+    'POINT',
+
 
 
     # Boolean operators
@@ -91,7 +94,7 @@ t_LESS = r'<'
 t_ASSIGN = r':='
 t_EQUALS = r'='
 
-
+t_POINT = r'\.'
 
 # regular expression rule to Float numbers
 def t_FLOAT(t):

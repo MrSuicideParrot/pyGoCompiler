@@ -167,4 +167,15 @@ class Func(Elemento):
             self.children.append(lista)
 
 class ListPRI(ListCommand):
-    pass
+    def __init__(self, left, right=None):
+        """
+        :param left: Elemento da lista de comandos
+        :type left: Elemento
+        :param right: Resto da lista de comandos
+        :type right: ListCommand
+        """
+        self.value = ('ARGV',)
+        self.children = []
+        self.children.append(left)
+        if right:
+            self.children.append(right)
