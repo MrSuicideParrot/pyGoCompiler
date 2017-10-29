@@ -57,7 +57,7 @@ def p_inst_assignment(p):
 def p_inst_If(p):
     '''inst : IF expressionBo LCURLBRACKET list RCURLBRACKET ELSE LCURLBRACKET list RCURLBRACKET
             | IF expressionBo LCURLBRACKET list RCURLBRACKET'''
-    if p.len == 10:
+    if len(p) == 10:
         p[0] = Branch(p[2], p[4], p[9])
     else:
         p[0] = Branch(p[2], p[4])
