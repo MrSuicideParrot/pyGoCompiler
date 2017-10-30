@@ -140,11 +140,18 @@ class Group(Elemento):
 
 class Assignment(Elemento):
     def __init__(self, ID, valor):
-        self.value = ('EQUALS', ':=')
+        self.value = ('ASSIGN', ':=')
         self.children = []
         self.children.append(Identifier(ID))
         self.children.append(valor)
 
+"""class Equalizer(Elemento):
+    def __init__(self, ID, value):
+        self.value = ('EQUALS', '=')
+        self.children = []
+        self.children.append(Identifier(ID))
+        self.children.append(value)
+"""
 
 class Func(Elemento):
     def __init__(self, tipo, argv, lista=None):

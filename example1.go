@@ -10,7 +10,7 @@ func main() {
     else {
     fmt.Print(2);
     }
-    a := -2;
-	a := 2+2;
+    a := -0.2;
+	a = -(2+2);
 	fmt.Print(a,v,d);
 }
