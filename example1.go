@@ -4,5 +4,5 @@ import "fmt"
 
 func main() {
 	a := 2+2;
-	fmt.Print(a);
+	fmt.Print(a,v,d);
 }

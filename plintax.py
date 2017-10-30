@@ -70,7 +70,7 @@ def p_listID(p):
     if len(p) == 2:
         p[0] = ListPRI(p[1])
     else:
-        p[0] = ListPRI(p[1], p[2])
+        p[0] = ListPRI(p[1], p[3])
 
 """
 def p_inst_expression(p):
@@ -94,16 +94,19 @@ def p_expressionAR_binop(p):
     '''expressionAR : expressionAR PLUS expressionAR
                      | expressionAR MINUS expressionAR
                      | expressionAR TIMES expressionAR
-                     | expressionAR DIVIDE expressionAR'''
-    if p[2] == '+':
-        p[0] = ExprAr('+', p[1], p[3])
-    elif p[2] == '-':
-        p[0] = ExprAr('-', p[1], p[3])
-    elif p[2] == '*':
-        p[0] = ExprAr('*', p[1], p[3])
-    elif p[2] == '/':
-     p[0] = ExprAr('/', p[1], p[3])
-    else:
+                     | expressionAR DIVIDE expressionAR
+                     | ID'''
+    try:
+        if p[2] == '+':
+            p[0] = ExprAr('+', p[1], p[3])
+        elif p[2] == '-':
+            p[0] = ExprAr('-', p[1], p[3])
+        elif p[2] == '*':
+            p[0] = ExprAr('*', p[1], p[3])
+        elif p[2] == '/':
+         p[0] = ExprAr('/', p[1], p[3])
+
+    except IndexError:
         p[0] = Identifier(p[1])
 
 """
@@ -138,23 +141,20 @@ def p_expressionBo_binop(p):
                     | expressionBo NOTEQUAL expressionBo
                     | expressionAR NOTEQUAL expressionAR
                     | expressionBo EQUALSTO expressionBo
-                    | expressionAR EQUALSTO expressionAR
-                    | ID'''
-    try:
-        if p[2] == '>':
-            p[0] = ExprBo('>', p[1], p[3])
-        elif p[2] == '<':
-            p[0] = ExprBo('<', p[1], p[3])
-        elif p[2] == '>=':
-            p[0] = ExprBo('>=', p[1], p[3])
-        elif p[2] == '<=':
-            p[0] = ExprBo('<=', p[1], p[3])
-        elif p[2] == '!=':
-            p[0] = ExprBo('!=', p[1], p[3])
-        elif p[2] == '==':
-            p[0] = ExprBo('==', p[1], p[3])
-    except IndexError:
-        p[0] = Identifier(p[1])
+                    | expressionAR EQUALSTO expressionAR'''
+    if p[2] == '>':
+        p[0] = ExprBo('>', p[1], p[3])
+    elif p[2] == '<':
+        p[0] = ExprBo('<', p[1], p[3])
+    elif p[2] == '>=':
+        p[0] = ExprBo('>=', p[1], p[3])
+    elif p[2] == '<=':
+        p[0] = ExprBo('<=', p[1], p[3])
+    elif p[2] == '!=':
+        p[0] = ExprBo('!=', p[1], p[3])
+    elif p[2] == '==':
+        p[0] = ExprBo('==', p[1], p[3])
+
 
 
 """
