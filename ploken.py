@@ -125,7 +125,7 @@ def t_COMMENT(t):
     pass #token discarded
 
 def t_STRING(t):
-    r'\".*\"'
+    r'\".*\" | \'.*\''
     t.value = t.value[1:-1]
     return t
 
