@@ -35,14 +35,13 @@ def p_list(p):
 
 def p_assignment(p):
     '''assignment : ID ASSIGN expressionAR
-                  | ID ASSIGN expressionBo'''
-    p[0] = Assignment(p[1], p[3])
-
-"""def p_equalizer(p):
-    '''equalizer : ID EQUALS expressionAR
+                  | ID ASSIGN expressionBo
+                  | ID EQUALS expressionAR
                   | ID EQUALS expressionBo'''
-    p[0] = Equalizer(p[1], p[3])
-"""
+    if p[2] == '=':
+        p[0] = Equalizer(p[1], p[3])
+    else:
+        p[0] = Assignment(p[1], p[3])
 
 # Faltam os for mais complicados
 def p_inst_For(p):
@@ -118,26 +117,19 @@ def p_expressionAR_int(p):
     'expressionAR : INT'
     p[0] = Number(p[1])
 
-def p_expressionAR_inverse_int(p):
-    'expressionAR : MINUS INT %prec UMINUS'
-    p[0] = Number(-p[2])
+def p_expressionAR_inverse(p):
+    'expressionAR : MINUS expressionAR %prec UMINUS'
+    p[0] = ExprAr('-', p[2])
 
 def p_expressionAR_float(p):
     'expressionAR : FLOAT'
     p[0] = Number(p[1])
 
-def p_expressionAR_inverse_float(p):
-    'expressionAR : MINUS FLOAT %prec UMINUS'
-    p[0] = Number(-p[2])
 
 def p_expressionAR_group(p):
     'expressionAR : LPAREN expressionAR RPAREN'
     p[0] = Group(p[2])
 
-"""def p_expressionAR_inverse_group(p):
-    'expressionAR : MINUS LPAREN expressionAR RPAREN %prec UMINUS'
-    p[0] = Group(-p[2])
-"""
 
 # ---------------------------------------------------------
 # operações booleanas
@@ -165,11 +157,10 @@ def p_expressionBo_binop(p):
 
 
 
-"""
 def p_expressionBo_inverse(p):
-    'expressionBo : MINUS expressionBo %prec UMINUS'
-    p[0] = ExprBo('',(p[2].value))
-"""
+    'expressionBo : NOT expressionBo %prec UMINUS'
+    p[0] = ExprBo('!', p[2])
+
 
 
 def p_expressionBo_int(p):

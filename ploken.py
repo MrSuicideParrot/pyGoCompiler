@@ -61,6 +61,7 @@ tokens = [
     'SEMICOLON',
     'COMMA',
     'POINT',
+    'NOT',
 
 
 
@@ -93,6 +94,7 @@ t_MORE = r'>'
 t_LESS = r'<'
 t_ASSIGN = r':='
 t_EQUALS = r'='
+t_NOT = r'!'
 
 t_POINT = r'\.'
 

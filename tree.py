@@ -64,7 +64,7 @@ class ListCommand(Elemento):
 
 
 class ExprAr(Elemento):
-    def __init__(self, operator, left, right):
+    def __init__(self, operator, left, right=None):
         """
         :type operator: str
         :type left: ExprAr | Number | Identifier
@@ -73,11 +73,12 @@ class ExprAr(Elemento):
         self.value = ('OPERATOR_AR', operator)
         self.children = []
         self.children.append(left)
-        self.children.append(right)
+        if right:
+            self.children.append(right)
 
 
 class ExprBo(Elemento):
-    def __init__(self, operator, left, right):
+    def __init__(self, operator, left, right=None):
         """
         :type operator: str
         :type left: ExprBo | Number | Identifier
@@ -86,7 +87,8 @@ class ExprBo(Elemento):
         self.tag = ('OPERATOR_AR', operator)
         self.children = []
         self.children.append(left)
-        self.children.append(right)
+        if right:
+            self.children.append(right)
 
 
 class Identifier(Elemento):
@@ -145,13 +147,14 @@ class Assignment(Elemento):
         self.children.append(Identifier(ID))
         self.children.append(valor)
 
-"""class Equalizer(Elemento):
+
+class Equalizer(Elemento):
     def __init__(self, ID, value):
         self.value = ('EQUALS', '=')
         self.children = []
         self.children.append(Identifier(ID))
         self.children.append(value)
-"""
+
 
 class Func(Elemento):
     def __init__(self, tipo, argv, lista=None):
