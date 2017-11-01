@@ -157,7 +157,7 @@ class Equalizer(Elemento):
 
 
 class Func(Elemento):
-    def __init__(self, tipo, argv, lista=None):
+    def __init__(self, tipo, argv=None, lista=None):
         """"
         :param tipo: Nome da função
         :type str

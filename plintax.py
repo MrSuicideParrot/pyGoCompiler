@@ -37,16 +37,24 @@ def p_assignment(p):
     '''assignment : ID ASSIGN expressionAR
                   | ID ASSIGN expressionBo
                   | ID EQUALS expressionAR
-                  | ID EQUALS expressionBo'''
-    if p[2] == '=':
-        p[0] = Equalizer(p[1], p[3])
+                  | ID EQUALS expressionBo
+                  | INCREMENT ID
+                  | DECREMENT ID'''
+    if len(p) == 3:
+        if p[1] == '++':
+            p[0] = Equalizer(Identifier(p[2]),ExprAr('+',Identifier(p[2]),Number(1)))
+        else:
+            p[0] = Equalizer(Identifier(p[2]), ExprAr('-', Identifier(p[2]), Number(1)))
     else:
-        p[0] = Assignment(p[1], p[3])
+        if p[2] == '=':
+            p[0] = Equalizer(p[1], p[3])
+        else:
+            p[0] = Assignment(p[1], p[3])
 
 # Faltam os for mais complicados
 def p_inst_For(p):
     '''inst : FOR expressionBo LCURLBRACKET list RCURLBRACKET
-            | FOR assignment SEMICOLON expressionBo SEMICOLON expressionAR LCURLBRACKET list RCURLBRACKET'''
+            | FOR assignment SEMICOLON expressionBo SEMICOLON assignment LCURLBRACKET list RCURLBRACKET'''
     if len(p) == 6:
         p[0] = For(condicao=p[2],body=p[4])
     else:
@@ -87,20 +95,24 @@ def p_inst_expression(p):
 
 def p_inst_func(p):
     '''inst : FMT POINT PRINT LPAREN listID RPAREN SEMICOLON
-            | FMT POINT SCAN LPAREN listID RPAREN SEMICOLON'''
-    p[0] = Func(p[3],p[5])
-    
+            | FMT POINT SCAN LPAREN listID RPAREN SEMICOLON
+            | FMT POINT PRINT LPAREN RPAREN SEMICOLON
+            | FMT POINT SCAN LPAREN RPAREN SEMICOLON'''
+    try:
+        p[0] = Func(p[3],p[5])
+    except IndexError:
+        p[0] = Func(p[3])
 
 
 #---------------------------------------------------------
 # operações ariteméticas
 def p_expressionAR_binop(p):
     '''expressionAR : expressionAR PLUS expressionAR
-                     | expressionAR MINUS expressionAR
-                     | expressionAR TIMES expressionAR
-                     | expressionAR DIVIDE expressionAR
-                     | ID'''
-    try:
+                    | expressionAR MINUS expressionAR
+                    | expressionAR TIMES expressionAR
+                    | expressionAR DIVIDE expressionAR
+                    | ID'''
+    if len(p) == 4:
         if p[2] == '+':
             p[0] = ExprAr('+', p[1], p[3])
         elif p[2] == '-':
@@ -109,17 +121,19 @@ def p_expressionAR_binop(p):
             p[0] = ExprAr('*', p[1], p[3])
         elif p[2] == '/':
          p[0] = ExprAr('/', p[1], p[3])
-
-    except IndexError:
+    else:
         p[0] = Identifier(p[1])
+
 
 def p_expressionAR_int(p):
     'expressionAR : INT'
     p[0] = Number(p[1])
 
+
 def p_expressionAR_inverse(p):
     'expressionAR : MINUS expressionAR %prec UMINUS'
     p[0] = ExprAr('-', p[2])
+
 
 def p_expressionAR_float(p):
     'expressionAR : FLOAT'
@@ -201,7 +215,7 @@ def main():
             if result is not None:
                 print(result)
     else:
-        fd = open("example1.go", "r")
+        fd = open("example2.go", "r")
         result = parser.parse(''.join(fd.readlines()))
 
 

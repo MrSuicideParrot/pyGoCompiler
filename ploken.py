@@ -71,10 +71,17 @@ tokens = [
     'LESS',
     'MOREEQUAL',
     'LESSEQUAL',
-    'NOTEQUAL'
+    'NOTEQUAL',
+
+    #Special aritemetic operators
+    'INCREMENT',
+    'DECREMENT'
 ] + list(reservedw.values())
 
 # Regular expression rules for simple tokens
+t_INCREMENT = r'\+\+'
+t_DECREMENT = r'--'
+
 t_PLUS = r'\+'
 t_MINUS = r'-'
 t_TIMES = r'\*'
