@@ -38,8 +38,8 @@ def p_assignment(p):
                   | ID ASSIGN expressionBo
                   | ID EQUALS expressionAR
                   | ID EQUALS expressionBo
-                  | INCREMENT ID
-                  | DECREMENT ID'''
+                  | ID INCREMENT
+                  | ID DECREMENT'''
     if len(p) == 3:
         if p[1] == '++':
             p[0] = Equalizer(Identifier(p[2]),ExprAr('+',Identifier(p[2]),Number(1)))
@@ -215,7 +215,7 @@ def main():
             if result is not None:
                 print(result)
     else:
-        fd = open("example2.go", "r")
+        fd = open("example1.go", "r")
         result = parser.parse(''.join(fd.readlines()))
 
 
