@@ -38,5 +38,4 @@ func main() {
 ### Uso
 ### Dependências
 * ply
-* treelib
 * argparse
