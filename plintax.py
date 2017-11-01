@@ -42,9 +42,9 @@ def p_assignment(p):
                   | ID DECREMENT'''
     if len(p) == 3:
         if p[2] == '++':
-            p[0] = Equalizer(Identifier(p[1]),ExprAr('+',Identifier(p[1]),Number(1)))
+            p[0] = Equalizer('=', ExprAr('+', Identifier(p[1]), Number(1)))
         else:
-            p[0] = Equalizer(Identifier(p[1]), ExprAr('-', Identifier(p[1]), Number(1)))
+            p[0] = Equalizer('=', ExprAr('-', Identifier(p[1]), Number(1)))
     else:
         if p[2] == '=':
             p[0] = Equalizer(p[1], p[3])
@@ -56,7 +56,7 @@ def p_inst_For(p):
     '''inst : FOR expressionBo LCURLBRACKET list RCURLBRACKET
             | FOR assignment SEMICOLON expressionBo SEMICOLON assignment LCURLBRACKET list RCURLBRACKET'''
     if len(p) == 6:
-        p[0] = For(condicao=p[2],body=p[4])
+        p[0] = For(condicao=p[2], body=p[4])
     else:
         p[0] = For(iniciacao=p[2], condicao=p[4], incremento=p[6], body=p[8])
 
