@@ -31,8 +31,6 @@ func main() {
 * A atribuição de váriaveis pode ser feitas das seguinte formas:
 ```Go
   i = 2;
-  ++i;
-  --i;
   i++;
   i--;
 ```

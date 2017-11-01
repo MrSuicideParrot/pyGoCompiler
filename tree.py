@@ -84,7 +84,7 @@ class ExprBo(Elemento):
         :type left: ExprBo | Number | Identifier
         :type right: ExprBo | Number | Identifier
         """
-        self.tag = ('OPERATOR_AR', operator)
+        self.value = ('OPERATOR_AR', operator)
         self.children = []
         self.children.append(left)
         if right:
