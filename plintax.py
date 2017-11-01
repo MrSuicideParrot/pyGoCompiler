@@ -41,10 +41,10 @@ def p_assignment(p):
                   | ID INCREMENT
                   | ID DECREMENT'''
     if len(p) == 3:
-        if p[1] == '++':
-            p[0] = Equalizer(Identifier(p[2]),ExprAr('+',Identifier(p[2]),Number(1)))
+        if p[2] == '++':
+            p[0] = Equalizer(Identifier(p[1]),ExprAr('+',Identifier(p[1]),Number(1)))
         else:
-            p[0] = Equalizer(Identifier(p[2]), ExprAr('-', Identifier(p[2]), Number(1)))
+            p[0] = Equalizer(Identifier(p[1]), ExprAr('-', Identifier(p[1]), Number(1)))
     else:
         if p[2] == '=':
             p[0] = Equalizer(p[1], p[3])
@@ -70,7 +70,7 @@ def p_inst_If(p):
     '''inst : IF expressionBo LCURLBRACKET list RCURLBRACKET ELSE LCURLBRACKET list RCURLBRACKET
             | IF expressionBo LCURLBRACKET list RCURLBRACKET'''
     if len(p) == 10:
-        p[0] = Branch(p[2], p[4], p[9])
+        p[0] = Branch(p[2], p[4], p[8])
     else:
         p[0] = Branch(p[2], p[4])
 
