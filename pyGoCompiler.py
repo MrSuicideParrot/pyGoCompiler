@@ -17,6 +17,8 @@ def main():
     else:
         fd = open("example1.go", "r")
         result = parser.parse(''.join(fd.readlines()))
+        result.pprint()
+
 
 if __name__ == '__main__':
     main()
