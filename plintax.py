@@ -22,7 +22,7 @@ def p_statement_expr(t):
         t[0] = Programa([Package(t[2]), Import(t[4]), Func(t[6], None, None)])
     else:
         t[0] = Programa([Package(t[2]), Import(t[4]), Func(t[6], None, t[10])])
-    t[0].pprint()
+    t[0]
 
 
 def p_list(p):
@@ -217,6 +217,7 @@ def main():
     else:
         fd = open("example1.go", "r")
         result = parser.parse(''.join(fd.readlines()))
+        result.pprint()
 
 
 if __name__ == '__main__':
