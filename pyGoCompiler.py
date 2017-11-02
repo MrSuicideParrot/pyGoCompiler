@@ -1,23 +1,18 @@
-from plintax import *
+from plintax import parser
+import argparse
+import sys
 
 def main():
-    file = True
-    if not file:
-        while True:
-            try:
-                s = input('calc > ')
-            except EOFError:
-                print()
-                break
-            if not s:
-                continue
-            result = parser.parse(s)
-            if result is not None:
-                print(result)
-    else:
-        fd = open("example1.go", "r")
+    argsParser = argparse.ArgumentParser()
+    argsParser.add_argument('-tree', nargs=1, required=True)
+    argsParser.parse_args()
+    arg=str(sys.argv[2])
+    if arg[-3:] == '.go':
+        fd = open(arg, "r")
         result = parser.parse(''.join(fd.readlines()))
         result.pprint()
+    else:
+        print('O ficheiro escolhido não é código go.')
 
 
 if __name__ == '__main__':
