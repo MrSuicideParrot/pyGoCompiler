@@ -14,7 +14,7 @@ def main():
     argsParser = ArgumentParser(description='Compiler the Go in Python3')
 
     argsParser.add_argument('-p', '--print_tree', action='store_true', help='Print the abstract tree')
-    argsParser.add_argument('-f', '--file', type=str, required=True, help='File')
+    argsParser.add_argument('file', metavar='f', type=str, help='File')
 
     args = argsParser.parse_args()
 
