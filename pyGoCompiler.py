@@ -19,8 +19,8 @@ def main():
     args = argsParser.parse_args()
     for i in args.file:
         if not isfile(i):
-            print('ERRO: Ficheiro inexistente!')
-            exit(1)
+            print('ERRO: Ficheiro ',i,' inexistente!')
+            continue
 
         with open(i, "r") as fd:
             abstract_tree = parser.parse(''.join(fd.readlines()))
