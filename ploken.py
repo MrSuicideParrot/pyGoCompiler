@@ -72,6 +72,8 @@ tokens = [
     'MOREEQUAL',
     'LESSEQUAL',
     'NOTEQUAL',
+    'AND',
+    'OR',
 
     #Special aritemetic operators
     'INCREMENT',
@@ -102,6 +104,8 @@ t_LESS = r'<'
 t_ASSIGN = r':='
 t_EQUALS = r'='
 t_NOT = r'!'
+t_AND = r'&&'
+t_OR = r'\|\|'
 
 t_POINT = r'\.'
 

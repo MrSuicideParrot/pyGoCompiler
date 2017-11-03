@@ -162,7 +162,9 @@ def p_expressionBo_binop(p):
                     | expressionBo NOTEQUAL expressionBo
                     | expressionAR NOTEQUAL expressionAR
                     | expressionBo EQUALSTO expressionBo
-                    | expressionAR EQUALSTO expressionAR'''
+                    | expressionAR EQUALSTO expressionAR
+                    | expressionBo AND expressionBo
+                    | expressionBo OR expressionBo'''
     if p[2] == '>':
         p[0] = ExprBo('>', p[1], p[3])
     elif p[2] == '<':
@@ -175,6 +177,10 @@ def p_expressionBo_binop(p):
         p[0] = ExprBo('!=', p[1], p[3])
     elif p[2] == '==':
         p[0] = ExprBo('==', p[1], p[3])
+    elif p[2] == '&&':
+        p[0] = ExprBo('&&', p[1], p[3])
+    elif p[2] == '||':
+        p[0] = ExprBo('||', p[1], p[3])
 
 
 

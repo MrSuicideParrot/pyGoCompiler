@@ -68,13 +68,16 @@ Rule 39    expressionBo -> expressionBo NOTEQUAL expressionBo
 Rule 40    expressionBo -> expressionAR NOTEQUAL expressionAR
 Rule 41    expressionBo -> expressionBo EQUALSTO expressionBo
 Rule 42    expressionBo -> expressionAR EQUALSTO expressionAR
-Rule 43    expressionBo -> NOT expressionBo
-Rule 44    expressionBo -> TRUE
-Rule 45    expressionBo -> FALSE
-Rule 46    expressionBo -> LPAREN expressionBo RPAREN
+Rule 43    expressionBo -> expressionBo AND expressionBo
+Rule 44    expressionBo -> expressionBo OR expressionBo
+Rule 45    expressionBo -> NOT expressionBo
+Rule 46    expressionBo -> TRUE
+Rule 47    expressionBo -> FALSE
+Rule 48    expressionBo -> LPAREN expressionBo RPAREN
 
 Terminals, with rules where they appear
 
+AND                  : 43
 ASSIGN               : 5 6
 BREAK                : 
 CASE                 : 
@@ -91,7 +94,7 @@ ELSE                 : 14
 EQUALS               : 7 8
 EQUALSTO             : 41 42
 FALLTHROUGH          : 
-FALSE                : 45
+FALSE                : 47
 FLOAT                : 33
 FMT                  : 22 23 24 25
 FOR                  : 11 12
@@ -107,14 +110,15 @@ INTERFACE            :
 LCURLBRACKET         : 1 2 11 12 14 14 15
 LESS                 : 36
 LESSEQUAL            : 38
-LPAREN               : 1 2 22 23 24 25 34 46
+LPAREN               : 1 2 22 23 24 25 34 48
 MAIN                 : 1 1 2 2
 MAP                  : 
 MINUS                : 27 32
 MORE                 : 35
 MOREEQUAL            : 37
-NOT                  : 43
+NOT                  : 45
 NOTEQUAL             : 39 40
+OR                   : 44
 PACKAGE              : 1 2
 PLUS                 : 26
 POINT                : 22 23 24 25
@@ -122,7 +126,7 @@ PRINT                : 22 24
 RANGE                : 
 RCURLBRACKET         : 1 2 11 12 14 14 15
 RETURN               : 
-RPAREN               : 1 2 22 23 24 25 34 46
+RPAREN               : 1 2 22 23 24 25 34 48
 SCAN                 : 23 25
 SELECT               : 
 SEMICOLON            : 12 12 13 22 23 24 25
@@ -130,7 +134,7 @@ STRING               : 1 2
 STRUCT               : 
 SWITCH               : 
 TIMES                : 28
-TRUE                 : 44
+TRUE                 : 46
 TYPE                 : 
 VAR                  : 
 error                : 
@@ -140,7 +144,7 @@ Nonterminals, with rules where they appear
 IDlist               : 21 23
 assignment           : 12 12 13
 expressionAR         : 5 7 16 19 26 26 27 27 28 28 29 29 32 34 35 35 36 36 37 37 38 38 40 40 42 42
-expressionBo         : 6 8 11 12 14 15 17 18 39 39 41 41 43 46
+expressionBo         : 6 8 11 12 14 15 17 18 39 39 41 41 43 43 44 44 45 48
 inst                 : 3 4
 list                 : 1 4 11 12 14 14 15
 listID               : 18 19 22
@@ -318,10 +322,12 @@ state 14
     (40) expressionBo -> . expressionAR NOTEQUAL expressionAR
     (41) expressionBo -> . expressionBo EQUALSTO expressionBo
     (42) expressionBo -> . expressionAR EQUALSTO expressionAR
-    (43) expressionBo -> . NOT expressionBo
-    (44) expressionBo -> . TRUE
-    (45) expressionBo -> . FALSE
-    (46) expressionBo -> . LPAREN expressionBo RPAREN
+    (43) expressionBo -> . expressionBo AND expressionBo
+    (44) expressionBo -> . expressionBo OR expressionBo
+    (45) expressionBo -> . NOT expressionBo
+    (46) expressionBo -> . TRUE
+    (47) expressionBo -> . FALSE
+    (48) expressionBo -> . LPAREN expressionBo RPAREN
     (5) assignment -> . ID ASSIGN expressionAR
     (6) assignment -> . ID ASSIGN expressionBo
     (7) assignment -> . ID EQUALS expressionAR
@@ -370,10 +376,12 @@ state 16
     (40) expressionBo -> . expressionAR NOTEQUAL expressionAR
     (41) expressionBo -> . expressionBo EQUALSTO expressionBo
     (42) expressionBo -> . expressionAR EQUALSTO expressionAR
-    (43) expressionBo -> . NOT expressionBo
-    (44) expressionBo -> . TRUE
-    (45) expressionBo -> . FALSE
-    (46) expressionBo -> . LPAREN expressionBo RPAREN
+    (43) expressionBo -> . expressionBo AND expressionBo
+    (44) expressionBo -> . expressionBo OR expressionBo
+    (45) expressionBo -> . NOT expressionBo
+    (46) expressionBo -> . TRUE
+    (47) expressionBo -> . FALSE
+    (48) expressionBo -> . LPAREN expressionBo RPAREN
     (26) expressionAR -> . expressionAR PLUS expressionAR
     (27) expressionAR -> . expressionAR MINUS expressionAR
     (28) expressionAR -> . expressionAR TIMES expressionAR
@@ -440,17 +448,21 @@ state 21
     (11) inst -> FOR expressionBo . LCURLBRACKET list RCURLBRACKET
     (39) expressionBo -> expressionBo . NOTEQUAL expressionBo
     (41) expressionBo -> expressionBo . EQUALSTO expressionBo
+    (43) expressionBo -> expressionBo . AND expressionBo
+    (44) expressionBo -> expressionBo . OR expressionBo
 
     LCURLBRACKET    shift and go to state 40
     NOTEQUAL        shift and go to state 41
     EQUALSTO        shift and go to state 42
+    AND             shift and go to state 43
+    OR              shift and go to state 44
 
 
 state 22
 
     (12) inst -> FOR assignment . SEMICOLON expressionBo SEMICOLON assignment LCURLBRACKET list RCURLBRACKET
 
-    SEMICOLON       shift and go to state 43
+    SEMICOLON       shift and go to state 45
 
 
 state 23
@@ -466,21 +478,21 @@ state 23
     (28) expressionAR -> expressionAR . TIMES expressionAR
     (29) expressionAR -> expressionAR . DIVIDE expressionAR
 
-    MORE            shift and go to state 44
-    LESS            shift and go to state 45
-    MOREEQUAL       shift and go to state 46
-    LESSEQUAL       shift and go to state 47
-    NOTEQUAL        shift and go to state 48
-    EQUALSTO        shift and go to state 49
-    PLUS            shift and go to state 50
-    MINUS           shift and go to state 51
-    TIMES           shift and go to state 52
-    DIVIDE          shift and go to state 53
+    MORE            shift and go to state 46
+    LESS            shift and go to state 47
+    MOREEQUAL       shift and go to state 48
+    LESSEQUAL       shift and go to state 49
+    NOTEQUAL        shift and go to state 50
+    EQUALSTO        shift and go to state 51
+    PLUS            shift and go to state 52
+    MINUS           shift and go to state 53
+    TIMES           shift and go to state 54
+    DIVIDE          shift and go to state 55
 
 
 state 24
 
-    (43) expressionBo -> NOT . expressionBo
+    (45) expressionBo -> NOT . expressionBo
     (35) expressionBo -> . expressionAR MORE expressionAR
     (36) expressionBo -> . expressionAR LESS expressionAR
     (37) expressionBo -> . expressionAR MOREEQUAL expressionAR
@@ -489,10 +501,12 @@ state 24
     (40) expressionBo -> . expressionAR NOTEQUAL expressionAR
     (41) expressionBo -> . expressionBo EQUALSTO expressionBo
     (42) expressionBo -> . expressionAR EQUALSTO expressionAR
-    (43) expressionBo -> . NOT expressionBo
-    (44) expressionBo -> . TRUE
-    (45) expressionBo -> . FALSE
-    (46) expressionBo -> . LPAREN expressionBo RPAREN
+    (43) expressionBo -> . expressionBo AND expressionBo
+    (44) expressionBo -> . expressionBo OR expressionBo
+    (45) expressionBo -> . NOT expressionBo
+    (46) expressionBo -> . TRUE
+    (47) expressionBo -> . FALSE
+    (48) expressionBo -> . LPAREN expressionBo RPAREN
     (26) expressionAR -> . expressionAR PLUS expressionAR
     (27) expressionAR -> . expressionAR MINUS expressionAR
     (28) expressionAR -> . expressionAR TIMES expressionAR
@@ -512,36 +526,40 @@ state 24
     MINUS           shift and go to state 29
     FLOAT           shift and go to state 31
 
-    expressionBo                   shift and go to state 54
+    expressionBo                   shift and go to state 56
     expressionAR                   shift and go to state 23
 
 state 25
 
-    (44) expressionBo -> TRUE .
+    (46) expressionBo -> TRUE .
 
-    LCURLBRACKET    reduce using rule 44 (expressionBo -> TRUE .)
-    NOTEQUAL        reduce using rule 44 (expressionBo -> TRUE .)
-    EQUALSTO        reduce using rule 44 (expressionBo -> TRUE .)
-    RPAREN          reduce using rule 44 (expressionBo -> TRUE .)
-    SEMICOLON       reduce using rule 44 (expressionBo -> TRUE .)
-    COMMA           reduce using rule 44 (expressionBo -> TRUE .)
+    LCURLBRACKET    reduce using rule 46 (expressionBo -> TRUE .)
+    NOTEQUAL        reduce using rule 46 (expressionBo -> TRUE .)
+    EQUALSTO        reduce using rule 46 (expressionBo -> TRUE .)
+    AND             reduce using rule 46 (expressionBo -> TRUE .)
+    OR              reduce using rule 46 (expressionBo -> TRUE .)
+    RPAREN          reduce using rule 46 (expressionBo -> TRUE .)
+    SEMICOLON       reduce using rule 46 (expressionBo -> TRUE .)
+    COMMA           reduce using rule 46 (expressionBo -> TRUE .)
 
 
 state 26
 
-    (45) expressionBo -> FALSE .
+    (47) expressionBo -> FALSE .
 
-    LCURLBRACKET    reduce using rule 45 (expressionBo -> FALSE .)
-    NOTEQUAL        reduce using rule 45 (expressionBo -> FALSE .)
-    EQUALSTO        reduce using rule 45 (expressionBo -> FALSE .)
-    RPAREN          reduce using rule 45 (expressionBo -> FALSE .)
-    SEMICOLON       reduce using rule 45 (expressionBo -> FALSE .)
-    COMMA           reduce using rule 45 (expressionBo -> FALSE .)
+    LCURLBRACKET    reduce using rule 47 (expressionBo -> FALSE .)
+    NOTEQUAL        reduce using rule 47 (expressionBo -> FALSE .)
+    EQUALSTO        reduce using rule 47 (expressionBo -> FALSE .)
+    AND             reduce using rule 47 (expressionBo -> FALSE .)
+    OR              reduce using rule 47 (expressionBo -> FALSE .)
+    RPAREN          reduce using rule 47 (expressionBo -> FALSE .)
+    SEMICOLON       reduce using rule 47 (expressionBo -> FALSE .)
+    COMMA           reduce using rule 47 (expressionBo -> FALSE .)
 
 
 state 27
 
-    (46) expressionBo -> LPAREN . expressionBo RPAREN
+    (48) expressionBo -> LPAREN . expressionBo RPAREN
     (34) expressionAR -> LPAREN . expressionAR RPAREN
     (35) expressionBo -> . expressionAR MORE expressionAR
     (36) expressionBo -> . expressionAR LESS expressionAR
@@ -551,10 +569,12 @@ state 27
     (40) expressionBo -> . expressionAR NOTEQUAL expressionAR
     (41) expressionBo -> . expressionBo EQUALSTO expressionBo
     (42) expressionBo -> . expressionAR EQUALSTO expressionAR
-    (43) expressionBo -> . NOT expressionBo
-    (44) expressionBo -> . TRUE
-    (45) expressionBo -> . FALSE
-    (46) expressionBo -> . LPAREN expressionBo RPAREN
+    (43) expressionBo -> . expressionBo AND expressionBo
+    (44) expressionBo -> . expressionBo OR expressionBo
+    (45) expressionBo -> . NOT expressionBo
+    (46) expressionBo -> . TRUE
+    (47) expressionBo -> . FALSE
+    (48) expressionBo -> . LPAREN expressionBo RPAREN
     (26) expressionAR -> . expressionAR PLUS expressionAR
     (27) expressionAR -> . expressionAR MINUS expressionAR
     (28) expressionAR -> . expressionAR TIMES expressionAR
@@ -574,8 +594,8 @@ state 27
     MINUS           shift and go to state 29
     FLOAT           shift and go to state 31
 
-    expressionBo                   shift and go to state 55
-    expressionAR                   shift and go to state 56
+    expressionBo                   shift and go to state 57
+    expressionAR                   shift and go to state 58
 
 state 28
 
@@ -620,9 +640,9 @@ state 29
     INT             shift and go to state 30
     MINUS           shift and go to state 29
     FLOAT           shift and go to state 31
-    LPAREN          shift and go to state 58
+    LPAREN          shift and go to state 60
 
-    expressionAR                   shift and go to state 57
+    expressionAR                   shift and go to state 59
 
 state 30
 
@@ -641,6 +661,8 @@ state 30
     RPAREN          reduce using rule 31 (expressionAR -> INT .)
     SEMICOLON       reduce using rule 31 (expressionAR -> INT .)
     LCURLBRACKET    reduce using rule 31 (expressionAR -> INT .)
+    AND             reduce using rule 31 (expressionAR -> INT .)
+    OR              reduce using rule 31 (expressionAR -> INT .)
     COMMA           reduce using rule 31 (expressionAR -> INT .)
 
 
@@ -661,6 +683,8 @@ state 31
     RPAREN          reduce using rule 33 (expressionAR -> FLOAT .)
     SEMICOLON       reduce using rule 33 (expressionAR -> FLOAT .)
     LCURLBRACKET    reduce using rule 33 (expressionAR -> FLOAT .)
+    AND             reduce using rule 33 (expressionAR -> FLOAT .)
+    OR              reduce using rule 33 (expressionAR -> FLOAT .)
     COMMA           reduce using rule 33 (expressionAR -> FLOAT .)
 
 
@@ -681,10 +705,14 @@ state 33
     (15) inst -> IF expressionBo . LCURLBRACKET list RCURLBRACKET
     (39) expressionBo -> expressionBo . NOTEQUAL expressionBo
     (41) expressionBo -> expressionBo . EQUALSTO expressionBo
+    (43) expressionBo -> expressionBo . AND expressionBo
+    (44) expressionBo -> expressionBo . OR expressionBo
 
-    LCURLBRACKET    shift and go to state 59
+    LCURLBRACKET    shift and go to state 61
     NOTEQUAL        shift and go to state 41
     EQUALSTO        shift and go to state 42
+    AND             shift and go to state 43
+    OR              shift and go to state 44
 
 
 state 34
@@ -704,6 +732,8 @@ state 34
     RPAREN          reduce using rule 30 (expressionAR -> ID .)
     SEMICOLON       reduce using rule 30 (expressionAR -> ID .)
     LCURLBRACKET    reduce using rule 30 (expressionAR -> ID .)
+    AND             reduce using rule 30 (expressionAR -> ID .)
+    OR              reduce using rule 30 (expressionAR -> ID .)
     COMMA           reduce using rule 30 (expressionAR -> ID .)
 
 
@@ -714,8 +744,8 @@ state 35
     (24) inst -> FMT POINT . PRINT LPAREN RPAREN SEMICOLON
     (25) inst -> FMT POINT . SCAN LPAREN RPAREN SEMICOLON
 
-    PRINT           shift and go to state 60
-    SCAN            shift and go to state 61
+    PRINT           shift and go to state 62
+    SCAN            shift and go to state 63
 
 
 state 36
@@ -739,22 +769,24 @@ state 36
     (40) expressionBo -> . expressionAR NOTEQUAL expressionAR
     (41) expressionBo -> . expressionBo EQUALSTO expressionBo
     (42) expressionBo -> . expressionAR EQUALSTO expressionAR
-    (43) expressionBo -> . NOT expressionBo
-    (44) expressionBo -> . TRUE
-    (45) expressionBo -> . FALSE
-    (46) expressionBo -> . LPAREN expressionBo RPAREN
+    (43) expressionBo -> . expressionBo AND expressionBo
+    (44) expressionBo -> . expressionBo OR expressionBo
+    (45) expressionBo -> . NOT expressionBo
+    (46) expressionBo -> . TRUE
+    (47) expressionBo -> . FALSE
+    (48) expressionBo -> . LPAREN expressionBo RPAREN
 
     ID              shift and go to state 34
     INT             shift and go to state 30
     MINUS           shift and go to state 29
     FLOAT           shift and go to state 31
-    LPAREN          shift and go to state 64
+    LPAREN          shift and go to state 66
     NOT             shift and go to state 24
     TRUE            shift and go to state 25
     FALSE           shift and go to state 26
 
-    expressionAR                   shift and go to state 62
-    expressionBo                   shift and go to state 63
+    expressionAR                   shift and go to state 64
+    expressionBo                   shift and go to state 65
 
 state 37
 
@@ -777,22 +809,24 @@ state 37
     (40) expressionBo -> . expressionAR NOTEQUAL expressionAR
     (41) expressionBo -> . expressionBo EQUALSTO expressionBo
     (42) expressionBo -> . expressionAR EQUALSTO expressionAR
-    (43) expressionBo -> . NOT expressionBo
-    (44) expressionBo -> . TRUE
-    (45) expressionBo -> . FALSE
-    (46) expressionBo -> . LPAREN expressionBo RPAREN
+    (43) expressionBo -> . expressionBo AND expressionBo
+    (44) expressionBo -> . expressionBo OR expressionBo
+    (45) expressionBo -> . NOT expressionBo
+    (46) expressionBo -> . TRUE
+    (47) expressionBo -> . FALSE
+    (48) expressionBo -> . LPAREN expressionBo RPAREN
 
     ID              shift and go to state 34
     INT             shift and go to state 30
     MINUS           shift and go to state 29
     FLOAT           shift and go to state 31
-    LPAREN          shift and go to state 64
+    LPAREN          shift and go to state 66
     NOT             shift and go to state 24
     TRUE            shift and go to state 25
     FALSE           shift and go to state 26
 
-    expressionAR                   shift and go to state 65
-    expressionBo                   shift and go to state 66
+    expressionAR                   shift and go to state 67
+    expressionBo                   shift and go to state 68
 
 state 38
 
@@ -836,7 +870,7 @@ state 40
     FMT             shift and go to state 17
     ID              shift and go to state 18
 
-    list                           shift and go to state 67
+    list                           shift and go to state 69
     inst                           shift and go to state 13
     assignment                     shift and go to state 15
 
@@ -851,84 +885,12 @@ state 41
     (40) expressionBo -> . expressionAR NOTEQUAL expressionAR
     (41) expressionBo -> . expressionBo EQUALSTO expressionBo
     (42) expressionBo -> . expressionAR EQUALSTO expressionAR
-    (43) expressionBo -> . NOT expressionBo
-    (44) expressionBo -> . TRUE
-    (45) expressionBo -> . FALSE
-    (46) expressionBo -> . LPAREN expressionBo RPAREN
-    (26) expressionAR -> . expressionAR PLUS expressionAR
-    (27) expressionAR -> . expressionAR MINUS expressionAR
-    (28) expressionAR -> . expressionAR TIMES expressionAR
-    (29) expressionAR -> . expressionAR DIVIDE expressionAR
-    (30) expressionAR -> . ID
-    (31) expressionAR -> . INT
-    (32) expressionAR -> . MINUS expressionAR
-    (33) expressionAR -> . FLOAT
-    (34) expressionAR -> . LPAREN expressionAR RPAREN
-
-    NOT             shift and go to state 24
-    TRUE            shift and go to state 25
-    FALSE           shift and go to state 26
-    LPAREN          shift and go to state 27
-    ID              shift and go to state 34
-    INT             shift and go to state 30
-    MINUS           shift and go to state 29
-    FLOAT           shift and go to state 31
-
-    expressionBo                   shift and go to state 68
-    expressionAR                   shift and go to state 23
-
-state 42
-
-    (41) expressionBo -> expressionBo EQUALSTO . expressionBo
-    (35) expressionBo -> . expressionAR MORE expressionAR
-    (36) expressionBo -> . expressionAR LESS expressionAR
-    (37) expressionBo -> . expressionAR MOREEQUAL expressionAR
-    (38) expressionBo -> . expressionAR LESSEQUAL expressionAR
-    (39) expressionBo -> . expressionBo NOTEQUAL expressionBo
-    (40) expressionBo -> . expressionAR NOTEQUAL expressionAR
-    (41) expressionBo -> . expressionBo EQUALSTO expressionBo
-    (42) expressionBo -> . expressionAR EQUALSTO expressionAR
-    (43) expressionBo -> . NOT expressionBo
-    (44) expressionBo -> . TRUE
-    (45) expressionBo -> . FALSE
-    (46) expressionBo -> . LPAREN expressionBo RPAREN
-    (26) expressionAR -> . expressionAR PLUS expressionAR
-    (27) expressionAR -> . expressionAR MINUS expressionAR
-    (28) expressionAR -> . expressionAR TIMES expressionAR
-    (29) expressionAR -> . expressionAR DIVIDE expressionAR
-    (30) expressionAR -> . ID
-    (31) expressionAR -> . INT
-    (32) expressionAR -> . MINUS expressionAR
-    (33) expressionAR -> . FLOAT
-    (34) expressionAR -> . LPAREN expressionAR RPAREN
-
-    NOT             shift and go to state 24
-    TRUE            shift and go to state 25
-    FALSE           shift and go to state 26
-    LPAREN          shift and go to state 27
-    ID              shift and go to state 34
-    INT             shift and go to state 30
-    MINUS           shift and go to state 29
-    FLOAT           shift and go to state 31
-
-    expressionBo                   shift and go to state 69
-    expressionAR                   shift and go to state 23
-
-state 43
-
-    (12) inst -> FOR assignment SEMICOLON . expressionBo SEMICOLON assignment LCURLBRACKET list RCURLBRACKET
-    (35) expressionBo -> . expressionAR MORE expressionAR
-    (36) expressionBo -> . expressionAR LESS expressionAR
-    (37) expressionBo -> . expressionAR MOREEQUAL expressionAR
-    (38) expressionBo -> . expressionAR LESSEQUAL expressionAR
-    (39) expressionBo -> . expressionBo NOTEQUAL expressionBo
-    (40) expressionBo -> . expressionAR NOTEQUAL expressionAR
-    (41) expressionBo -> . expressionBo EQUALSTO expressionBo
-    (42) expressionBo -> . expressionAR EQUALSTO expressionAR
-    (43) expressionBo -> . NOT expressionBo
-    (44) expressionBo -> . TRUE
-    (45) expressionBo -> . FALSE
-    (46) expressionBo -> . LPAREN expressionBo RPAREN
+    (43) expressionBo -> . expressionBo AND expressionBo
+    (44) expressionBo -> . expressionBo OR expressionBo
+    (45) expressionBo -> . NOT expressionBo
+    (46) expressionBo -> . TRUE
+    (47) expressionBo -> . FALSE
+    (48) expressionBo -> . LPAREN expressionBo RPAREN
     (26) expressionAR -> . expressionAR PLUS expressionAR
     (27) expressionAR -> . expressionAR MINUS expressionAR
     (28) expressionAR -> . expressionAR TIMES expressionAR
@@ -951,7 +913,163 @@ state 43
     expressionBo                   shift and go to state 70
     expressionAR                   shift and go to state 23
 
+state 42
+
+    (41) expressionBo -> expressionBo EQUALSTO . expressionBo
+    (35) expressionBo -> . expressionAR MORE expressionAR
+    (36) expressionBo -> . expressionAR LESS expressionAR
+    (37) expressionBo -> . expressionAR MOREEQUAL expressionAR
+    (38) expressionBo -> . expressionAR LESSEQUAL expressionAR
+    (39) expressionBo -> . expressionBo NOTEQUAL expressionBo
+    (40) expressionBo -> . expressionAR NOTEQUAL expressionAR
+    (41) expressionBo -> . expressionBo EQUALSTO expressionBo
+    (42) expressionBo -> . expressionAR EQUALSTO expressionAR
+    (43) expressionBo -> . expressionBo AND expressionBo
+    (44) expressionBo -> . expressionBo OR expressionBo
+    (45) expressionBo -> . NOT expressionBo
+    (46) expressionBo -> . TRUE
+    (47) expressionBo -> . FALSE
+    (48) expressionBo -> . LPAREN expressionBo RPAREN
+    (26) expressionAR -> . expressionAR PLUS expressionAR
+    (27) expressionAR -> . expressionAR MINUS expressionAR
+    (28) expressionAR -> . expressionAR TIMES expressionAR
+    (29) expressionAR -> . expressionAR DIVIDE expressionAR
+    (30) expressionAR -> . ID
+    (31) expressionAR -> . INT
+    (32) expressionAR -> . MINUS expressionAR
+    (33) expressionAR -> . FLOAT
+    (34) expressionAR -> . LPAREN expressionAR RPAREN
+
+    NOT             shift and go to state 24
+    TRUE            shift and go to state 25
+    FALSE           shift and go to state 26
+    LPAREN          shift and go to state 27
+    ID              shift and go to state 34
+    INT             shift and go to state 30
+    MINUS           shift and go to state 29
+    FLOAT           shift and go to state 31
+
+    expressionBo                   shift and go to state 71
+    expressionAR                   shift and go to state 23
+
+state 43
+
+    (43) expressionBo -> expressionBo AND . expressionBo
+    (35) expressionBo -> . expressionAR MORE expressionAR
+    (36) expressionBo -> . expressionAR LESS expressionAR
+    (37) expressionBo -> . expressionAR MOREEQUAL expressionAR
+    (38) expressionBo -> . expressionAR LESSEQUAL expressionAR
+    (39) expressionBo -> . expressionBo NOTEQUAL expressionBo
+    (40) expressionBo -> . expressionAR NOTEQUAL expressionAR
+    (41) expressionBo -> . expressionBo EQUALSTO expressionBo
+    (42) expressionBo -> . expressionAR EQUALSTO expressionAR
+    (43) expressionBo -> . expressionBo AND expressionBo
+    (44) expressionBo -> . expressionBo OR expressionBo
+    (45) expressionBo -> . NOT expressionBo
+    (46) expressionBo -> . TRUE
+    (47) expressionBo -> . FALSE
+    (48) expressionBo -> . LPAREN expressionBo RPAREN
+    (26) expressionAR -> . expressionAR PLUS expressionAR
+    (27) expressionAR -> . expressionAR MINUS expressionAR
+    (28) expressionAR -> . expressionAR TIMES expressionAR
+    (29) expressionAR -> . expressionAR DIVIDE expressionAR
+    (30) expressionAR -> . ID
+    (31) expressionAR -> . INT
+    (32) expressionAR -> . MINUS expressionAR
+    (33) expressionAR -> . FLOAT
+    (34) expressionAR -> . LPAREN expressionAR RPAREN
+
+    NOT             shift and go to state 24
+    TRUE            shift and go to state 25
+    FALSE           shift and go to state 26
+    LPAREN          shift and go to state 27
+    ID              shift and go to state 34
+    INT             shift and go to state 30
+    MINUS           shift and go to state 29
+    FLOAT           shift and go to state 31
+
+    expressionBo                   shift and go to state 72
+    expressionAR                   shift and go to state 23
+
 state 44
+
+    (44) expressionBo -> expressionBo OR . expressionBo
+    (35) expressionBo -> . expressionAR MORE expressionAR
+    (36) expressionBo -> . expressionAR LESS expressionAR
+    (37) expressionBo -> . expressionAR MOREEQUAL expressionAR
+    (38) expressionBo -> . expressionAR LESSEQUAL expressionAR
+    (39) expressionBo -> . expressionBo NOTEQUAL expressionBo
+    (40) expressionBo -> . expressionAR NOTEQUAL expressionAR
+    (41) expressionBo -> . expressionBo EQUALSTO expressionBo
+    (42) expressionBo -> . expressionAR EQUALSTO expressionAR
+    (43) expressionBo -> . expressionBo AND expressionBo
+    (44) expressionBo -> . expressionBo OR expressionBo
+    (45) expressionBo -> . NOT expressionBo
+    (46) expressionBo -> . TRUE
+    (47) expressionBo -> . FALSE
+    (48) expressionBo -> . LPAREN expressionBo RPAREN
+    (26) expressionAR -> . expressionAR PLUS expressionAR
+    (27) expressionAR -> . expressionAR MINUS expressionAR
+    (28) expressionAR -> . expressionAR TIMES expressionAR
+    (29) expressionAR -> . expressionAR DIVIDE expressionAR
+    (30) expressionAR -> . ID
+    (31) expressionAR -> . INT
+    (32) expressionAR -> . MINUS expressionAR
+    (33) expressionAR -> . FLOAT
+    (34) expressionAR -> . LPAREN expressionAR RPAREN
+
+    NOT             shift and go to state 24
+    TRUE            shift and go to state 25
+    FALSE           shift and go to state 26
+    LPAREN          shift and go to state 27
+    ID              shift and go to state 34
+    INT             shift and go to state 30
+    MINUS           shift and go to state 29
+    FLOAT           shift and go to state 31
+
+    expressionBo                   shift and go to state 73
+    expressionAR                   shift and go to state 23
+
+state 45
+
+    (12) inst -> FOR assignment SEMICOLON . expressionBo SEMICOLON assignment LCURLBRACKET list RCURLBRACKET
+    (35) expressionBo -> . expressionAR MORE expressionAR
+    (36) expressionBo -> . expressionAR LESS expressionAR
+    (37) expressionBo -> . expressionAR MOREEQUAL expressionAR
+    (38) expressionBo -> . expressionAR LESSEQUAL expressionAR
+    (39) expressionBo -> . expressionBo NOTEQUAL expressionBo
+    (40) expressionBo -> . expressionAR NOTEQUAL expressionAR
+    (41) expressionBo -> . expressionBo EQUALSTO expressionBo
+    (42) expressionBo -> . expressionAR EQUALSTO expressionAR
+    (43) expressionBo -> . expressionBo AND expressionBo
+    (44) expressionBo -> . expressionBo OR expressionBo
+    (45) expressionBo -> . NOT expressionBo
+    (46) expressionBo -> . TRUE
+    (47) expressionBo -> . FALSE
+    (48) expressionBo -> . LPAREN expressionBo RPAREN
+    (26) expressionAR -> . expressionAR PLUS expressionAR
+    (27) expressionAR -> . expressionAR MINUS expressionAR
+    (28) expressionAR -> . expressionAR TIMES expressionAR
+    (29) expressionAR -> . expressionAR DIVIDE expressionAR
+    (30) expressionAR -> . ID
+    (31) expressionAR -> . INT
+    (32) expressionAR -> . MINUS expressionAR
+    (33) expressionAR -> . FLOAT
+    (34) expressionAR -> . LPAREN expressionAR RPAREN
+
+    NOT             shift and go to state 24
+    TRUE            shift and go to state 25
+    FALSE           shift and go to state 26
+    LPAREN          shift and go to state 27
+    ID              shift and go to state 34
+    INT             shift and go to state 30
+    MINUS           shift and go to state 29
+    FLOAT           shift and go to state 31
+
+    expressionBo                   shift and go to state 74
+    expressionAR                   shift and go to state 23
+
+state 46
 
     (35) expressionBo -> expressionAR MORE . expressionAR
     (26) expressionAR -> . expressionAR PLUS expressionAR
@@ -968,11 +1086,11 @@ state 44
     INT             shift and go to state 30
     MINUS           shift and go to state 29
     FLOAT           shift and go to state 31
-    LPAREN          shift and go to state 58
+    LPAREN          shift and go to state 60
 
-    expressionAR                   shift and go to state 71
+    expressionAR                   shift and go to state 75
 
-state 45
+state 47
 
     (36) expressionBo -> expressionAR LESS . expressionAR
     (26) expressionAR -> . expressionAR PLUS expressionAR
@@ -989,11 +1107,11 @@ state 45
     INT             shift and go to state 30
     MINUS           shift and go to state 29
     FLOAT           shift and go to state 31
-    LPAREN          shift and go to state 58
+    LPAREN          shift and go to state 60
 
-    expressionAR                   shift and go to state 72
+    expressionAR                   shift and go to state 76
 
-state 46
+state 48
 
     (37) expressionBo -> expressionAR MOREEQUAL . expressionAR
     (26) expressionAR -> . expressionAR PLUS expressionAR
@@ -1010,11 +1128,11 @@ state 46
     INT             shift and go to state 30
     MINUS           shift and go to state 29
     FLOAT           shift and go to state 31
-    LPAREN          shift and go to state 58
+    LPAREN          shift and go to state 60
 
-    expressionAR                   shift and go to state 73
+    expressionAR                   shift and go to state 77
 
-state 47
+state 49
 
     (38) expressionBo -> expressionAR LESSEQUAL . expressionAR
     (26) expressionAR -> . expressionAR PLUS expressionAR
@@ -1031,11 +1149,11 @@ state 47
     INT             shift and go to state 30
     MINUS           shift and go to state 29
     FLOAT           shift and go to state 31
-    LPAREN          shift and go to state 58
+    LPAREN          shift and go to state 60
 
-    expressionAR                   shift and go to state 74
+    expressionAR                   shift and go to state 78
 
-state 48
+state 50
 
     (40) expressionBo -> expressionAR NOTEQUAL . expressionAR
     (26) expressionAR -> . expressionAR PLUS expressionAR
@@ -1052,11 +1170,11 @@ state 48
     INT             shift and go to state 30
     MINUS           shift and go to state 29
     FLOAT           shift and go to state 31
-    LPAREN          shift and go to state 58
+    LPAREN          shift and go to state 60
 
-    expressionAR                   shift and go to state 75
+    expressionAR                   shift and go to state 79
 
-state 49
+state 51
 
     (42) expressionBo -> expressionAR EQUALSTO . expressionAR
     (26) expressionAR -> . expressionAR PLUS expressionAR
@@ -1073,11 +1191,11 @@ state 49
     INT             shift and go to state 30
     MINUS           shift and go to state 29
     FLOAT           shift and go to state 31
-    LPAREN          shift and go to state 58
+    LPAREN          shift and go to state 60
 
-    expressionAR                   shift and go to state 76
+    expressionAR                   shift and go to state 80
 
-state 50
+state 52
 
     (26) expressionAR -> expressionAR PLUS . expressionAR
     (26) expressionAR -> . expressionAR PLUS expressionAR
@@ -1094,11 +1212,11 @@ state 50
     INT             shift and go to state 30
     MINUS           shift and go to state 29
     FLOAT           shift and go to state 31
-    LPAREN          shift and go to state 58
+    LPAREN          shift and go to state 60
 
-    expressionAR                   shift and go to state 77
+    expressionAR                   shift and go to state 81
 
-state 51
+state 53
 
     (27) expressionAR -> expressionAR MINUS . expressionAR
     (26) expressionAR -> . expressionAR PLUS expressionAR
@@ -1115,11 +1233,11 @@ state 51
     INT             shift and go to state 30
     MINUS           shift and go to state 29
     FLOAT           shift and go to state 31
-    LPAREN          shift and go to state 58
+    LPAREN          shift and go to state 60
 
-    expressionAR                   shift and go to state 78
+    expressionAR                   shift and go to state 82
 
-state 52
+state 54
 
     (28) expressionAR -> expressionAR TIMES . expressionAR
     (26) expressionAR -> . expressionAR PLUS expressionAR
@@ -1136,11 +1254,11 @@ state 52
     INT             shift and go to state 30
     MINUS           shift and go to state 29
     FLOAT           shift and go to state 31
-    LPAREN          shift and go to state 58
+    LPAREN          shift and go to state 60
 
-    expressionAR                   shift and go to state 79
+    expressionAR                   shift and go to state 83
 
-state 53
+state 55
 
     (29) expressionAR -> expressionAR DIVIDE . expressionAR
     (26) expressionAR -> . expressionAR PLUS expressionAR
@@ -1157,39 +1275,49 @@ state 53
     INT             shift and go to state 30
     MINUS           shift and go to state 29
     FLOAT           shift and go to state 31
-    LPAREN          shift and go to state 58
+    LPAREN          shift and go to state 60
 
-    expressionAR                   shift and go to state 80
+    expressionAR                   shift and go to state 84
 
-state 54
+state 56
 
-    (43) expressionBo -> NOT expressionBo .
+    (45) expressionBo -> NOT expressionBo .
     (39) expressionBo -> expressionBo . NOTEQUAL expressionBo
     (41) expressionBo -> expressionBo . EQUALSTO expressionBo
+    (43) expressionBo -> expressionBo . AND expressionBo
+    (44) expressionBo -> expressionBo . OR expressionBo
 
-    LCURLBRACKET    reduce using rule 43 (expressionBo -> NOT expressionBo .)
-    NOTEQUAL        reduce using rule 43 (expressionBo -> NOT expressionBo .)
-    EQUALSTO        reduce using rule 43 (expressionBo -> NOT expressionBo .)
-    RPAREN          reduce using rule 43 (expressionBo -> NOT expressionBo .)
-    SEMICOLON       reduce using rule 43 (expressionBo -> NOT expressionBo .)
-    COMMA           reduce using rule 43 (expressionBo -> NOT expressionBo .)
+    LCURLBRACKET    reduce using rule 45 (expressionBo -> NOT expressionBo .)
+    NOTEQUAL        reduce using rule 45 (expressionBo -> NOT expressionBo .)
+    EQUALSTO        reduce using rule 45 (expressionBo -> NOT expressionBo .)
+    AND             reduce using rule 45 (expressionBo -> NOT expressionBo .)
+    OR              reduce using rule 45 (expressionBo -> NOT expressionBo .)
+    RPAREN          reduce using rule 45 (expressionBo -> NOT expressionBo .)
+    SEMICOLON       reduce using rule 45 (expressionBo -> NOT expressionBo .)
+    COMMA           reduce using rule 45 (expressionBo -> NOT expressionBo .)
 
   ! NOTEQUAL        [ shift and go to state 41 ]
   ! EQUALSTO        [ shift and go to state 42 ]
+  ! AND             [ shift and go to state 43 ]
+  ! OR              [ shift and go to state 44 ]
 
 
-state 55
+state 57
 
-    (46) expressionBo -> LPAREN expressionBo . RPAREN
+    (48) expressionBo -> LPAREN expressionBo . RPAREN
     (39) expressionBo -> expressionBo . NOTEQUAL expressionBo
     (41) expressionBo -> expressionBo . EQUALSTO expressionBo
+    (43) expressionBo -> expressionBo . AND expressionBo
+    (44) expressionBo -> expressionBo . OR expressionBo
 
-    RPAREN          shift and go to state 81
+    RPAREN          shift and go to state 85
     NOTEQUAL        shift and go to state 41
     EQUALSTO        shift and go to state 42
+    AND             shift and go to state 43
+    OR              shift and go to state 44
 
 
-state 56
+state 58
 
     (34) expressionAR -> LPAREN expressionAR . RPAREN
     (35) expressionBo -> expressionAR . MORE expressionAR
@@ -1203,20 +1331,20 @@ state 56
     (28) expressionAR -> expressionAR . TIMES expressionAR
     (29) expressionAR -> expressionAR . DIVIDE expressionAR
 
-    RPAREN          shift and go to state 82
-    MORE            shift and go to state 44
-    LESS            shift and go to state 45
-    MOREEQUAL       shift and go to state 46
-    LESSEQUAL       shift and go to state 47
-    NOTEQUAL        shift and go to state 48
-    EQUALSTO        shift and go to state 49
-    PLUS            shift and go to state 50
-    MINUS           shift and go to state 51
-    TIMES           shift and go to state 52
-    DIVIDE          shift and go to state 53
+    RPAREN          shift and go to state 86
+    MORE            shift and go to state 46
+    LESS            shift and go to state 47
+    MOREEQUAL       shift and go to state 48
+    LESSEQUAL       shift and go to state 49
+    NOTEQUAL        shift and go to state 50
+    EQUALSTO        shift and go to state 51
+    PLUS            shift and go to state 52
+    MINUS           shift and go to state 53
+    TIMES           shift and go to state 54
+    DIVIDE          shift and go to state 55
 
 
-state 57
+state 59
 
     (32) expressionAR -> MINUS expressionAR .
     (26) expressionAR -> expressionAR . PLUS expressionAR
@@ -1237,15 +1365,17 @@ state 57
     RPAREN          reduce using rule 32 (expressionAR -> MINUS expressionAR .)
     SEMICOLON       reduce using rule 32 (expressionAR -> MINUS expressionAR .)
     LCURLBRACKET    reduce using rule 32 (expressionAR -> MINUS expressionAR .)
+    AND             reduce using rule 32 (expressionAR -> MINUS expressionAR .)
+    OR              reduce using rule 32 (expressionAR -> MINUS expressionAR .)
     COMMA           reduce using rule 32 (expressionAR -> MINUS expressionAR .)
 
-  ! PLUS            [ shift and go to state 50 ]
-  ! MINUS           [ shift and go to state 51 ]
-  ! TIMES           [ shift and go to state 52 ]
-  ! DIVIDE          [ shift and go to state 53 ]
+  ! PLUS            [ shift and go to state 52 ]
+  ! MINUS           [ shift and go to state 53 ]
+  ! TIMES           [ shift and go to state 54 ]
+  ! DIVIDE          [ shift and go to state 55 ]
 
 
-state 58
+state 60
 
     (34) expressionAR -> LPAREN . expressionAR RPAREN
     (26) expressionAR -> . expressionAR PLUS expressionAR
@@ -1262,11 +1392,11 @@ state 58
     INT             shift and go to state 30
     MINUS           shift and go to state 29
     FLOAT           shift and go to state 31
-    LPAREN          shift and go to state 58
+    LPAREN          shift and go to state 60
 
-    expressionAR                   shift and go to state 83
+    expressionAR                   shift and go to state 87
 
-state 59
+state 61
 
     (14) inst -> IF expressionBo LCURLBRACKET . list RCURLBRACKET ELSE LCURLBRACKET list RCURLBRACKET
     (15) inst -> IF expressionBo LCURLBRACKET . list RCURLBRACKET
@@ -1293,27 +1423,27 @@ state 59
     FMT             shift and go to state 17
     ID              shift and go to state 18
 
-    list                           shift and go to state 84
+    list                           shift and go to state 88
     inst                           shift and go to state 13
     assignment                     shift and go to state 15
 
-state 60
+state 62
 
     (22) inst -> FMT POINT PRINT . LPAREN listID RPAREN SEMICOLON
     (24) inst -> FMT POINT PRINT . LPAREN RPAREN SEMICOLON
 
-    LPAREN          shift and go to state 85
+    LPAREN          shift and go to state 89
 
 
-state 61
+state 63
 
     (23) inst -> FMT POINT SCAN . LPAREN IDlist RPAREN SEMICOLON
     (25) inst -> FMT POINT SCAN . LPAREN RPAREN SEMICOLON
 
-    LPAREN          shift and go to state 86
+    LPAREN          shift and go to state 90
 
 
-state 62
+state 64
 
     (5) assignment -> ID ASSIGN expressionAR .
     (26) expressionAR -> expressionAR . PLUS expressionAR
@@ -1329,34 +1459,38 @@ state 62
 
     SEMICOLON       reduce using rule 5 (assignment -> ID ASSIGN expressionAR .)
     LCURLBRACKET    reduce using rule 5 (assignment -> ID ASSIGN expressionAR .)
-    PLUS            shift and go to state 50
-    MINUS           shift and go to state 51
-    TIMES           shift and go to state 52
-    DIVIDE          shift and go to state 53
-    MORE            shift and go to state 44
-    LESS            shift and go to state 45
-    MOREEQUAL       shift and go to state 46
-    LESSEQUAL       shift and go to state 47
-    NOTEQUAL        shift and go to state 48
-    EQUALSTO        shift and go to state 49
+    PLUS            shift and go to state 52
+    MINUS           shift and go to state 53
+    TIMES           shift and go to state 54
+    DIVIDE          shift and go to state 55
+    MORE            shift and go to state 46
+    LESS            shift and go to state 47
+    MOREEQUAL       shift and go to state 48
+    LESSEQUAL       shift and go to state 49
+    NOTEQUAL        shift and go to state 50
+    EQUALSTO        shift and go to state 51
 
 
-state 63
+state 65
 
     (6) assignment -> ID ASSIGN expressionBo .
     (39) expressionBo -> expressionBo . NOTEQUAL expressionBo
     (41) expressionBo -> expressionBo . EQUALSTO expressionBo
+    (43) expressionBo -> expressionBo . AND expressionBo
+    (44) expressionBo -> expressionBo . OR expressionBo
 
     SEMICOLON       reduce using rule 6 (assignment -> ID ASSIGN expressionBo .)
     LCURLBRACKET    reduce using rule 6 (assignment -> ID ASSIGN expressionBo .)
     NOTEQUAL        shift and go to state 41
     EQUALSTO        shift and go to state 42
+    AND             shift and go to state 43
+    OR              shift and go to state 44
 
 
-state 64
+state 66
 
     (34) expressionAR -> LPAREN . expressionAR RPAREN
-    (46) expressionBo -> LPAREN . expressionBo RPAREN
+    (48) expressionBo -> LPAREN . expressionBo RPAREN
     (26) expressionAR -> . expressionAR PLUS expressionAR
     (27) expressionAR -> . expressionAR MINUS expressionAR
     (28) expressionAR -> . expressionAR TIMES expressionAR
@@ -1374,24 +1508,26 @@ state 64
     (40) expressionBo -> . expressionAR NOTEQUAL expressionAR
     (41) expressionBo -> . expressionBo EQUALSTO expressionBo
     (42) expressionBo -> . expressionAR EQUALSTO expressionAR
-    (43) expressionBo -> . NOT expressionBo
-    (44) expressionBo -> . TRUE
-    (45) expressionBo -> . FALSE
-    (46) expressionBo -> . LPAREN expressionBo RPAREN
+    (43) expressionBo -> . expressionBo AND expressionBo
+    (44) expressionBo -> . expressionBo OR expressionBo
+    (45) expressionBo -> . NOT expressionBo
+    (46) expressionBo -> . TRUE
+    (47) expressionBo -> . FALSE
+    (48) expressionBo -> . LPAREN expressionBo RPAREN
 
     ID              shift and go to state 34
     INT             shift and go to state 30
     MINUS           shift and go to state 29
     FLOAT           shift and go to state 31
-    LPAREN          shift and go to state 64
+    LPAREN          shift and go to state 66
     NOT             shift and go to state 24
     TRUE            shift and go to state 25
     FALSE           shift and go to state 26
 
-    expressionAR                   shift and go to state 87
-    expressionBo                   shift and go to state 55
+    expressionAR                   shift and go to state 91
+    expressionBo                   shift and go to state 57
 
-state 65
+state 67
 
     (7) assignment -> ID EQUALS expressionAR .
     (26) expressionAR -> expressionAR . PLUS expressionAR
@@ -1407,83 +1543,157 @@ state 65
 
     SEMICOLON       reduce using rule 7 (assignment -> ID EQUALS expressionAR .)
     LCURLBRACKET    reduce using rule 7 (assignment -> ID EQUALS expressionAR .)
-    PLUS            shift and go to state 50
-    MINUS           shift and go to state 51
-    TIMES           shift and go to state 52
-    DIVIDE          shift and go to state 53
-    MORE            shift and go to state 44
-    LESS            shift and go to state 45
-    MOREEQUAL       shift and go to state 46
-    LESSEQUAL       shift and go to state 47
-    NOTEQUAL        shift and go to state 48
-    EQUALSTO        shift and go to state 49
+    PLUS            shift and go to state 52
+    MINUS           shift and go to state 53
+    TIMES           shift and go to state 54
+    DIVIDE          shift and go to state 55
+    MORE            shift and go to state 46
+    LESS            shift and go to state 47
+    MOREEQUAL       shift and go to state 48
+    LESSEQUAL       shift and go to state 49
+    NOTEQUAL        shift and go to state 50
+    EQUALSTO        shift and go to state 51
 
 
-state 66
+state 68
 
     (8) assignment -> ID EQUALS expressionBo .
     (39) expressionBo -> expressionBo . NOTEQUAL expressionBo
     (41) expressionBo -> expressionBo . EQUALSTO expressionBo
+    (43) expressionBo -> expressionBo . AND expressionBo
+    (44) expressionBo -> expressionBo . OR expressionBo
 
     SEMICOLON       reduce using rule 8 (assignment -> ID EQUALS expressionBo .)
     LCURLBRACKET    reduce using rule 8 (assignment -> ID EQUALS expressionBo .)
     NOTEQUAL        shift and go to state 41
     EQUALSTO        shift and go to state 42
+    AND             shift and go to state 43
+    OR              shift and go to state 44
 
 
-state 67
+state 69
 
     (11) inst -> FOR expressionBo LCURLBRACKET list . RCURLBRACKET
 
-    RCURLBRACKET    shift and go to state 88
+    RCURLBRACKET    shift and go to state 92
 
 
-state 68
+state 70
 
     (39) expressionBo -> expressionBo NOTEQUAL expressionBo .
     (39) expressionBo -> expressionBo . NOTEQUAL expressionBo
     (41) expressionBo -> expressionBo . EQUALSTO expressionBo
+    (43) expressionBo -> expressionBo . AND expressionBo
+    (44) expressionBo -> expressionBo . OR expressionBo
 
     LCURLBRACKET    reduce using rule 39 (expressionBo -> expressionBo NOTEQUAL expressionBo .)
     NOTEQUAL        reduce using rule 39 (expressionBo -> expressionBo NOTEQUAL expressionBo .)
     EQUALSTO        reduce using rule 39 (expressionBo -> expressionBo NOTEQUAL expressionBo .)
+    AND             reduce using rule 39 (expressionBo -> expressionBo NOTEQUAL expressionBo .)
+    OR              reduce using rule 39 (expressionBo -> expressionBo NOTEQUAL expressionBo .)
     RPAREN          reduce using rule 39 (expressionBo -> expressionBo NOTEQUAL expressionBo .)
     SEMICOLON       reduce using rule 39 (expressionBo -> expressionBo NOTEQUAL expressionBo .)
     COMMA           reduce using rule 39 (expressionBo -> expressionBo NOTEQUAL expressionBo .)
 
   ! NOTEQUAL        [ shift and go to state 41 ]
   ! EQUALSTO        [ shift and go to state 42 ]
+  ! AND             [ shift and go to state 43 ]
+  ! OR              [ shift and go to state 44 ]
 
 
-state 69
+state 71
 
     (41) expressionBo -> expressionBo EQUALSTO expressionBo .
     (39) expressionBo -> expressionBo . NOTEQUAL expressionBo
     (41) expressionBo -> expressionBo . EQUALSTO expressionBo
+    (43) expressionBo -> expressionBo . AND expressionBo
+    (44) expressionBo -> expressionBo . OR expressionBo
 
     LCURLBRACKET    reduce using rule 41 (expressionBo -> expressionBo EQUALSTO expressionBo .)
     NOTEQUAL        reduce using rule 41 (expressionBo -> expressionBo EQUALSTO expressionBo .)
     EQUALSTO        reduce using rule 41 (expressionBo -> expressionBo EQUALSTO expressionBo .)
+    AND             reduce using rule 41 (expressionBo -> expressionBo EQUALSTO expressionBo .)
+    OR              reduce using rule 41 (expressionBo -> expressionBo EQUALSTO expressionBo .)
     RPAREN          reduce using rule 41 (expressionBo -> expressionBo EQUALSTO expressionBo .)
     SEMICOLON       reduce using rule 41 (expressionBo -> expressionBo EQUALSTO expressionBo .)
     COMMA           reduce using rule 41 (expressionBo -> expressionBo EQUALSTO expressionBo .)
 
   ! NOTEQUAL        [ shift and go to state 41 ]
   ! EQUALSTO        [ shift and go to state 42 ]
+  ! AND             [ shift and go to state 43 ]
+  ! OR              [ shift and go to state 44 ]
 
 
-state 70
+state 72
+
+    (43) expressionBo -> expressionBo AND expressionBo .
+    (39) expressionBo -> expressionBo . NOTEQUAL expressionBo
+    (41) expressionBo -> expressionBo . EQUALSTO expressionBo
+    (43) expressionBo -> expressionBo . AND expressionBo
+    (44) expressionBo -> expressionBo . OR expressionBo
+
+  ! shift/reduce conflict for NOTEQUAL resolved as shift
+  ! shift/reduce conflict for EQUALSTO resolved as shift
+  ! shift/reduce conflict for AND resolved as shift
+  ! shift/reduce conflict for OR resolved as shift
+    LCURLBRACKET    reduce using rule 43 (expressionBo -> expressionBo AND expressionBo .)
+    RPAREN          reduce using rule 43 (expressionBo -> expressionBo AND expressionBo .)
+    SEMICOLON       reduce using rule 43 (expressionBo -> expressionBo AND expressionBo .)
+    COMMA           reduce using rule 43 (expressionBo -> expressionBo AND expressionBo .)
+    NOTEQUAL        shift and go to state 41
+    EQUALSTO        shift and go to state 42
+    AND             shift and go to state 43
+    OR              shift and go to state 44
+
+  ! NOTEQUAL        [ reduce using rule 43 (expressionBo -> expressionBo AND expressionBo .) ]
+  ! EQUALSTO        [ reduce using rule 43 (expressionBo -> expressionBo AND expressionBo .) ]
+  ! AND             [ reduce using rule 43 (expressionBo -> expressionBo AND expressionBo .) ]
+  ! OR              [ reduce using rule 43 (expressionBo -> expressionBo AND expressionBo .) ]
+
+
+state 73
+
+    (44) expressionBo -> expressionBo OR expressionBo .
+    (39) expressionBo -> expressionBo . NOTEQUAL expressionBo
+    (41) expressionBo -> expressionBo . EQUALSTO expressionBo
+    (43) expressionBo -> expressionBo . AND expressionBo
+    (44) expressionBo -> expressionBo . OR expressionBo
+
+  ! shift/reduce conflict for NOTEQUAL resolved as shift
+  ! shift/reduce conflict for EQUALSTO resolved as shift
+  ! shift/reduce conflict for AND resolved as shift
+  ! shift/reduce conflict for OR resolved as shift
+    LCURLBRACKET    reduce using rule 44 (expressionBo -> expressionBo OR expressionBo .)
+    RPAREN          reduce using rule 44 (expressionBo -> expressionBo OR expressionBo .)
+    SEMICOLON       reduce using rule 44 (expressionBo -> expressionBo OR expressionBo .)
+    COMMA           reduce using rule 44 (expressionBo -> expressionBo OR expressionBo .)
+    NOTEQUAL        shift and go to state 41
+    EQUALSTO        shift and go to state 42
+    AND             shift and go to state 43
+    OR              shift and go to state 44
+
+  ! NOTEQUAL        [ reduce using rule 44 (expressionBo -> expressionBo OR expressionBo .) ]
+  ! EQUALSTO        [ reduce using rule 44 (expressionBo -> expressionBo OR expressionBo .) ]
+  ! AND             [ reduce using rule 44 (expressionBo -> expressionBo OR expressionBo .) ]
+  ! OR              [ reduce using rule 44 (expressionBo -> expressionBo OR expressionBo .) ]
+
+
+state 74
 
     (12) inst -> FOR assignment SEMICOLON expressionBo . SEMICOLON assignment LCURLBRACKET list RCURLBRACKET
     (39) expressionBo -> expressionBo . NOTEQUAL expressionBo
     (41) expressionBo -> expressionBo . EQUALSTO expressionBo
+    (43) expressionBo -> expressionBo . AND expressionBo
+    (44) expressionBo -> expressionBo . OR expressionBo
 
-    SEMICOLON       shift and go to state 89
+    SEMICOLON       shift and go to state 93
     NOTEQUAL        shift and go to state 41
     EQUALSTO        shift and go to state 42
+    AND             shift and go to state 43
+    OR              shift and go to state 44
 
 
-state 71
+state 75
 
     (35) expressionBo -> expressionAR MORE expressionAR .
     (26) expressionAR -> expressionAR . PLUS expressionAR
@@ -1494,16 +1704,18 @@ state 71
     LCURLBRACKET    reduce using rule 35 (expressionBo -> expressionAR MORE expressionAR .)
     NOTEQUAL        reduce using rule 35 (expressionBo -> expressionAR MORE expressionAR .)
     EQUALSTO        reduce using rule 35 (expressionBo -> expressionAR MORE expressionAR .)
+    AND             reduce using rule 35 (expressionBo -> expressionAR MORE expressionAR .)
+    OR              reduce using rule 35 (expressionBo -> expressionAR MORE expressionAR .)
     RPAREN          reduce using rule 35 (expressionBo -> expressionAR MORE expressionAR .)
     SEMICOLON       reduce using rule 35 (expressionBo -> expressionAR MORE expressionAR .)
     COMMA           reduce using rule 35 (expressionBo -> expressionAR MORE expressionAR .)
-    PLUS            shift and go to state 50
-    MINUS           shift and go to state 51
-    TIMES           shift and go to state 52
-    DIVIDE          shift and go to state 53
+    PLUS            shift and go to state 52
+    MINUS           shift and go to state 53
+    TIMES           shift and go to state 54
+    DIVIDE          shift and go to state 55
 
 
-state 72
+state 76
 
     (36) expressionBo -> expressionAR LESS expressionAR .
     (26) expressionAR -> expressionAR . PLUS expressionAR
@@ -1514,16 +1726,18 @@ state 72
     LCURLBRACKET    reduce using rule 36 (expressionBo -> expressionAR LESS expressionAR .)
     NOTEQUAL        reduce using rule 36 (expressionBo -> expressionAR LESS expressionAR .)
     EQUALSTO        reduce using rule 36 (expressionBo -> expressionAR LESS expressionAR .)
+    AND             reduce using rule 36 (expressionBo -> expressionAR LESS expressionAR .)
+    OR              reduce using rule 36 (expressionBo -> expressionAR LESS expressionAR .)
     RPAREN          reduce using rule 36 (expressionBo -> expressionAR LESS expressionAR .)
     SEMICOLON       reduce using rule 36 (expressionBo -> expressionAR LESS expressionAR .)
     COMMA           reduce using rule 36 (expressionBo -> expressionAR LESS expressionAR .)
-    PLUS            shift and go to state 50
-    MINUS           shift and go to state 51
-    TIMES           shift and go to state 52
-    DIVIDE          shift and go to state 53
+    PLUS            shift and go to state 52
+    MINUS           shift and go to state 53
+    TIMES           shift and go to state 54
+    DIVIDE          shift and go to state 55
 
 
-state 73
+state 77
 
     (37) expressionBo -> expressionAR MOREEQUAL expressionAR .
     (26) expressionAR -> expressionAR . PLUS expressionAR
@@ -1534,16 +1748,18 @@ state 73
     LCURLBRACKET    reduce using rule 37 (expressionBo -> expressionAR MOREEQUAL expressionAR .)
     NOTEQUAL        reduce using rule 37 (expressionBo -> expressionAR MOREEQUAL expressionAR .)
     EQUALSTO        reduce using rule 37 (expressionBo -> expressionAR MOREEQUAL expressionAR .)
+    AND             reduce using rule 37 (expressionBo -> expressionAR MOREEQUAL expressionAR .)
+    OR              reduce using rule 37 (expressionBo -> expressionAR MOREEQUAL expressionAR .)
     RPAREN          reduce using rule 37 (expressionBo -> expressionAR MOREEQUAL expressionAR .)
     SEMICOLON       reduce using rule 37 (expressionBo -> expressionAR MOREEQUAL expressionAR .)
     COMMA           reduce using rule 37 (expressionBo -> expressionAR MOREEQUAL expressionAR .)
-    PLUS            shift and go to state 50
-    MINUS           shift and go to state 51
-    TIMES           shift and go to state 52
-    DIVIDE          shift and go to state 53
+    PLUS            shift and go to state 52
+    MINUS           shift and go to state 53
+    TIMES           shift and go to state 54
+    DIVIDE          shift and go to state 55
 
 
-state 74
+state 78
 
     (38) expressionBo -> expressionAR LESSEQUAL expressionAR .
     (26) expressionAR -> expressionAR . PLUS expressionAR
@@ -1554,16 +1770,18 @@ state 74
     LCURLBRACKET    reduce using rule 38 (expressionBo -> expressionAR LESSEQUAL expressionAR .)
     NOTEQUAL        reduce using rule 38 (expressionBo -> expressionAR LESSEQUAL expressionAR .)
     EQUALSTO        reduce using rule 38 (expressionBo -> expressionAR LESSEQUAL expressionAR .)
+    AND             reduce using rule 38 (expressionBo -> expressionAR LESSEQUAL expressionAR .)
+    OR              reduce using rule 38 (expressionBo -> expressionAR LESSEQUAL expressionAR .)
     RPAREN          reduce using rule 38 (expressionBo -> expressionAR LESSEQUAL expressionAR .)
     SEMICOLON       reduce using rule 38 (expressionBo -> expressionAR LESSEQUAL expressionAR .)
     COMMA           reduce using rule 38 (expressionBo -> expressionAR LESSEQUAL expressionAR .)
-    PLUS            shift and go to state 50
-    MINUS           shift and go to state 51
-    TIMES           shift and go to state 52
-    DIVIDE          shift and go to state 53
+    PLUS            shift and go to state 52
+    MINUS           shift and go to state 53
+    TIMES           shift and go to state 54
+    DIVIDE          shift and go to state 55
 
 
-state 75
+state 79
 
     (40) expressionBo -> expressionAR NOTEQUAL expressionAR .
     (26) expressionAR -> expressionAR . PLUS expressionAR
@@ -1574,16 +1792,18 @@ state 75
     LCURLBRACKET    reduce using rule 40 (expressionBo -> expressionAR NOTEQUAL expressionAR .)
     NOTEQUAL        reduce using rule 40 (expressionBo -> expressionAR NOTEQUAL expressionAR .)
     EQUALSTO        reduce using rule 40 (expressionBo -> expressionAR NOTEQUAL expressionAR .)
+    AND             reduce using rule 40 (expressionBo -> expressionAR NOTEQUAL expressionAR .)
+    OR              reduce using rule 40 (expressionBo -> expressionAR NOTEQUAL expressionAR .)
     RPAREN          reduce using rule 40 (expressionBo -> expressionAR NOTEQUAL expressionAR .)
     SEMICOLON       reduce using rule 40 (expressionBo -> expressionAR NOTEQUAL expressionAR .)
     COMMA           reduce using rule 40 (expressionBo -> expressionAR NOTEQUAL expressionAR .)
-    PLUS            shift and go to state 50
-    MINUS           shift and go to state 51
-    TIMES           shift and go to state 52
-    DIVIDE          shift and go to state 53
+    PLUS            shift and go to state 52
+    MINUS           shift and go to state 53
+    TIMES           shift and go to state 54
+    DIVIDE          shift and go to state 55
 
 
-state 76
+state 80
 
     (42) expressionBo -> expressionAR EQUALSTO expressionAR .
     (26) expressionAR -> expressionAR . PLUS expressionAR
@@ -1594,16 +1814,18 @@ state 76
     LCURLBRACKET    reduce using rule 42 (expressionBo -> expressionAR EQUALSTO expressionAR .)
     NOTEQUAL        reduce using rule 42 (expressionBo -> expressionAR EQUALSTO expressionAR .)
     EQUALSTO        reduce using rule 42 (expressionBo -> expressionAR EQUALSTO expressionAR .)
+    AND             reduce using rule 42 (expressionBo -> expressionAR EQUALSTO expressionAR .)
+    OR              reduce using rule 42 (expressionBo -> expressionAR EQUALSTO expressionAR .)
     RPAREN          reduce using rule 42 (expressionBo -> expressionAR EQUALSTO expressionAR .)
     SEMICOLON       reduce using rule 42 (expressionBo -> expressionAR EQUALSTO expressionAR .)
     COMMA           reduce using rule 42 (expressionBo -> expressionAR EQUALSTO expressionAR .)
-    PLUS            shift and go to state 50
-    MINUS           shift and go to state 51
-    TIMES           shift and go to state 52
-    DIVIDE          shift and go to state 53
+    PLUS            shift and go to state 52
+    MINUS           shift and go to state 53
+    TIMES           shift and go to state 54
+    DIVIDE          shift and go to state 55
 
 
-state 77
+state 81
 
     (26) expressionAR -> expressionAR PLUS expressionAR .
     (26) expressionAR -> expressionAR . PLUS expressionAR
@@ -1622,17 +1844,19 @@ state 77
     RPAREN          reduce using rule 26 (expressionAR -> expressionAR PLUS expressionAR .)
     SEMICOLON       reduce using rule 26 (expressionAR -> expressionAR PLUS expressionAR .)
     LCURLBRACKET    reduce using rule 26 (expressionAR -> expressionAR PLUS expressionAR .)
+    AND             reduce using rule 26 (expressionAR -> expressionAR PLUS expressionAR .)
+    OR              reduce using rule 26 (expressionAR -> expressionAR PLUS expressionAR .)
     COMMA           reduce using rule 26 (expressionAR -> expressionAR PLUS expressionAR .)
-    TIMES           shift and go to state 52
-    DIVIDE          shift and go to state 53
+    TIMES           shift and go to state 54
+    DIVIDE          shift and go to state 55
 
   ! TIMES           [ reduce using rule 26 (expressionAR -> expressionAR PLUS expressionAR .) ]
   ! DIVIDE          [ reduce using rule 26 (expressionAR -> expressionAR PLUS expressionAR .) ]
-  ! PLUS            [ shift and go to state 50 ]
-  ! MINUS           [ shift and go to state 51 ]
+  ! PLUS            [ shift and go to state 52 ]
+  ! MINUS           [ shift and go to state 53 ]
 
 
-state 78
+state 82
 
     (27) expressionAR -> expressionAR MINUS expressionAR .
     (26) expressionAR -> expressionAR . PLUS expressionAR
@@ -1651,17 +1875,19 @@ state 78
     RPAREN          reduce using rule 27 (expressionAR -> expressionAR MINUS expressionAR .)
     SEMICOLON       reduce using rule 27 (expressionAR -> expressionAR MINUS expressionAR .)
     LCURLBRACKET    reduce using rule 27 (expressionAR -> expressionAR MINUS expressionAR .)
+    AND             reduce using rule 27 (expressionAR -> expressionAR MINUS expressionAR .)
+    OR              reduce using rule 27 (expressionAR -> expressionAR MINUS expressionAR .)
     COMMA           reduce using rule 27 (expressionAR -> expressionAR MINUS expressionAR .)
-    TIMES           shift and go to state 52
-    DIVIDE          shift and go to state 53
+    TIMES           shift and go to state 54
+    DIVIDE          shift and go to state 55
 
   ! TIMES           [ reduce using rule 27 (expressionAR -> expressionAR MINUS expressionAR .) ]
   ! DIVIDE          [ reduce using rule 27 (expressionAR -> expressionAR MINUS expressionAR .) ]
-  ! PLUS            [ shift and go to state 50 ]
-  ! MINUS           [ shift and go to state 51 ]
+  ! PLUS            [ shift and go to state 52 ]
+  ! MINUS           [ shift and go to state 53 ]
 
 
-state 79
+state 83
 
     (28) expressionAR -> expressionAR TIMES expressionAR .
     (26) expressionAR -> expressionAR . PLUS expressionAR
@@ -1682,15 +1908,17 @@ state 79
     RPAREN          reduce using rule 28 (expressionAR -> expressionAR TIMES expressionAR .)
     SEMICOLON       reduce using rule 28 (expressionAR -> expressionAR TIMES expressionAR .)
     LCURLBRACKET    reduce using rule 28 (expressionAR -> expressionAR TIMES expressionAR .)
+    AND             reduce using rule 28 (expressionAR -> expressionAR TIMES expressionAR .)
+    OR              reduce using rule 28 (expressionAR -> expressionAR TIMES expressionAR .)
     COMMA           reduce using rule 28 (expressionAR -> expressionAR TIMES expressionAR .)
 
-  ! PLUS            [ shift and go to state 50 ]
-  ! MINUS           [ shift and go to state 51 ]
-  ! TIMES           [ shift and go to state 52 ]
-  ! DIVIDE          [ shift and go to state 53 ]
+  ! PLUS            [ shift and go to state 52 ]
+  ! MINUS           [ shift and go to state 53 ]
+  ! TIMES           [ shift and go to state 54 ]
+  ! DIVIDE          [ shift and go to state 55 ]
 
 
-state 80
+state 84
 
     (29) expressionAR -> expressionAR DIVIDE expressionAR .
     (26) expressionAR -> expressionAR . PLUS expressionAR
@@ -1711,27 +1939,31 @@ state 80
     RPAREN          reduce using rule 29 (expressionAR -> expressionAR DIVIDE expressionAR .)
     SEMICOLON       reduce using rule 29 (expressionAR -> expressionAR DIVIDE expressionAR .)
     LCURLBRACKET    reduce using rule 29 (expressionAR -> expressionAR DIVIDE expressionAR .)
+    AND             reduce using rule 29 (expressionAR -> expressionAR DIVIDE expressionAR .)
+    OR              reduce using rule 29 (expressionAR -> expressionAR DIVIDE expressionAR .)
     COMMA           reduce using rule 29 (expressionAR -> expressionAR DIVIDE expressionAR .)
 
-  ! PLUS            [ shift and go to state 50 ]
-  ! MINUS           [ shift and go to state 51 ]
-  ! TIMES           [ shift and go to state 52 ]
-  ! DIVIDE          [ shift and go to state 53 ]
+  ! PLUS            [ shift and go to state 52 ]
+  ! MINUS           [ shift and go to state 53 ]
+  ! TIMES           [ shift and go to state 54 ]
+  ! DIVIDE          [ shift and go to state 55 ]
 
 
-state 81
+state 85
 
-    (46) expressionBo -> LPAREN expressionBo RPAREN .
+    (48) expressionBo -> LPAREN expressionBo RPAREN .
 
-    LCURLBRACKET    reduce using rule 46 (expressionBo -> LPAREN expressionBo RPAREN .)
-    NOTEQUAL        reduce using rule 46 (expressionBo -> LPAREN expressionBo RPAREN .)
-    EQUALSTO        reduce using rule 46 (expressionBo -> LPAREN expressionBo RPAREN .)
-    RPAREN          reduce using rule 46 (expressionBo -> LPAREN expressionBo RPAREN .)
-    SEMICOLON       reduce using rule 46 (expressionBo -> LPAREN expressionBo RPAREN .)
-    COMMA           reduce using rule 46 (expressionBo -> LPAREN expressionBo RPAREN .)
+    LCURLBRACKET    reduce using rule 48 (expressionBo -> LPAREN expressionBo RPAREN .)
+    NOTEQUAL        reduce using rule 48 (expressionBo -> LPAREN expressionBo RPAREN .)
+    EQUALSTO        reduce using rule 48 (expressionBo -> LPAREN expressionBo RPAREN .)
+    AND             reduce using rule 48 (expressionBo -> LPAREN expressionBo RPAREN .)
+    OR              reduce using rule 48 (expressionBo -> LPAREN expressionBo RPAREN .)
+    RPAREN          reduce using rule 48 (expressionBo -> LPAREN expressionBo RPAREN .)
+    SEMICOLON       reduce using rule 48 (expressionBo -> LPAREN expressionBo RPAREN .)
+    COMMA           reduce using rule 48 (expressionBo -> LPAREN expressionBo RPAREN .)
 
 
-state 82
+state 86
 
     (34) expressionAR -> LPAREN expressionAR RPAREN .
 
@@ -1748,10 +1980,12 @@ state 82
     RPAREN          reduce using rule 34 (expressionAR -> LPAREN expressionAR RPAREN .)
     SEMICOLON       reduce using rule 34 (expressionAR -> LPAREN expressionAR RPAREN .)
     LCURLBRACKET    reduce using rule 34 (expressionAR -> LPAREN expressionAR RPAREN .)
+    AND             reduce using rule 34 (expressionAR -> LPAREN expressionAR RPAREN .)
+    OR              reduce using rule 34 (expressionAR -> LPAREN expressionAR RPAREN .)
     COMMA           reduce using rule 34 (expressionAR -> LPAREN expressionAR RPAREN .)
 
 
-state 83
+state 87
 
     (34) expressionAR -> LPAREN expressionAR . RPAREN
     (26) expressionAR -> expressionAR . PLUS expressionAR
@@ -1759,22 +1993,22 @@ state 83
     (28) expressionAR -> expressionAR . TIMES expressionAR
     (29) expressionAR -> expressionAR . DIVIDE expressionAR
 
-    RPAREN          shift and go to state 82
-    PLUS            shift and go to state 50
-    MINUS           shift and go to state 51
-    TIMES           shift and go to state 52
-    DIVIDE          shift and go to state 53
+    RPAREN          shift and go to state 86
+    PLUS            shift and go to state 52
+    MINUS           shift and go to state 53
+    TIMES           shift and go to state 54
+    DIVIDE          shift and go to state 55
 
 
-state 84
+state 88
 
     (14) inst -> IF expressionBo LCURLBRACKET list . RCURLBRACKET ELSE LCURLBRACKET list RCURLBRACKET
     (15) inst -> IF expressionBo LCURLBRACKET list . RCURLBRACKET
 
-    RCURLBRACKET    shift and go to state 90
+    RCURLBRACKET    shift and go to state 94
 
 
-state 85
+state 89
 
     (22) inst -> FMT POINT PRINT LPAREN . listID RPAREN SEMICOLON
     (24) inst -> FMT POINT PRINT LPAREN . RPAREN SEMICOLON
@@ -1799,38 +2033,40 @@ state 85
     (40) expressionBo -> . expressionAR NOTEQUAL expressionAR
     (41) expressionBo -> . expressionBo EQUALSTO expressionBo
     (42) expressionBo -> . expressionAR EQUALSTO expressionAR
-    (43) expressionBo -> . NOT expressionBo
-    (44) expressionBo -> . TRUE
-    (45) expressionBo -> . FALSE
-    (46) expressionBo -> . LPAREN expressionBo RPAREN
+    (43) expressionBo -> . expressionBo AND expressionBo
+    (44) expressionBo -> . expressionBo OR expressionBo
+    (45) expressionBo -> . NOT expressionBo
+    (46) expressionBo -> . TRUE
+    (47) expressionBo -> . FALSE
+    (48) expressionBo -> . LPAREN expressionBo RPAREN
 
-    RPAREN          shift and go to state 92
+    RPAREN          shift and go to state 96
     ID              shift and go to state 34
     INT             shift and go to state 30
     MINUS           shift and go to state 29
     FLOAT           shift and go to state 31
-    LPAREN          shift and go to state 64
+    LPAREN          shift and go to state 66
     NOT             shift and go to state 24
     TRUE            shift and go to state 25
     FALSE           shift and go to state 26
 
-    listID                         shift and go to state 91
-    expressionAR                   shift and go to state 93
-    expressionBo                   shift and go to state 94
+    listID                         shift and go to state 95
+    expressionAR                   shift and go to state 97
+    expressionBo                   shift and go to state 98
 
-state 86
+state 90
 
     (23) inst -> FMT POINT SCAN LPAREN . IDlist RPAREN SEMICOLON
     (25) inst -> FMT POINT SCAN LPAREN . RPAREN SEMICOLON
     (20) IDlist -> . ID
     (21) IDlist -> . ID COMMA IDlist
 
-    RPAREN          shift and go to state 96
-    ID              shift and go to state 97
+    RPAREN          shift and go to state 100
+    ID              shift and go to state 101
 
-    IDlist                         shift and go to state 95
+    IDlist                         shift and go to state 99
 
-state 87
+state 91
 
     (34) expressionAR -> LPAREN expressionAR . RPAREN
     (26) expressionAR -> expressionAR . PLUS expressionAR
@@ -1844,20 +2080,20 @@ state 87
     (40) expressionBo -> expressionAR . NOTEQUAL expressionAR
     (42) expressionBo -> expressionAR . EQUALSTO expressionAR
 
-    RPAREN          shift and go to state 82
-    PLUS            shift and go to state 50
-    MINUS           shift and go to state 51
-    TIMES           shift and go to state 52
-    DIVIDE          shift and go to state 53
-    MORE            shift and go to state 44
-    LESS            shift and go to state 45
-    MOREEQUAL       shift and go to state 46
-    LESSEQUAL       shift and go to state 47
-    NOTEQUAL        shift and go to state 48
-    EQUALSTO        shift and go to state 49
+    RPAREN          shift and go to state 86
+    PLUS            shift and go to state 52
+    MINUS           shift and go to state 53
+    TIMES           shift and go to state 54
+    DIVIDE          shift and go to state 55
+    MORE            shift and go to state 46
+    LESS            shift and go to state 47
+    MOREEQUAL       shift and go to state 48
+    LESSEQUAL       shift and go to state 49
+    NOTEQUAL        shift and go to state 50
+    EQUALSTO        shift and go to state 51
 
 
-state 88
+state 92
 
     (11) inst -> FOR expressionBo LCURLBRACKET list RCURLBRACKET .
 
@@ -1868,7 +2104,7 @@ state 88
     RCURLBRACKET    reduce using rule 11 (inst -> FOR expressionBo LCURLBRACKET list RCURLBRACKET .)
 
 
-state 89
+state 93
 
     (12) inst -> FOR assignment SEMICOLON expressionBo SEMICOLON . assignment LCURLBRACKET list RCURLBRACKET
     (5) assignment -> . ID ASSIGN expressionAR
@@ -1880,14 +2116,14 @@ state 89
 
     ID              shift and go to state 18
 
-    assignment                     shift and go to state 98
+    assignment                     shift and go to state 102
 
-state 90
+state 94
 
     (14) inst -> IF expressionBo LCURLBRACKET list RCURLBRACKET . ELSE LCURLBRACKET list RCURLBRACKET
     (15) inst -> IF expressionBo LCURLBRACKET list RCURLBRACKET .
 
-    ELSE            shift and go to state 99
+    ELSE            shift and go to state 103
     FOR             reduce using rule 15 (inst -> IF expressionBo LCURLBRACKET list RCURLBRACKET .)
     IF              reduce using rule 15 (inst -> IF expressionBo LCURLBRACKET list RCURLBRACKET .)
     FMT             reduce using rule 15 (inst -> IF expressionBo LCURLBRACKET list RCURLBRACKET .)
@@ -1895,21 +2131,21 @@ state 90
     RCURLBRACKET    reduce using rule 15 (inst -> IF expressionBo LCURLBRACKET list RCURLBRACKET .)
 
 
-state 91
+state 95
 
     (22) inst -> FMT POINT PRINT LPAREN listID . RPAREN SEMICOLON
 
-    RPAREN          shift and go to state 100
+    RPAREN          shift and go to state 104
 
 
-state 92
+state 96
 
     (24) inst -> FMT POINT PRINT LPAREN RPAREN . SEMICOLON
 
-    SEMICOLON       shift and go to state 101
+    SEMICOLON       shift and go to state 105
 
 
-state 93
+state 97
 
     (16) listID -> expressionAR .
     (19) listID -> expressionAR . COMMA listID
@@ -1925,77 +2161,81 @@ state 93
     (42) expressionBo -> expressionAR . EQUALSTO expressionAR
 
     RPAREN          reduce using rule 16 (listID -> expressionAR .)
-    COMMA           shift and go to state 102
-    PLUS            shift and go to state 50
-    MINUS           shift and go to state 51
-    TIMES           shift and go to state 52
-    DIVIDE          shift and go to state 53
-    MORE            shift and go to state 44
-    LESS            shift and go to state 45
-    MOREEQUAL       shift and go to state 46
-    LESSEQUAL       shift and go to state 47
-    NOTEQUAL        shift and go to state 48
-    EQUALSTO        shift and go to state 49
+    COMMA           shift and go to state 106
+    PLUS            shift and go to state 52
+    MINUS           shift and go to state 53
+    TIMES           shift and go to state 54
+    DIVIDE          shift and go to state 55
+    MORE            shift and go to state 46
+    LESS            shift and go to state 47
+    MOREEQUAL       shift and go to state 48
+    LESSEQUAL       shift and go to state 49
+    NOTEQUAL        shift and go to state 50
+    EQUALSTO        shift and go to state 51
 
 
-state 94
+state 98
 
     (17) listID -> expressionBo .
     (18) listID -> expressionBo . COMMA listID
     (39) expressionBo -> expressionBo . NOTEQUAL expressionBo
     (41) expressionBo -> expressionBo . EQUALSTO expressionBo
+    (43) expressionBo -> expressionBo . AND expressionBo
+    (44) expressionBo -> expressionBo . OR expressionBo
 
     RPAREN          reduce using rule 17 (listID -> expressionBo .)
-    COMMA           shift and go to state 103
+    COMMA           shift and go to state 107
     NOTEQUAL        shift and go to state 41
     EQUALSTO        shift and go to state 42
-
-
-state 95
-
-    (23) inst -> FMT POINT SCAN LPAREN IDlist . RPAREN SEMICOLON
-
-    RPAREN          shift and go to state 104
-
-
-state 96
-
-    (25) inst -> FMT POINT SCAN LPAREN RPAREN . SEMICOLON
-
-    SEMICOLON       shift and go to state 105
-
-
-state 97
-
-    (20) IDlist -> ID .
-    (21) IDlist -> ID . COMMA IDlist
-
-    RPAREN          reduce using rule 20 (IDlist -> ID .)
-    COMMA           shift and go to state 106
-
-
-state 98
-
-    (12) inst -> FOR assignment SEMICOLON expressionBo SEMICOLON assignment . LCURLBRACKET list RCURLBRACKET
-
-    LCURLBRACKET    shift and go to state 107
+    AND             shift and go to state 43
+    OR              shift and go to state 44
 
 
 state 99
 
-    (14) inst -> IF expressionBo LCURLBRACKET list RCURLBRACKET ELSE . LCURLBRACKET list RCURLBRACKET
+    (23) inst -> FMT POINT SCAN LPAREN IDlist . RPAREN SEMICOLON
 
-    LCURLBRACKET    shift and go to state 108
+    RPAREN          shift and go to state 108
 
 
 state 100
 
-    (22) inst -> FMT POINT PRINT LPAREN listID RPAREN . SEMICOLON
+    (25) inst -> FMT POINT SCAN LPAREN RPAREN . SEMICOLON
 
     SEMICOLON       shift and go to state 109
 
 
 state 101
+
+    (20) IDlist -> ID .
+    (21) IDlist -> ID . COMMA IDlist
+
+    RPAREN          reduce using rule 20 (IDlist -> ID .)
+    COMMA           shift and go to state 110
+
+
+state 102
+
+    (12) inst -> FOR assignment SEMICOLON expressionBo SEMICOLON assignment . LCURLBRACKET list RCURLBRACKET
+
+    LCURLBRACKET    shift and go to state 111
+
+
+state 103
+
+    (14) inst -> IF expressionBo LCURLBRACKET list RCURLBRACKET ELSE . LCURLBRACKET list RCURLBRACKET
+
+    LCURLBRACKET    shift and go to state 112
+
+
+state 104
+
+    (22) inst -> FMT POINT PRINT LPAREN listID RPAREN . SEMICOLON
+
+    SEMICOLON       shift and go to state 113
+
+
+state 105
 
     (24) inst -> FMT POINT PRINT LPAREN RPAREN SEMICOLON .
 
@@ -2006,7 +2246,7 @@ state 101
     RCURLBRACKET    reduce using rule 24 (inst -> FMT POINT PRINT LPAREN RPAREN SEMICOLON .)
 
 
-state 102
+state 106
 
     (19) listID -> expressionAR COMMA . listID
     (16) listID -> . expressionAR
@@ -2030,25 +2270,27 @@ state 102
     (40) expressionBo -> . expressionAR NOTEQUAL expressionAR
     (41) expressionBo -> . expressionBo EQUALSTO expressionBo
     (42) expressionBo -> . expressionAR EQUALSTO expressionAR
-    (43) expressionBo -> . NOT expressionBo
-    (44) expressionBo -> . TRUE
-    (45) expressionBo -> . FALSE
-    (46) expressionBo -> . LPAREN expressionBo RPAREN
+    (43) expressionBo -> . expressionBo AND expressionBo
+    (44) expressionBo -> . expressionBo OR expressionBo
+    (45) expressionBo -> . NOT expressionBo
+    (46) expressionBo -> . TRUE
+    (47) expressionBo -> . FALSE
+    (48) expressionBo -> . LPAREN expressionBo RPAREN
 
     ID              shift and go to state 34
     INT             shift and go to state 30
     MINUS           shift and go to state 29
     FLOAT           shift and go to state 31
-    LPAREN          shift and go to state 64
+    LPAREN          shift and go to state 66
     NOT             shift and go to state 24
     TRUE            shift and go to state 25
     FALSE           shift and go to state 26
 
-    expressionAR                   shift and go to state 93
-    listID                         shift and go to state 110
-    expressionBo                   shift and go to state 94
+    expressionAR                   shift and go to state 97
+    listID                         shift and go to state 114
+    expressionBo                   shift and go to state 98
 
-state 103
+state 107
 
     (18) listID -> expressionBo COMMA . listID
     (16) listID -> . expressionAR
@@ -2072,32 +2314,34 @@ state 103
     (40) expressionBo -> . expressionAR NOTEQUAL expressionAR
     (41) expressionBo -> . expressionBo EQUALSTO expressionBo
     (42) expressionBo -> . expressionAR EQUALSTO expressionAR
-    (43) expressionBo -> . NOT expressionBo
-    (44) expressionBo -> . TRUE
-    (45) expressionBo -> . FALSE
-    (46) expressionBo -> . LPAREN expressionBo RPAREN
+    (43) expressionBo -> . expressionBo AND expressionBo
+    (44) expressionBo -> . expressionBo OR expressionBo
+    (45) expressionBo -> . NOT expressionBo
+    (46) expressionBo -> . TRUE
+    (47) expressionBo -> . FALSE
+    (48) expressionBo -> . LPAREN expressionBo RPAREN
 
     ID              shift and go to state 34
     INT             shift and go to state 30
     MINUS           shift and go to state 29
     FLOAT           shift and go to state 31
-    LPAREN          shift and go to state 64
+    LPAREN          shift and go to state 66
     NOT             shift and go to state 24
     TRUE            shift and go to state 25
     FALSE           shift and go to state 26
 
-    expressionBo                   shift and go to state 94
-    listID                         shift and go to state 111
-    expressionAR                   shift and go to state 93
+    expressionBo                   shift and go to state 98
+    listID                         shift and go to state 115
+    expressionAR                   shift and go to state 97
 
-state 104
+state 108
 
     (23) inst -> FMT POINT SCAN LPAREN IDlist RPAREN . SEMICOLON
 
-    SEMICOLON       shift and go to state 112
+    SEMICOLON       shift and go to state 116
 
 
-state 105
+state 109
 
     (25) inst -> FMT POINT SCAN LPAREN RPAREN SEMICOLON .
 
@@ -2108,17 +2352,17 @@ state 105
     RCURLBRACKET    reduce using rule 25 (inst -> FMT POINT SCAN LPAREN RPAREN SEMICOLON .)
 
 
-state 106
+state 110
 
     (21) IDlist -> ID COMMA . IDlist
     (20) IDlist -> . ID
     (21) IDlist -> . ID COMMA IDlist
 
-    ID              shift and go to state 97
+    ID              shift and go to state 101
 
-    IDlist                         shift and go to state 113
+    IDlist                         shift and go to state 117
 
-state 107
+state 111
 
     (12) inst -> FOR assignment SEMICOLON expressionBo SEMICOLON assignment LCURLBRACKET . list RCURLBRACKET
     (3) list -> . inst
@@ -2145,10 +2389,10 @@ state 107
     ID              shift and go to state 18
 
     assignment                     shift and go to state 15
-    list                           shift and go to state 114
+    list                           shift and go to state 118
     inst                           shift and go to state 13
 
-state 108
+state 112
 
     (14) inst -> IF expressionBo LCURLBRACKET list RCURLBRACKET ELSE LCURLBRACKET . list RCURLBRACKET
     (3) list -> . inst
@@ -2174,11 +2418,11 @@ state 108
     FMT             shift and go to state 17
     ID              shift and go to state 18
 
-    list                           shift and go to state 115
+    list                           shift and go to state 119
     inst                           shift and go to state 13
     assignment                     shift and go to state 15
 
-state 109
+state 113
 
     (22) inst -> FMT POINT PRINT LPAREN listID RPAREN SEMICOLON .
 
@@ -2189,21 +2433,21 @@ state 109
     RCURLBRACKET    reduce using rule 22 (inst -> FMT POINT PRINT LPAREN listID RPAREN SEMICOLON .)
 
 
-state 110
+state 114
 
     (19) listID -> expressionAR COMMA listID .
 
     RPAREN          reduce using rule 19 (listID -> expressionAR COMMA listID .)
 
 
-state 111
+state 115
 
     (18) listID -> expressionBo COMMA listID .
 
     RPAREN          reduce using rule 18 (listID -> expressionBo COMMA listID .)
 
 
-state 112
+state 116
 
     (23) inst -> FMT POINT SCAN LPAREN IDlist RPAREN SEMICOLON .
 
@@ -2214,28 +2458,28 @@ state 112
     RCURLBRACKET    reduce using rule 23 (inst -> FMT POINT SCAN LPAREN IDlist RPAREN SEMICOLON .)
 
 
-state 113
+state 117
 
     (21) IDlist -> ID COMMA IDlist .
 
     RPAREN          reduce using rule 21 (IDlist -> ID COMMA IDlist .)
 
 
-state 114
+state 118
 
     (12) inst -> FOR assignment SEMICOLON expressionBo SEMICOLON assignment LCURLBRACKET list . RCURLBRACKET
 
-    RCURLBRACKET    shift and go to state 116
+    RCURLBRACKET    shift and go to state 120
 
 
-state 115
+state 119
 
     (14) inst -> IF expressionBo LCURLBRACKET list RCURLBRACKET ELSE LCURLBRACKET list . RCURLBRACKET
 
-    RCURLBRACKET    shift and go to state 117
+    RCURLBRACKET    shift and go to state 121
 
 
-state 116
+state 120
 
     (12) inst -> FOR assignment SEMICOLON expressionBo SEMICOLON assignment LCURLBRACKET list RCURLBRACKET .
 
@@ -2246,7 +2490,7 @@ state 116
     RCURLBRACKET    reduce using rule 12 (inst -> FOR assignment SEMICOLON expressionBo SEMICOLON assignment LCURLBRACKET list RCURLBRACKET .)
 
 
-state 117
+state 121
 
     (14) inst -> IF expressionBo LCURLBRACKET list RCURLBRACKET ELSE LCURLBRACKET list RCURLBRACKET .
 
@@ -2256,3 +2500,14 @@ state 117
     ID              reduce using rule 14 (inst -> IF expressionBo LCURLBRACKET list RCURLBRACKET ELSE LCURLBRACKET list RCURLBRACKET .)
     RCURLBRACKET    reduce using rule 14 (inst -> IF expressionBo LCURLBRACKET list RCURLBRACKET ELSE LCURLBRACKET list RCURLBRACKET .)
 
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for NOTEQUAL in state 72 resolved as shift
+WARNING: shift/reduce conflict for EQUALSTO in state 72 resolved as shift
+WARNING: shift/reduce conflict for AND in state 72 resolved as shift
+WARNING: shift/reduce conflict for OR in state 72 resolved as shift
+WARNING: shift/reduce conflict for NOTEQUAL in state 73 resolved as shift
+WARNING: shift/reduce conflict for EQUALSTO in state 73 resolved as shift
+WARNING: shift/reduce conflict for AND in state 73 resolved as shift
+WARNING: shift/reduce conflict for OR in state 73 resolved as shift

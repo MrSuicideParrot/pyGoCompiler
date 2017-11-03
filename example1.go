@@ -3,9 +3,10 @@ package main
 import "fmt"
 
 func main() {
-    fmt.Scan(2);
+    fmt.Scan(b);
+    f:=true;
     for i:=1; i<=10; i++ {
-        if 2==2 {
+        if false || true {
             fmt.Print(3);
         }
         else {
