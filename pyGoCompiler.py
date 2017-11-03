@@ -4,7 +4,7 @@ from os.path import isfile
 
 
 def main():
-    argsParser = ArgumentParser(description='Compilador de código go em python.')
+    argsParser = ArgumentParser(description='Compiler the Go in Python3')
 
     argsParser.add_argument('-p', '--print_tree', action='store_true', help='Print the abstract tree')
     argsParser.add_argument('-f', '--file', type=str, required=True, help='File')
