@@ -14,19 +14,19 @@ def main():
     argsParser = ArgumentParser(description='Compiler the Go in Python3')
 
     argsParser.add_argument('-p', '--print_tree', action='store_true', help='Print the abstract tree')
-    argsParser.add_argument('file', metavar='f', type=str, help='File')
+    argsParser.add_argument('file', metavar='f', nargs='+', type=str, help='File')
 
     args = argsParser.parse_args()
+    for i in args.file:
+        if not isfile(i):
+            print('ERRO: Ficheiro inexistente!')
+            exit(1)
 
-    if not isfile(args.file):
-        print('ERRO: Ficheiro inexistente!')
-        exit(1)
+        with open(i, "r") as fd:
+            abstract_tree = parser.parse(''.join(fd.readlines()))
 
-    with open(args.file, "r") as fd:
-        abstract_tree = parser.parse(''.join(fd.readlines()))
-
-    if args.print_tree:
-        abstract_tree.pprint()
+        if args.print_tree:
+            abstract_tree.pprint()
 
 
 if __name__ == '__main__':
