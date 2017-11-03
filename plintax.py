@@ -83,6 +83,14 @@ def p_listID(p):
     else:
         p[0] = ListPRI(p[1], p[3])
 
+def p_IDlist(p):
+    '''IDlist : ID
+              | ID COMMA IDlist'''
+    if len(p) == 2:
+        p[0] = ListPRI(p[1])
+    else:
+        p[0] = ListPRI(p[1], p[3])
+
 """
 def p_inst_expression(p):
     '''inst : expressionAR
@@ -94,7 +102,7 @@ def p_inst_expression(p):
 
 def p_inst_func(p):
     '''inst : FMT POINT PRINT LPAREN listID RPAREN SEMICOLON
-            | FMT POINT SCAN LPAREN listID RPAREN SEMICOLON
+            | FMT POINT SCAN LPAREN IDlist RPAREN SEMICOLON
             | FMT POINT PRINT LPAREN RPAREN SEMICOLON
             | FMT POINT SCAN LPAREN RPAREN SEMICOLON'''
     try:
@@ -191,8 +199,9 @@ def p_expressionBo_group(p):
 
 # Error rule for syntax errors
 def p_error(p):
-    print("Erro ",end='')
+    print("Erro: ",end='')
     print(p)
+    exit(1)
 
 
 # Build the parser
