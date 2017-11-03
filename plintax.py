@@ -6,9 +6,10 @@ from tree import *
 
 precedence = (
     ('nonassoc', 'LESS', 'MORE', 'EQUALSTO','MOREEQUAL',
-    'LESSEQUAL', 'NOTEQUAL', 'AND', 'OR' ),
+    'LESSEQUAL', 'NOTEQUAL'),
     ('left', 'PLUS', 'MINUS'),
     ('left', 'TIMES', 'DIVIDE'),
+    ('left', 'AND', 'OR'),
     ('right', 'UMINUS'),
 )
 

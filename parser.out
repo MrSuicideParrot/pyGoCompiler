@@ -1589,16 +1589,16 @@ state 70
     LCURLBRACKET    reduce using rule 39 (expressionBo -> expressionBo NOTEQUAL expressionBo .)
     NOTEQUAL        reduce using rule 39 (expressionBo -> expressionBo NOTEQUAL expressionBo .)
     EQUALSTO        reduce using rule 39 (expressionBo -> expressionBo NOTEQUAL expressionBo .)
-    AND             reduce using rule 39 (expressionBo -> expressionBo NOTEQUAL expressionBo .)
-    OR              reduce using rule 39 (expressionBo -> expressionBo NOTEQUAL expressionBo .)
     RPAREN          reduce using rule 39 (expressionBo -> expressionBo NOTEQUAL expressionBo .)
     SEMICOLON       reduce using rule 39 (expressionBo -> expressionBo NOTEQUAL expressionBo .)
     COMMA           reduce using rule 39 (expressionBo -> expressionBo NOTEQUAL expressionBo .)
+    AND             shift and go to state 43
+    OR              shift and go to state 44
 
+  ! AND             [ reduce using rule 39 (expressionBo -> expressionBo NOTEQUAL expressionBo .) ]
+  ! OR              [ reduce using rule 39 (expressionBo -> expressionBo NOTEQUAL expressionBo .) ]
   ! NOTEQUAL        [ shift and go to state 41 ]
   ! EQUALSTO        [ shift and go to state 42 ]
-  ! AND             [ shift and go to state 43 ]
-  ! OR              [ shift and go to state 44 ]
 
 
 state 71
@@ -1612,16 +1612,16 @@ state 71
     LCURLBRACKET    reduce using rule 41 (expressionBo -> expressionBo EQUALSTO expressionBo .)
     NOTEQUAL        reduce using rule 41 (expressionBo -> expressionBo EQUALSTO expressionBo .)
     EQUALSTO        reduce using rule 41 (expressionBo -> expressionBo EQUALSTO expressionBo .)
-    AND             reduce using rule 41 (expressionBo -> expressionBo EQUALSTO expressionBo .)
-    OR              reduce using rule 41 (expressionBo -> expressionBo EQUALSTO expressionBo .)
     RPAREN          reduce using rule 41 (expressionBo -> expressionBo EQUALSTO expressionBo .)
     SEMICOLON       reduce using rule 41 (expressionBo -> expressionBo EQUALSTO expressionBo .)
     COMMA           reduce using rule 41 (expressionBo -> expressionBo EQUALSTO expressionBo .)
+    AND             shift and go to state 43
+    OR              shift and go to state 44
 
+  ! AND             [ reduce using rule 41 (expressionBo -> expressionBo EQUALSTO expressionBo .) ]
+  ! OR              [ reduce using rule 41 (expressionBo -> expressionBo EQUALSTO expressionBo .) ]
   ! NOTEQUAL        [ shift and go to state 41 ]
   ! EQUALSTO        [ shift and go to state 42 ]
-  ! AND             [ shift and go to state 43 ]
-  ! OR              [ shift and go to state 44 ]
 
 
 state 72
