@@ -1,6 +1,6 @@
 # pyGoCompiler
 ## Compiladores - 2017
-Compilador em python3 de Go language para MIPS.
+Compilador em Python3 de Go language para MIPS.
 ### Sobre o compilador
 O compilador encontra-se preparado para um subset da liguagem <a href="https://golang.org/">Go</a>. Que é seguinte apresentado.
 
@@ -14,28 +14,40 @@ import "fmt"
 func main() {
   //Intruções
 }
-
 ```
 * Da biblioteca fmt podem ser utilizados a função *Scan* e *Print* para a interação com o utilizador.
 
-* Os tipos defenidos no trabalham foram Inteiros, Floats e valores Booleanos.
+* Os tipos definidos no trabalho foram valores do tipo Inteiro, Float ou Booleano.
 
-* Ás variavies só podem ser atribuidos valores numéricos.
+* Às variavies só podem ser atribuidos valores numéricos.
 
 * Todas as atribuições devem ser seguidas de um ";".
 
-* As declaração de variavies é efetuada da seguinte forma:
+* A declaração de variáveis é efetuada da seguinte forma:
 ```Go
   i := 2;
 ```
 * A atribuição de váriaveis pode ser feitas das seguinte formas:
 ```Go
-  i = 2;
+  i = expr;
   i++;
   i--;
 ```
+* Todos os restantes requerimentos para compilação correspondem aos da linguagem Go, da qual a documentação está referida anteriormente.
 
 ### Uso
+Para perceber como utilizar o programa corretamente no terminal, pode usar a opção -h:
+```txt
+python3 pyGoCompiler -h
+```
 ### Dependências
 * ply
 * argparse
+
+As várias implementações foram testadas nas seguintes máquinas:
+* Arch Linux, Python 3.6.0, GCC 6.3.1, PLY 3.10
+* Ubuntu 16.04, Python 3.5.2, GCC 5.4.0, PLY 3.10
+***
+##### Trabalho realizado por:
+###### [André Cirne](https://sigarra.up.pt/fcup/pt/fest_geral.cursos_list?pv_num_unico=201505860)
+###### [José Rocha](https://sigarra.up.pt/fcup/pt/fest_geral.cursos_list?pv_num_unico=201503229)
