@@ -22,7 +22,6 @@ def p_statement_expr(t):
         t[0] = Programa([Package(t[2]), Import(t[4]), Func(t[6], None, None)])
     else:
         t[0] = Programa([Package(t[2]), Import(t[4]), Func(t[6], None, t[10])])
-    t[0]
 
 
 def p_list(p):
