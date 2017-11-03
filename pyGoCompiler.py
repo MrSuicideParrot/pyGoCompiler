@@ -1,9 +1,16 @@
 from plintax import parser
 from argparse import ArgumentParser
 from os.path import isfile
+from os import devnull
+from sys import stderr
 
 
 def main():
+    debug = False
+
+    if not debug:
+        stderr = open(devnull, 'w')
+
     argsParser = ArgumentParser(description='Compiler the Go in Python3')
 
     argsParser.add_argument('-p', '--print_tree', action='store_true', help='Print the abstract tree')
