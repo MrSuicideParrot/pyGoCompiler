@@ -6,7 +6,7 @@ from tree import *
 
 precedence = (
     ('nonassoc', 'LESS', 'MORE', 'EQUALSTO','MOREEQUAL',
-    'LESSEQUAL', 'NOTEQUAL' ),
+    'LESSEQUAL', 'NOTEQUAL', 'AND', 'OR' ),
     ('left', 'PLUS', 'MINUS'),
     ('left', 'TIMES', 'DIVIDE'),
     ('right', 'UMINUS'),

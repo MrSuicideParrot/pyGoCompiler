@@ -6,7 +6,7 @@ func main() {
     fmt.Scan(b);
     f:=true;
     for i:=1; i<=10; i++ {
-        if false || true {
+        if true {
             fmt.Print(3);
         }
         else {

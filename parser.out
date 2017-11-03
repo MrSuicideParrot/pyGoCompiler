@@ -1632,23 +1632,19 @@ state 72
     (43) expressionBo -> expressionBo . AND expressionBo
     (44) expressionBo -> expressionBo . OR expressionBo
 
-  ! shift/reduce conflict for NOTEQUAL resolved as shift
-  ! shift/reduce conflict for EQUALSTO resolved as shift
-  ! shift/reduce conflict for AND resolved as shift
-  ! shift/reduce conflict for OR resolved as shift
     LCURLBRACKET    reduce using rule 43 (expressionBo -> expressionBo AND expressionBo .)
+    NOTEQUAL        reduce using rule 43 (expressionBo -> expressionBo AND expressionBo .)
+    EQUALSTO        reduce using rule 43 (expressionBo -> expressionBo AND expressionBo .)
+    AND             reduce using rule 43 (expressionBo -> expressionBo AND expressionBo .)
+    OR              reduce using rule 43 (expressionBo -> expressionBo AND expressionBo .)
     RPAREN          reduce using rule 43 (expressionBo -> expressionBo AND expressionBo .)
     SEMICOLON       reduce using rule 43 (expressionBo -> expressionBo AND expressionBo .)
     COMMA           reduce using rule 43 (expressionBo -> expressionBo AND expressionBo .)
-    NOTEQUAL        shift and go to state 41
-    EQUALSTO        shift and go to state 42
-    AND             shift and go to state 43
-    OR              shift and go to state 44
 
-  ! NOTEQUAL        [ reduce using rule 43 (expressionBo -> expressionBo AND expressionBo .) ]
-  ! EQUALSTO        [ reduce using rule 43 (expressionBo -> expressionBo AND expressionBo .) ]
-  ! AND             [ reduce using rule 43 (expressionBo -> expressionBo AND expressionBo .) ]
-  ! OR              [ reduce using rule 43 (expressionBo -> expressionBo AND expressionBo .) ]
+  ! NOTEQUAL        [ shift and go to state 41 ]
+  ! EQUALSTO        [ shift and go to state 42 ]
+  ! AND             [ shift and go to state 43 ]
+  ! OR              [ shift and go to state 44 ]
 
 
 state 73
@@ -1659,23 +1655,19 @@ state 73
     (43) expressionBo -> expressionBo . AND expressionBo
     (44) expressionBo -> expressionBo . OR expressionBo
 
-  ! shift/reduce conflict for NOTEQUAL resolved as shift
-  ! shift/reduce conflict for EQUALSTO resolved as shift
-  ! shift/reduce conflict for AND resolved as shift
-  ! shift/reduce conflict for OR resolved as shift
     LCURLBRACKET    reduce using rule 44 (expressionBo -> expressionBo OR expressionBo .)
+    NOTEQUAL        reduce using rule 44 (expressionBo -> expressionBo OR expressionBo .)
+    EQUALSTO        reduce using rule 44 (expressionBo -> expressionBo OR expressionBo .)
+    AND             reduce using rule 44 (expressionBo -> expressionBo OR expressionBo .)
+    OR              reduce using rule 44 (expressionBo -> expressionBo OR expressionBo .)
     RPAREN          reduce using rule 44 (expressionBo -> expressionBo OR expressionBo .)
     SEMICOLON       reduce using rule 44 (expressionBo -> expressionBo OR expressionBo .)
     COMMA           reduce using rule 44 (expressionBo -> expressionBo OR expressionBo .)
-    NOTEQUAL        shift and go to state 41
-    EQUALSTO        shift and go to state 42
-    AND             shift and go to state 43
-    OR              shift and go to state 44
 
-  ! NOTEQUAL        [ reduce using rule 44 (expressionBo -> expressionBo OR expressionBo .) ]
-  ! EQUALSTO        [ reduce using rule 44 (expressionBo -> expressionBo OR expressionBo .) ]
-  ! AND             [ reduce using rule 44 (expressionBo -> expressionBo OR expressionBo .) ]
-  ! OR              [ reduce using rule 44 (expressionBo -> expressionBo OR expressionBo .) ]
+  ! NOTEQUAL        [ shift and go to state 41 ]
+  ! EQUALSTO        [ shift and go to state 42 ]
+  ! AND             [ shift and go to state 43 ]
+  ! OR              [ shift and go to state 44 ]
 
 
 state 74
@@ -2500,14 +2492,3 @@ state 121
     ID              reduce using rule 14 (inst -> IF expressionBo LCURLBRACKET list RCURLBRACKET ELSE LCURLBRACKET list RCURLBRACKET .)
     RCURLBRACKET    reduce using rule 14 (inst -> IF expressionBo LCURLBRACKET list RCURLBRACKET ELSE LCURLBRACKET list RCURLBRACKET .)
 
-WARNING: 
-WARNING: Conflicts:
-WARNING: 
-WARNING: shift/reduce conflict for NOTEQUAL in state 72 resolved as shift
-WARNING: shift/reduce conflict for EQUALSTO in state 72 resolved as shift
-WARNING: shift/reduce conflict for AND in state 72 resolved as shift
-WARNING: shift/reduce conflict for OR in state 72 resolved as shift
-WARNING: shift/reduce conflict for NOTEQUAL in state 73 resolved as shift
-WARNING: shift/reduce conflict for EQUALSTO in state 73 resolved as shift
-WARNING: shift/reduce conflict for AND in state 73 resolved as shift
-WARNING: shift/reduce conflict for OR in state 73 resolved as shift
