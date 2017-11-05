@@ -2,7 +2,7 @@
 ## Compiladores - 2017
 Compilador em Python3 de Go language para MIPS.
 ### Sobre o compilador
-O compilador encontra-se preparado para um subset da liguagem <a href="https://golang.org/">Go</a>. Que é seguinte apresentado.
+O compilador encontra-se preparado para um subset da liguagem <a href="https://golang.org/">Go</a> com as seguintes limitações:
 
 * Qualquer programa só pode ter uma função defenida pelo utilizador que é a main e no cabeçalho deve defenir o Package e o import.
 
@@ -17,7 +17,7 @@ func main() {
 ```
 * Da biblioteca fmt podem ser utilizados a função *Scan* e *Print* para a interação com o utilizador.
 
-* Os tipos definidos no trabalho foram valores do tipo Inteiro, Float ou Booleano.
+* Os tipos definidos no trabalho são valores do tipo Inteiro, Float ou Booleano.
 
 * Às variavies só podem ser atribuidos valores numéricos.
 

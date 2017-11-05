@@ -4,7 +4,6 @@ import "fmt"
 
 func main() {
     fmt.Scan(b);
-    f:=true;
     for i:=1; i<=10; i++ {
         if true && true || false {
             fmt.Print(3);
