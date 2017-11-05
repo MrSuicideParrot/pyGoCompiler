@@ -45,7 +45,7 @@ python3 pyGoCompiler -h
 * argparse
 
 As várias implementações foram testadas nas seguintes máquinas:
-* Arch Linux, Python 3.6.0, GCC 6.3.1, PLY 3.10
+* Arch Linux, Python 3.6.3, GCC 7.2.0, PLY 3.10
 * Ubuntu 16.04, Python 3.5.2, GCC 5.4.0, PLY 3.10
 ***
 ##### Trabalho realizado por:
