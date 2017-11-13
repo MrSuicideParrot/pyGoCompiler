@@ -13,9 +13,6 @@ precedence = (
     ('right', 'UMINUS'),
 )
 
-# variaveis = {}
-
-
 def p_statement_expr(t):
     '''statement : PACKAGE MAIN IMPORT STRING FUNC MAIN LPAREN RPAREN LCURLBRACKET list RCURLBRACKET
                  | PACKAGE MAIN IMPORT STRING FUNC MAIN LPAREN RPAREN LCURLBRACKET RCURLBRACKET'''
