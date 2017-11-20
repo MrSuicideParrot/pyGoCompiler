@@ -1,9 +1,22 @@
 # -*- coding: utf-8 -*-
 
 from treelib import Tree, Node
+import InterCode
 
 
 class Elemento():
+    t = -1
+    l = -1
+
+    @staticmethod
+    def getVar():
+        Elemento.i += 1
+        return 't'+Elemento.i
+
+    @staticmethod
+    def getLabel():
+        Elemento.i += 1
+        return 'label' + Elemento.i
 
     def pprint(self):
         tree_print = Tree()
@@ -30,17 +43,29 @@ class Elemento():
         except AttributeError:
             pass
 
+    def __recInstr(self):
+        return []
+
+    def getInstructionList(self):
+        return self.__recInstr()
+
 
 class Programa(Elemento):
     def __init__(self, lista):
         self.value = ('ROOT',)
         self.children = lista
 
+    def __recInstr(self):
+        return self.children.__recInstr()
+
 # Estrutura do programa
 class Package(Elemento):
     def __init__(self, pacote):
         self.value = ('PACKAGE',pacote)
         self.children = []
+
+    '''Talvez colcoar a retornar uma
+     label'''
 
 
 class Import(Elemento):
@@ -62,6 +87,13 @@ class ListCommand(Elemento):
         if right:
             self.children.append(right)
 
+    def __recInstr(self):
+        lista = []
+        for i in self.children:
+            lista = i + lista
+
+        return lista
+
 
 class ExprAr(Elemento):
     def __init__(self, operator, left, right=None):
@@ -76,6 +108,20 @@ class ExprAr(Elemento):
         if right:
             self.children.append(right)
 
+    def __recInstr(self,var):
+        lista = []
+        a1 = None
+        a2 = None
+        for i in self.children:
+            if type(i) != ExprAr:
+                a1 = i.value
+            else:
+                a2 = Elemento.getVar()
+                lista += i.__recInstr(a2)
+
+        lista.append(InterCode.Expr(self.value[1], var, a1, a2))
+
+        return lista
 
 class ExprBo(Elemento):
     def __init__(self, operator, left, right=None):
@@ -89,6 +135,21 @@ class ExprBo(Elemento):
         self.children.append(left)
         if right:
             self.children.append(right)
+
+    def __recInstr(self, var):
+        lista = []
+        a1 = None
+        a2 = None
+        for i in self.children:
+            if type(i) != (ExprBo|ExprAr):
+                a1 = i.value
+            else:
+                a2 = Elemento.getVar()
+                lista += i.__recInstr(a2)
+
+        lista.append(InterCode.Expr(self.value[1],var,a1,a2))
+
+        return lista
 
 
 class Identifier(Elemento):
@@ -116,6 +177,8 @@ class Branch(Elemento):
             self.children.append(elsebody)
 
 
+
+
 class For(Elemento):
     def __init__(self, iniciacao=None, condicao=None, incremento=None, body=None):
         self.value = ('FOR',)
@@ -132,12 +195,31 @@ class For(Elemento):
 
         self.children.append(body)
 
+    def __recInstr(self):
+        inst = []
+        
+
 
 class Group(Elemento):
     def __init__(self, valor):
         self.value = ('GROUP',)
         self.children = []
         self.children.append(valor)
+
+    def __recInstr(self, var):
+        lista = []
+        a1 = None
+        a2 = None
+        for i in self.children:
+            if type(i) != (ExprBo | ExprAr):
+                a1 = i.value
+            else:
+                a2 = Elemento.getVar()
+                lista += i.__recInstr(a2)
+
+        #lista.append(InterCode.Expr(self.value[1], var, a1, a2))
+
+        return lista
 
 
 class Assignment(Elemento):
@@ -147,6 +229,18 @@ class Assignment(Elemento):
         self.children.append(Identifier(ID))
         self.children.append(valor)
 
+    def __recInstr(self):
+        inst = []
+        if type(self.children[1]) != (ExprAr|ExprBo):
+            a1 = self.children[1].value
+        else:
+            a1 = Elemento.getVar()
+            inst.append(self.children[1].__recInstr(a1))
+
+        inst.append(InterCode.Atr(self.value[1],a1))
+
+        return inst
+
 
 class Equalizer(Elemento):
     def __init__(self, ID, value):
@@ -154,6 +248,18 @@ class Equalizer(Elemento):
         self.children = []
         self.children.append(Identifier(ID))
         self.children.append(value)
+
+    def __recInstr(self):
+        inst = []
+        if type(self.children[1]) != (ExprAr | ExprBo):
+            a1 = self.children[1].value
+        else:
+            a1 = Elemento.getVar()
+            inst.append(self.children[1].__recInstr(a1))
+
+        inst.append(InterCode.Atr(self.value[1], a1))
+
+        return inst
 
 
 class Func(Elemento):
