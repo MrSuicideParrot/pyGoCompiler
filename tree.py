@@ -108,20 +108,21 @@ class ExprAr(Elemento):
         if right:
             self.children.append(right)
 
-    def __recInstr(self,var):
+    def __recInstr(self, var):
         lista = []
-        a1 = None
-        a2 = None
+        arg = []
         for i in self.children:
             if type(i) != ExprAr:
-                a1 = i.value
+                arg.append(i.value)
             else:
-                a2 = Elemento.getVar()
-                lista += i.__recInstr(a2)
+                tmp = Elemento.getVar()
+                lista += i.__recInstr(tmp)
+                arg.append(tmp)
 
-        lista.append(InterCode.Expr(self.value[1], var, a1, a2))
+        lista.append(InterCode.Expr(self.value[1], var, *arg))
 
         return lista
+
 
 class ExprBo(Elemento):
     def __init__(self, operator, left, right=None):
@@ -138,18 +139,37 @@ class ExprBo(Elemento):
 
     def __recInstr(self, var):
         lista = []
-        a1 = None
-        a2 = None
+        arg = []
         for i in self.children:
             if type(i) != (ExprBo|ExprAr):
-                a1 = i.value
+                arg.append(i.value)
             else:
-                a2 = Elemento.getVar()
-                lista += i.__recInstr(a2)
+                tmp = Elemento.getVar()
+                lista += i.__recInstr(tmp)
+                arg.append(tmp)
 
-        lista.append(InterCode.Expr(self.value[1],var,a1,a2))
+        lista.append(InterCode.Expr(self.value[1], var, *arg))
 
         return lista
+
+    def __initIF(self, flag):
+        lista = []
+        arg = []
+        for i in self.children:
+            if type(i) != (ExprBo | ExprAr):
+                arg.append(i.value)
+            else:
+                tmp = Elemento.getVar()
+                lista += i.__recInstr(tmp)
+                arg.append(tmp)
+        arg.append(flag)
+        lista.append(InterCode.Branch(self.value[1], *arg))
+
+        return lista
+    """"
+    def invserse(self):
+    
+        }"""
 
 
 class Identifier(Elemento):
@@ -176,7 +196,19 @@ class Branch(Elemento):
         if elsebody:
             self.children.append(elsebody)
 
+    def __recInstr(self):
+        l1 = Elemento.getLabel() #verdaeiro
 
+        l3 = Elemento.getLabel() # retoma
+
+        inst = self.children[0].__initIF(l1)
+        if len(self.children == 3):
+            inst += self.children[2].__recInstr()
+        inst.append(InterCode.GoTo(l3))
+        inst.append(InterCode.Label(l1))
+        inst += self.children[1].__recInstr()
+        inst.append(InterCode.Label(l3))
+        return inst
 
 
 class For(Elemento):
@@ -197,7 +229,20 @@ class For(Elemento):
 
     def __recInstr(self):
         inst = []
-        
+        l1 = Elemento.getLabel() # bg
+        l2 = Elemento.getLabel() # first
+        l3 = Elemento.getLabel() # end
+        '''Inicialização'''
+        inst += self.children[0].__recInstr()
+        inst.append(InterCode.Label(l1))
+        inst += self.children[1].__initIF(l2)
+        inst.append(InterCode.GoTo(l3))
+        inst.append(InterCode.Label(l2))
+        inst += self.children[3].__recInstr()
+        inst += self.children[2].__recInstr()
+        inst.append(InterCode.GoTo(l1))
+
+        return inst
 
 
 class Group(Elemento):
@@ -282,6 +327,7 @@ class Func(Elemento):
         if lista:
             self.children.append(lista)
 
+
 class ListPRI(ListCommand):
     def __init__(self, left, right=None):
         """
@@ -295,3 +341,10 @@ class ListPRI(ListCommand):
         self.children.append(left)
         if right:
             self.children.append(right)
+
+    def __recInstr(self):
+        lista = []
+        for i in self.children:
+            lista = i + lista
+
+        return lista

@@ -47,11 +47,14 @@ class Jump(Instruction):
         return 'goto'+self.e1
 
 
+"""OP registo  registo2  label"""
 class Branch(Instruction):
     def __str__(self):
         pass
 
-
+class GoTo(Instruction):
+    def __str__(self):
+        pass
 
 class Label(Instruction):
     def __str__(self):
