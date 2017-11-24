@@ -36,7 +36,7 @@ class Expr(Instruction):
 class Atr(Instruction):
     def __str__(self):
         inst = self.e1
-        inst += ':='
+        inst += '='
         inst += self.e2
 
         return  inst
