@@ -95,7 +95,7 @@ t_RCURLBRACKET = r'\}'
 t_SEMICOLON = r';'
 t_COMMA = r','
 
-t_EQUALSTO = r'=='
+ta = r'=='
 t_MOREEQUAL = r'>='
 t_LESSEQUAL = r'<='
 t_NOTEQUAL = r'!='

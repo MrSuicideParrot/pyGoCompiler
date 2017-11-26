@@ -144,7 +144,7 @@ class ExprBo(Elemento):
         lista = []
         arg = []
         for i in self.children:
-            if type(i) != (ExprBo|ExprAr):
+            if type(i) != ExprBo and type(i) != ExprAr:
                 arg.append(i.value[1])
             else:
                 tmp = Elemento.getVar()
@@ -155,6 +155,7 @@ class ExprBo(Elemento):
 
         return lista
 
+    """Label de verdade"""
     def initIF(self, flag):
         lista = []
         arg = []
@@ -166,13 +167,14 @@ class ExprBo(Elemento):
                 lista += i.recInstr(tmp)
                 arg.append(tmp)
         arg.append(flag)
-        lista.append(InterCode.Branch(self.value[1], *arg))
 
+        if self.value[1] != '&&' and self.value[1] != '||' :
+            lista.append(InterCode.Branch(self.value[1], *arg))
+        else:
+            # fazer para o caso && ou || variavel auxiliar
+            pass
         return lista
-    """"
-    def invserse(self):
-    
-        }"""
+
 
 
 class Identifier(Elemento):
@@ -188,6 +190,12 @@ class Number(Elemento):
 class Boolean(Elemento):
     def __init__(self, value):
         self.value = ('BOOL', value)
+
+    """Partimos do principio que a flag será para onde que saltar se for verdadeiro a condição
+    os booleanos serão representados por inteiros 1 -> true e 0 -> false """
+
+    def initIF(self, flag):
+        return [InterCode.Branch('==',int(self.value[1]),1,flag)]
 
 
 class Branch(Elemento):
@@ -241,7 +249,7 @@ class For(Elemento):
         '''Inicialização'''
         inst += self.children[0].recInstr()
         inst.append(InterCode.Label(l1))
-        inst += self.children[1].__initIF(l2)
+        inst += self.children[1].initIF(l2)
         inst.append(InterCode.GoTo(l3))
         inst.append(InterCode.Label(l2))
         inst += self.children[3].recInstr()
@@ -302,11 +310,11 @@ class Equalizer(Elemento):
 
     def recInstr(self):
         inst = []
-        if type(self.children[1]) != (ExprAr | ExprBo):
+        if type(self.children[1]) != ExprAr and self.children[1] != ExprBo:
             a1 = self.children[1].value
         else:
             a1 = Elemento.getVar()
-            inst.append(self.children[1].recInstr(a1))
+            inst = self.children[1].recInstr(a1)
 
         inst.append(InterCode.Atr(self.value[1], a1))
 

@@ -24,20 +24,20 @@ class Instruction:
 
 class Expr(Instruction):
     def __str__(self):
-        inst = self.e1
+        inst = str(self.e1)
         inst += '='
-        inst += self.e2
-        inst += self.op
-        inst += self.e3
+        inst += str(self.e2)
+        inst += str(self.op)
+        inst += str(self.e3)
 
         return inst
 
 
 class Atr(Instruction):
     def __str__(self):
-        inst = self.e1
+        inst = str(self.e1)
         inst += '='
-        inst += self.e2
+        inst += str(self.e2)
 
         return  inst
 
@@ -50,15 +50,17 @@ class Jump(Instruction):
 """OP registo  registo2  label"""
 class Branch(Instruction):
     def __str__(self):
-        pass
+        return 'if '+str(self.e1)+self.op+str(self.e2)+' goto '+self.e3
 
+'''op = Label'''
 class GoTo(Instruction):
     def __str__(self):
-        pass
+        return 'goto '+self.op
 
+'''op=Label'''
 class Label(Instruction):
     def __str__(self):
-        return 'label'+self.e1
+        return 'label '+self.op
 
 
 class Function(Instruction):
