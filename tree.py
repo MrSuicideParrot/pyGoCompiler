@@ -10,13 +10,13 @@ class Elemento():
 
     @staticmethod
     def getVar():
-        Elemento.i += 1
-        return 't'+Elemento.i
+        Elemento.t += 1
+        return 't'+str(Elemento.t)
 
     @staticmethod
     def getLabel():
-        Elemento.i += 1
-        return 'label' + Elemento.i
+        Elemento.l += 1
+        return 'label' + str(Elemento.l)
 
     def pprint(self):
         tree_print = Tree()
@@ -43,20 +43,23 @@ class Elemento():
         except AttributeError:
             pass
 
-    def __recInstr(self):
+    def recInstr(self):
         return []
-
-    def getInstructionList(self):
-        return self.__recInstr()
-
 
 class Programa(Elemento):
     def __init__(self, lista):
         self.value = ('ROOT',)
         self.children = lista
 
-    def __recInstr(self):
-        return self.children.__recInstr()
+    def recInstr(self):
+        lista = []
+        for i in self.children:
+            lista += i.recInstr()
+        return lista
+
+    def getInstructionList(self):
+        return self.recInstr()
+
 
 # Estrutura do programa
 class Package(Elemento):
@@ -64,8 +67,8 @@ class Package(Elemento):
         self.value = ('PACKAGE',pacote)
         self.children = []
 
-    '''Talvez colcoar a retornar uma
-     label'''
+    def recInstr(self):
+        return [InterCode.Label(self.value[1])]
 
 
 class Import(Elemento):
@@ -87,10 +90,10 @@ class ListCommand(Elemento):
         if right:
             self.children.append(right)
 
-    def __recInstr(self):
+    def recInstr(self):
         lista = []
         for i in self.children:
-            lista = i + lista
+            lista += i.recInstr()
 
         return lista
 
@@ -108,15 +111,15 @@ class ExprAr(Elemento):
         if right:
             self.children.append(right)
 
-    def __recInstr(self, var):
+    def recInstr(self, var):
         lista = []
         arg = []
         for i in self.children:
             if type(i) != ExprAr:
-                arg.append(i.value)
+                arg.append(i.value[1])
             else:
                 tmp = Elemento.getVar()
-                lista += i.__recInstr(tmp)
+                lista += i.recInstr(tmp)
                 arg.append(tmp)
 
         lista.append(InterCode.Expr(self.value[1], var, *arg))
@@ -137,15 +140,15 @@ class ExprBo(Elemento):
         if right:
             self.children.append(right)
 
-    def __recInstr(self, var):
+    def recInstr(self, var):
         lista = []
         arg = []
         for i in self.children:
             if type(i) != (ExprBo|ExprAr):
-                arg.append(i.value)
+                arg.append(i.value[1])
             else:
                 tmp = Elemento.getVar()
-                lista += i.__recInstr(tmp)
+                lista += i.recInstr(tmp)
                 arg.append(tmp)
 
         lista.append(InterCode.Expr(self.value[1], var, *arg))
@@ -157,10 +160,10 @@ class ExprBo(Elemento):
         arg = []
         for i in self.children:
             if type(i) != (ExprBo | ExprAr):
-                arg.append(i.value)
+                arg.append(i.value[1])
             else:
                 tmp = Elemento.getVar()
-                lista += i.__recInstr(tmp)
+                lista += i.recInstr(tmp)
                 arg.append(tmp)
         arg.append(flag)
         lista.append(InterCode.Branch(self.value[1], *arg))
@@ -196,17 +199,17 @@ class Branch(Elemento):
         if elsebody:
             self.children.append(elsebody)
 
-    def __recInstr(self):
+    def recInstr(self):
         l1 = Elemento.getLabel() #verdaeiro
 
         l3 = Elemento.getLabel() # retoma
 
         inst = self.children[0].__initIF(l1)
         if len(self.children == 3):
-            inst += self.children[2].__recInstr()
+            inst += self.children[2].recInstr()
         inst.append(InterCode.GoTo(l3))
         inst.append(InterCode.Label(l1))
-        inst += self.children[1].__recInstr()
+        inst += self.children[1].recInstr()
         inst.append(InterCode.Label(l3))
         return inst
 
@@ -227,19 +230,19 @@ class For(Elemento):
 
         self.children.append(body)
 
-    def __recInstr(self):
+    def recInstr(self):
         inst = []
         l1 = Elemento.getLabel() # bg
         l2 = Elemento.getLabel() # first
         l3 = Elemento.getLabel() # end
         '''Inicialização'''
-        inst += self.children[0].__recInstr()
+        inst += self.children[0].recInstr()
         inst.append(InterCode.Label(l1))
         inst += self.children[1].__initIF(l2)
         inst.append(InterCode.GoTo(l3))
         inst.append(InterCode.Label(l2))
-        inst += self.children[3].__recInstr()
-        inst += self.children[2].__recInstr()
+        inst += self.children[3].recInstr()
+        inst += self.children[2].recInstr()
         inst.append(InterCode.GoTo(l1))
 
         return inst
@@ -251,7 +254,7 @@ class Group(Elemento):
         self.children = []
         self.children.append(valor)
 
-    def __recInstr(self, var):
+    def recInstr(self, var):
         lista = []
         a1 = None
         a2 = None
@@ -260,7 +263,7 @@ class Group(Elemento):
                 a1 = i.value
             else:
                 a2 = Elemento.getVar()
-                lista += i.__recInstr(a2)
+                lista += i.recInstr(a2)
 
         #lista.append(InterCode.Expr(self.value[1], var, a1, a2))
 
@@ -274,15 +277,15 @@ class Assignment(Elemento):
         self.children.append(Identifier(ID))
         self.children.append(valor)
 
-    def __recInstr(self):
+    def recInstr(self):
         inst = []
-        if type(self.children[1]) != (ExprAr|ExprBo):
+        if type(self.children[1]) != ExprAr and type(self.children[1]) != ExprBo:
             a1 = self.children[1].value
         else:
             a1 = Elemento.getVar()
-            inst.append(self.children[1].__recInstr(a1))
+            inst = self.children[1].recInstr(a1)
 
-        inst.append(InterCode.Atr(self.value[1],a1))
+        inst.append(InterCode.Atr(self.value[1],self.children[0],a1))
 
         return inst
 
@@ -294,13 +297,13 @@ class Equalizer(Elemento):
         self.children.append(Identifier(ID))
         self.children.append(value)
 
-    def __recInstr(self):
+    def recInstr(self):
         inst = []
         if type(self.children[1]) != (ExprAr | ExprBo):
             a1 = self.children[1].value
         else:
             a1 = Elemento.getVar()
-            inst.append(self.children[1].__recInstr(a1))
+            inst.append(self.children[1].recInstr(a1))
 
         inst.append(InterCode.Atr(self.value[1], a1))
 
@@ -327,6 +330,12 @@ class Func(Elemento):
         if lista:
             self.children.append(lista)
 
+    def recInstr(self):
+        lista = []
+        for i in self.children:
+            lista = i.recInstr() + lista
+
+        return lista
 
 class ListPRI(ListCommand):
     def __init__(self, left, right=None):
@@ -342,7 +351,7 @@ class ListPRI(ListCommand):
         if right:
             self.children.append(right)
 
-    def __recInstr(self):
+    def recInstr(self):
         lista = []
         for i in self.children:
             lista = i + lista

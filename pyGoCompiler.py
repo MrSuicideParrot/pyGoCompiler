@@ -28,6 +28,8 @@ def main():
         if args.print_tree:
             abstract_tree.pprint()
 
+        x= abstract_tree.getInstructionList()
+        print(x)
 
 if __name__ == '__main__':
     main()
