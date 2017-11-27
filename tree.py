@@ -310,13 +310,13 @@ class Equalizer(Elemento):
 
     def recInstr(self):
         inst = []
-        if type(self.children[1]) != ExprAr and self.children[1] != ExprBo:
+        if type(self.children[1]) != ExprAr and type(self.children[1]) != ExprBo:
             a1 = self.children[1].value
         else:
             a1 = Elemento.getVar()
             inst = self.children[1].recInstr(a1)
 
-        inst.append(InterCode.Atr(self.value[1], a1))
+        inst.append(InterCode.Atr(self.value[1], self.children[0].value[1], a1))
 
         return inst
 
