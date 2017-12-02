@@ -5,18 +5,47 @@ import InterCode
 
 
 class Elemento():
-    t = -1
+    tabela = None
+
+    rAvaliable = {
+        's':[InterCode.Register('$s' + str(i)) for i in reversed(range(8))],
+        't':[InterCode.Register('$t' + str(i)) for i in reversed(range(8))],
+        'a':[InterCode.Register('$a' + str(i)) for i in reversed(range(4))],
+    }
+
     l = -1
 
     @staticmethod
-    def getVar():
-        Elemento.t += 1
-        return 't'+str(Elemento.t)
+    def getVar(t='t'):
+        if Elemento.rAvaliable[t]:
+            return Elemento.rAvaliable[t].pop()
+        else:
+            if t.rType()=='s':
+                return None
+            print("Insufficient register number!")
+            exit(1)
+
+    @staticmethod
+    def freeVar(t):
+        if t.rType() == 's':
+            Elemento.tabela.free(t)
+
+        Elemento.rAvaliable[t.rType()].append(t)
 
     @staticmethod
     def getLabel():
         Elemento.l += 1
         return 'label' + str(Elemento.l)
+
+    @staticmethod
+    def disAlloc(args):
+        for i in args:
+            if type(i) is InterCode.Register:
+                Elemento.freeVar(i)
+
+    @staticmethod
+    def setTable(tabela):
+        Elemento.tabela = tabela
 
     def pprint(self):
         tree_print = Tree()
@@ -76,6 +105,7 @@ class Import(Elemento):
         self.value = ('IMPORT',biblio)
         self.children = []
 
+
 class ListCommand(Elemento):
     def __init__(self, left, right=None):
         """
@@ -116,13 +146,17 @@ class ExprAr(Elemento):
         arg = []
         for i in self.children:
             if type(i) != ExprAr:
-                arg.append(i.value[1])
+                if type(i) == Number:
+                    arg.append(i.value[1])
+                    continue
+                arg.append(Elemento.tabela[i.value[1]].getReg(lista))
             else:
                 tmp = Elemento.getVar()
                 lista += i.recInstr(tmp)
                 arg.append(tmp)
 
         lista.append(InterCode.Expr(self.value[1], var, *arg))
+        Elemento.disAlloc(arg)
 
         return lista
 
@@ -145,13 +179,17 @@ class ExprBo(Elemento):
         arg = []
         for i in self.children:
             if type(i) != ExprBo and type(i) != ExprAr:
-                arg.append(i.value[1])
+                if type(i) == Boolean or type(i) == Number:
+                    arg.append(i.value[1])
+                    continue
+                arg.append(Elemento.tabela[i.value[1]].getReg(lista))
             else:
                 tmp = Elemento.getVar()
                 lista += i.recInstr(tmp)
                 arg.append(tmp)
 
         lista.append(InterCode.Expr(self.value[1], var, *arg))
+        Elemento.disAlloc(arg)
 
         return lista
 
@@ -161,11 +199,16 @@ class ExprBo(Elemento):
         arg = []
         for i in self.children:
             if type(i) != ExprBo and type(i) != ExprAr:
-                arg.append(i.value[1])
+                if type(i) == Boolean or type(i) == Number:
+                    arg.append(i.value[1])
+                    continue
+
+                arg.append(Elemento.tabela[i.value[1]].getReg(lista))
             else:
                 tmp = Elemento.getVar()
                 lista += i.recInstr(tmp)
                 arg.append(tmp)
+
         arg.append(flag)
 
         if self.value[1] != '&&' and self.value[1] != '||' :
@@ -173,8 +216,9 @@ class ExprBo(Elemento):
         else:
             # fazer para o caso && ou || variavel auxiliar
             pass
-        return lista
 
+        Elemento.disAlloc(arg)
+        return lista
 
 
 class Identifier(Elemento):
@@ -319,7 +363,6 @@ class Equalizer(Elemento):
         inst.append(InterCode.Atr(self.value[1], self.children[0].value[1], a1))
 
         return inst
-
 
 class Func(Elemento):
     def __init__(self, tipo, argv=None, lista=None):

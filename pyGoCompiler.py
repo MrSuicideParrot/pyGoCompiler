@@ -1,5 +1,7 @@
 from plintax import parser
 from argparse import ArgumentParser
+from tabelaDeSimbolos import Tabela
+import tree
 from os.path import isfile
 from os import devnull
 from sys import stderr
@@ -27,6 +29,8 @@ def main():
 
         if args.print_tree:
             abstract_tree.pprint()
+
+        tree.Elemento.setTable(Tabela(abstract_tree))
 
         x= abstract_tree.getInstructionList()
         print(x)

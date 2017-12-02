@@ -77,3 +77,18 @@ class Function(Instruction):
             inst += ')'
 
         return inst
+
+"""op=variavel reg"""
+class Load(Instruction):
+    def __str__(self):
+        return "lw "+self.e1+", "+self.op
+
+"""op=variavel reg"""
+class Store(Instruction):
+    def __str__(self):
+        return "sw "+self.e1+", "+self.op
+
+class Register(str):
+
+    def rType(self):
+        return self[1]
