@@ -8,6 +8,10 @@ class Tabela(dict):
                  'OPERATOR_BO':'BOOL',
                  'BOOL':'BOOL'}
 
+    def __init__(self, arvore):
+        dict.__init__(self)
+        self.create(arvore)
+
     def create(self, elem):
         """ DFS """
         try:
@@ -15,16 +19,16 @@ class Tabela(dict):
                 """
                 Parti do principio que não se pode declarar variáveis duas vezes
                 """
-                if i is tree.Assignment:
-                    if i.children[0].value not in self:
-                        self[i.children[0].value] = self.dic_tipos[i.children[1].value]
+                if type(i) is tree.Assignment:
+                    if i.children[0].value[1] not in self:
+                        self[i.children[0].value[1]] = self.dic_tipos[i.children[1].value[0]]
                     else:
                         print('ERROR: Assignement of already existent variable')
                         exit(1)
-                elif i is tree.Equalizer:
-                    var = i.children[0].value
+                elif type(i) is tree.Equalizer:
+                    var = i.children[0].value[1]
                     if var in self:
-                        if self[var] != self.dic_tipos[i.children[1].value]:
+                        if self[var] != self.dic_tipos[i.children[1].value[0]]:
                             print('ERROR: variable does not type')
                             exit(1)
                     else:
