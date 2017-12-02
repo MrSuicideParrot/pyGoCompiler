@@ -52,10 +52,12 @@ class Branch(Instruction):
     def __str__(self):
         return 'if '+str(self.e1)+self.op+str(self.e2)+' goto '+self.e3
 
+
 '''op = Label'''
 class GoTo(Instruction):
     def __str__(self):
         return 'goto '+self.op
+
 
 '''op=Label'''
 class Label(Instruction):
@@ -78,17 +80,24 @@ class Function(Instruction):
 
         return inst
 
+
 """op=variavel reg"""
 class Load(Instruction):
     def __str__(self):
         return "lw "+self.e1+", "+self.op
+
 
 """op=variavel reg"""
 class Store(Instruction):
     def __str__(self):
         return "sw "+self.e1+", "+self.op
 
-class Register(str):
 
+class Register(str):
     def rType(self):
         return self[1]
+
+"""op=code of syscall"""
+class Syscall(Instruction):
+    def __str__(self):
+        return "syscall "+str(self.op)+" "+str(self.e1)

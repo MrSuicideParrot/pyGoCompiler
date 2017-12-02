@@ -145,7 +145,7 @@ class ExprAr(Elemento):
         lista = []
         arg = []
         for i in self.children:
-            if type(i) != ExprAr:
+            if type(i) != ExprAr and type(i) != Group:
                 if type(i) == Number:
                     arg.append(i.value[1])
                     continue
@@ -314,7 +314,7 @@ class Group(Elemento):
         a1 = None
         a2 = None
         for i in self.children:
-            if type(i) != (ExprBo | ExprAr):
+            if type(i) != ExprBo and type(i) != ExprAr:
                 a1 = i.value
             else:
                 a2 = Elemento.getVar()
@@ -340,7 +340,8 @@ class Assignment(Elemento):
             a1 = Elemento.getVar()
             inst = self.children[1].recInstr(a1)
 
-        inst.append(InterCode.Atr(self.value[1],self.children[0].value[1],a1))
+        tmp = Elemento.tabela[self.children[0].value[1]].getReg(inst)
+        inst.append(InterCode.Atr(None,tmp,a1))
 
         return inst
 
@@ -360,7 +361,8 @@ class Equalizer(Elemento):
             a1 = Elemento.getVar()
             inst = self.children[1].recInstr(a1)
 
-        inst.append(InterCode.Atr(self.value[1], self.children[0].value[1], a1))
+        tmp = Elemento.tabela[self.children[0].value[1]].getReg(inst)
+        inst.append(InterCode.Atr(None, tmp, a1))
 
         return inst
 
@@ -385,11 +387,11 @@ class Func(Elemento):
             self.children.append(lista)
 
     def recInstr(self):
-        lista = []
-        for i in self.children:
-            lista = i.recInstr() + lista
+        if self.children[0].value[0] == 'LIST':
+            return self.children[0].recInstr()
+        else:
+            return self.children[0].recInstr(self.value[1])
 
-        return lista
 
 class ListPRI(ListCommand):
     def __init__(self, left, right=None):
@@ -405,9 +407,34 @@ class ListPRI(ListCommand):
         if right:
             self.children.append(right)
 
-    def recInstr(self):
+    def recInstr(self, func):
         lista = []
-        for i in self.children:
-            lista = i + lista
+        left = self.children[0]
+        try:
+            right = self.children[1]
+        except IndexError:
+            right = None
+
+        "Analise se é um scan ou print"
+        if func == 'Scan':
+            lista.append(InterCode.Syscall(5,Elemento.tabela[left].getReg(lista)))
+        elif func == 'Print':
+            if type(left) != ExprAr and type(left) != ExprBo:
+                if type(left) == Boolean or type(left):
+                    arg = left.value[1]
+                else:
+                    arg = Elemento.tabela[left.value[1]].getReg(lista)
+            else:
+                    arg = Elemento.getVar('t')
+                    lista = lista + left.recInstr(arg)
+
+            lista.append(InterCode.Syscall(1,arg))      # Só imprime Inteiros
+            
+            if right:  # Imprime espaço
+                lista.append(InterCode.Syscall(11,32))
+
+        "Caso para progredir com a recursão"
+        if right:
+            lista = lista + right.recInstr(func)
 
         return lista
