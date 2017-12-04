@@ -2,6 +2,7 @@ from plintax import parser
 from argparse import ArgumentParser
 from tabelaDeSimbolos import Tabela
 import tree
+import InterCode
 from os.path import isfile
 from os import devnull
 from sys import stderr
@@ -33,7 +34,8 @@ def main():
         tree.Elemento.setTable(Tabela(abstract_tree))
 
         x= abstract_tree.getInstructionList()
-        print(x)
+
+        InterCode.printASM("a.asm", x)
 
 if __name__ == '__main__':
     main()

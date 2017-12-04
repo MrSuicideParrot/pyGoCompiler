@@ -147,7 +147,9 @@ class ExprAr(Elemento):
         for i in self.children:
             if type(i) != ExprAr and type(i) != Group:
                 if type(i) == Number:
-                    arg.append(i.value[1])
+                    tmp = Elemento.getVar()
+                    lista.append(InterCode.LI(tmp, i.value[1]))
+                    arg.append(tmp)
                     continue
                 arg.append(Elemento.tabela[i.value[1]].getReg(lista))
             else:
@@ -180,7 +182,9 @@ class ExprBo(Elemento):
         for i in self.children:
             if type(i) != ExprBo and type(i) != ExprAr:
                 if type(i) == Boolean or type(i) == Number:
-                    arg.append(i.value[1])
+                    tmp = Elemento.getVar()
+                    lista.append(InterCode.LI(tmp,i.value[1]))
+                    arg.append(tmp)
                     continue
                 arg.append(Elemento.tabela[i.value[1]].getReg(lista))
             else:
@@ -200,7 +204,9 @@ class ExprBo(Elemento):
         for i in self.children:
             if type(i) != ExprBo and type(i) != ExprAr:
                 if type(i) == Boolean or type(i) == Number:
-                    arg.append(i.value[1])
+                    tmp = Elemento.getVar()
+                    lista.append(InterCode.LI(tmp, i.value[1]))
+                    arg.append(tmp)
                     continue
 
                 arg.append(Elemento.tabela[i.value[1]].getReg(lista))
@@ -429,7 +435,7 @@ class ListPRI(ListCommand):
                     lista = lista + left.recInstr(arg)
 
             lista.append(InterCode.Syscall(1,arg))      # Só imprime Inteiros
-            
+
             if right:  # Imprime espaço
                 lista.append(InterCode.Syscall(11,32))
 
