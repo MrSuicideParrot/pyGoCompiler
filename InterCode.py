@@ -69,7 +69,7 @@ class Atr(Instruction):
         buf += self.e1
         buf += ", "
         buf += str(self.e2)
-        buf += "\n"
+        buf += ", $zero\n"
         fd.write(buf)
 
 
@@ -144,9 +144,9 @@ class Syscall(Instruction):
 
         if self.op == 5: # caso seja scan
             fd.write("\tsyscall\n")
-            fd.write("\tmove "+str(self.e1)+", $v0\n")
+            fd.write("\tadd "+str(self.e1)+", $v0, $zero\n")
         else:
-            fd.write("\tmove $a0, " + str(self.e1) +"\n")
+            fd.write("\tadd $a0, " + str(self.e1) +", $zero\n")
             fd.write("\tsyscall\n")
 
 
