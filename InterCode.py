@@ -79,7 +79,7 @@ class Atr(Instruction):
         buf += self.e1
         buf += ", "
         buf += str(self.e2)
-        buf += "\n"
+        buf += ", $zero\n"
         fd.write(buf)
 
 
@@ -94,6 +94,7 @@ class Branch(Instruction):
             '>':'algo',
             '<=':'algo',
             '>=':'algo',
+            '==':'algo', # temos de estar preparados porque acho que a direita temos numeros e nao registos talvez usar o BGTZ
         }
 
         fd.write('\t'+inst[self.op]+" "+str(self.e1)+", "+str(self.e2)+", "+self.e3)
@@ -115,30 +116,6 @@ class Label(Instruction):
     def translate(self, fd):
         fd.write(self.op+":\n")
 
-"""
-class Function(Instruction):
-    def __str__(self):
-        if self.op == 'read':
-            inst = self.e1
-            inst += ':='
-            inst += self.op +'()'
-
-        else:
-            inst = self.op
-            inst +='('
-            inst += self.e1
-            inst += ')'
-
-        return inst
-
-    def translate(self, fd):
-        buf = '\t'
-        if self.op == 'read':
-            Load('$v0',5).translate(fd)
-            
-        else:
-            pass
-"""
 
 """op=variavel reg"""
 class Load(Instruction):
@@ -177,15 +154,27 @@ class Syscall(Instruction):
 
         if self.op == 5: # caso seja scan
             fd.write("\tsyscall\n")
-            fd.write("\tmove "+str(self.e1)+", $v0\n")
+            fd.write("\tadd "+str(self.e1)+", $v0, $zero\n")
         else:
-            fd.write("\tmove $a0, " + str(self.e1) +"\n")
+            fd.write("\tadd $a0, " + str(self.e1) +", $zero\n")
             fd.write("\tsyscall\n")
 
 
 class Register(str):
     def rType(self):
         return self[1]
+
+
+class BIN(Instruction):
+    def __str__(self):
+        return self.op+" "+self.e2+" "+self.e3
+
+    def translate(self, fd):
+        inst = {
+            '&&':'and',
+            '||':'or',
+        }
+        fd.write("\t"+inst[self.op]+" "+self.e1+", "+self.e2+", "+self.e3)
 
 
 def printASM(file, instr3):

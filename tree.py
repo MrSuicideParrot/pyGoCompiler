@@ -220,8 +220,9 @@ class ExprBo(Elemento):
         if self.value[1] != '&&' and self.value[1] != '||' :
             lista.append(InterCode.Branch(self.value[1], *arg))
         else:
-            # fazer para o caso && ou || variavel auxiliar
-            pass
+            "Caso para quando é && ou ||"
+            lista.append(InterCode.Bin(self.value[1], arg[0], arg[:2]))
+            lista.append(InterCode.Branch("==", arg[0], 1, flag)) # temos de confirmar isto
 
         Elemento.disAlloc(arg)
         return lista
@@ -245,7 +246,7 @@ class Boolean(Elemento):
     os booleanos serão representados por inteiros 1 -> true e 0 -> false """
 
     def initIF(self, flag):
-        return [InterCode.Branch('==',int(self.value[1]),1,flag)]
+        return [InterCode.Branch('==', int(self.value[1]), 1, flag)]
 
 
 class Branch(Elemento):
