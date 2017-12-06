@@ -40,15 +40,25 @@ class Expr(Instruction):
             "/":"div",
         }
 
-        buf = '\t'
-        buf += instr[self.op]
-        buf += " "
-        buf += self.e1
-        buf += ", "
-        buf += self.e2
-        buf += ", "
-        buf += self.e3
-        buf += "\n"
+        if self.e3:
+            buf = '\t'
+            buf += instr[self.op]
+            buf += " "
+            buf += self.e1
+            buf += ", "
+            buf += self.e2
+            buf += ", "
+            buf += self.e3
+            buf += "\n"
+        elif self.op == '-':
+            buf = '\tsub '
+            buf += self.e1
+            buf += ", "
+            buf += self.e2
+            buf += ", $zero\n"
+        else:
+            print("ERRO")
+            exit(1)
 
         fd.write(buf)
 
