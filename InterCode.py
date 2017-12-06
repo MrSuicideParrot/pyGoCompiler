@@ -90,14 +90,14 @@ class Branch(Instruction):
 
     def translate(self, fd):
         inst = {
-            '<':'algo',
-            '>':'algo',
-            '<=':'algo',
-            '>=':'algo',
-            '==':'algo', # temos de estar preparados porque acho que a direita temos numeros e nao registos talvez usar o BGTZ
+            '<':'\tslt $t0, '+str(self.e1)+', '+str(self.e2)+'\n\t'+'bne $t0, $zero, '+self.e3,
+            '>':'\tslt $t0, '+str(self.e2)+', '+str(self.e1)+'\n\t'+'bne $t0, $zero, '+self.e3,
+            '<=':'\tslt $t0, '+str(self.e2)+', '+str(self.e1)+'\n\t'+'beq $t0, $zero, '+self.e3,
+            '>=':'\tslt $t0, '+str(self.e1)+', '+str(self.e2)+'\n\t'+'beq $t0, $zero, '+self.e3,
+            '==':'\tbeq '+str(self.e1)+', '+str(self.e2)+', '+self.e3, # temos de estar preparados porque acho que a direita temos numeros e nao registos talvez usar o BGTZ
         }
 
-        fd.write('\t'+inst[self.op]+" "+str(self.e1)+", "+str(self.e2)+", "+self.e3)
+        fd.write(inst[self.op])
 
 '''op = Label'''
 class GoTo(Instruction):
