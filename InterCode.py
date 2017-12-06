@@ -90,11 +90,11 @@ class Branch(Instruction):
 
     def translate(self, fd):
         inst = {
-            '<':'\tslt $t0, '+str(self.e1)+', '+str(self.e2)+'\n\t'+'bne $t0, $zero, '+self.e3,
-            '>':'\tslt $t0, '+str(self.e2)+', '+str(self.e1)+'\n\t'+'bne $t0, $zero, '+self.e3,
-            '<=':'\tslt $t0, '+str(self.e2)+', '+str(self.e1)+'\n\t'+'beq $t0, $zero, '+self.e3,
-            '>=':'\tslt $t0, '+str(self.e1)+', '+str(self.e2)+'\n\t'+'beq $t0, $zero, '+self.e3,
-            '==':'\tbeq '+str(self.e1)+', '+str(self.e2)+', '+self.e3, # temos de estar preparados porque acho que a direita temos numeros e nao registos talvez usar o BGTZ
+            '<':'\tslt $t0, '+str(self.e1)+', '+str(self.e2)+'\n\t'+'bne $t0, $zero, '+self.e3+'\n',
+            '>':'\tslt $t0, '+str(self.e2)+', '+str(self.e1)+'\n\t'+'bne $t0, $zero, '+self.e3+'\n',
+            '<=':'\tslt $t0, '+str(self.e2)+', '+str(self.e1)+'\n\t'+'beq $t0, $zero, '+self.e3+'\n',
+            '>=':'\tslt $t0, '+str(self.e1)+', '+str(self.e2)+'\n\t'+'beq $t0, $zero, '+self.e3+'\n',
+            '==':'\tbeq '+str(self.e1)+', '+str(self.e2)+', '+self.e3+'\n', # temos de estar preparados porque acho que a direita temos numeros e nao registos talvez usar o BGTZ
         }
 
         fd.write(inst[self.op])
@@ -174,7 +174,7 @@ class BIN(Instruction):
             '&&':'and',
             '||':'or',
         }
-        fd.write("\t"+inst[self.op]+" "+self.e1+", "+self.e2+", "+self.e3)
+        fd.write("\t"+inst[self.op]+" "+str(self.e1)+", "+str(self.e2)+", "+str(self.e3)+'\n')
 
 
 def printASM(file, instr3):
