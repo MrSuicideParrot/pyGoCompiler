@@ -184,8 +184,11 @@ def printASM(file, instr3):
     :return:
     """
     fd = open(file, "w")
+    fd.write('.data\n')
+    fd.write('.text\n')
 
     for i in instr3:
         i.translate(fd)
 
+    fd.write('\tli $v0, 10\n\tsyscall\n')
     fd.close()
