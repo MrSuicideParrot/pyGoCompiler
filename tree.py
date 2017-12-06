@@ -221,7 +221,7 @@ class ExprBo(Elemento):
             lista.append(InterCode.Branch(self.value[1], *arg))
         else:
             "Caso para quando é && ou ||"
-            lista.append(InterCode.Bin(self.value[1], arg[0], arg[:2]))
+            lista.append(InterCode.BIN(self.value[1], arg[0], arg[:2]))
             lista.append(InterCode.Branch("==", arg[0], 1, flag)) # temos de confirmar isto
 
         Elemento.disAlloc(arg)
@@ -445,3 +445,13 @@ class ListPRI(ListCommand):
             lista = lista + right.recInstr(func)
 
         return lista
+
+    def list(self):
+        ret = [self.children[0]]
+        try:
+            ret += self.children[1].list()
+        except IndexError:
+            pass
+
+        return ret
+
