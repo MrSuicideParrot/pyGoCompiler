@@ -280,17 +280,21 @@ class For(Elemento):
     def __init__(self, iniciacao=None, condicao=None, incremento=None, body=None):
         self.value = ('FOR',)
         self.children = []
-
+        self.tipo = [ None for _ in range(4)]
         if iniciacao:
             self.children.append(iniciacao)
+            self.tipo[0] = iniciacao
 
         if condicao:
             self.children.append(condicao)
+            self.tipo[1] = condicao
 
         if incremento:
             self.children.append(incremento)
+            self.tipo[2] = incremento
 
         self.children.append(body)
+        self.tipo[3] = body
 
     def recInstr(self):
         inst = []
@@ -298,13 +302,20 @@ class For(Elemento):
         l2 = Elemento.getLabel() # first
         l3 = Elemento.getLabel() # end
         '''Inicialização'''
-        inst += self.children[0].recInstr()
+        if self.tipo[0]:
+            inst += self.tipo[0].recInstr()
+
         inst.append(InterCode.Label(l1))
-        inst += self.children[1].initIF(l2)
+        inst += self.tipo[1].initIF(l2)
         inst.append(InterCode.GoTo(l3))
+
         inst.append(InterCode.Label(l2))
-        inst += self.children[3].recInstr()
-        inst += self.children[2].recInstr()
+        inst += self.tipo[3].recInstr()
+
+        '''Incremento'''
+        if self.tipo[2]:
+            inst += self.tipo[2].recInstr()
+
         inst.append(InterCode.GoTo(l1))
 
         return inst

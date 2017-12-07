@@ -6,6 +6,11 @@ class Tabela(dict):
 
     class Variavel:
         def __init__(self, out, var, tipo):
+            """
+            :param out: apontador para própria tabela
+            :param var: Nome da variaver
+            :param tipo: Tipo da variavel
+            """
             self.out = out
             self.tipo = tipo
             self.var = var
@@ -63,7 +68,11 @@ class Tabela(dict):
                 """
                 if type(i) is tree.Assignment:
                     if i.children[0].value[1] not in self:
-                        self[i.children[0].value[1]] = self.Variavel(self,i.children[0].value[1],self.dic_tipos[i.children[1].value[0]])
+                        if i.children[1].value[0] is 'ID':
+                            tipo = self[i.children[1].value[1]].getType()
+                        else:
+                            tipo = self.dic_tipos[i.children[1].value[0]]
+                        self[i.children[0].value[1]] = self.Variavel(self, i.children[0].value[1], tipo)
                     else:
                         print('ERROR: Assignement of already existent variable')
                         exit(1)
@@ -81,7 +90,7 @@ class Tabela(dict):
                     lista = i.children[0].list()
                     for c in lista:
                         if c not in self:
-                            self[c] = self.Variavel(self, i.value[1], None, ) # Nao podemos perver tipos
+                            self[c] = self.Variavel(self, i.value[1], 'NUMBER' ) # Nao podemos perver tipos
 
                 else:
                     self.create(i)
