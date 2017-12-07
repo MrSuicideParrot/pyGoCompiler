@@ -187,7 +187,7 @@ class BIN(Instruction):
         fd.write("\t"+inst[self.op]+" "+str(self.e1)+", "+str(self.e1)+", "+str(self.e2)+'\n')
 
 
-def printASM(file, instr3):
+def printASM(file, instr3, tabela):
     """
     :param file: ficheiro
     :param instr3: lista de instruções de três elementos
@@ -195,6 +195,7 @@ def printASM(file, instr3):
     """
     fd = open(file, "w")
     fd.write('.data\n')
+    tabela.createData(fd)
     fd.write('.text\n')
 
     for i in instr3:

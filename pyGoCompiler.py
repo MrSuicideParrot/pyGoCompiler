@@ -31,11 +31,12 @@ def main():
         if args.print_tree:
             abstract_tree.pprint()
 
-        tree.Elemento.setTable(Tabela(abstract_tree))
+        table = Tabela(abstract_tree)
+        tree.Elemento.setTable(table)
 
         x= abstract_tree.getInstructionList()
 
-        InterCode.printASM("a.asm", x)
+        InterCode.printASM("a.asm", x, table)
 
 if __name__ == '__main__':
     main()

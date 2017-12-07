@@ -103,3 +103,7 @@ class Tabela(dict):
             if i.registo == reg:
                 i.registo = None
                 break
+
+    def createData(self, fd):
+        for i in self.values():
+            fd.write('\t'+i.var+" .word 0\n")
