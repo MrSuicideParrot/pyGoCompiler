@@ -38,6 +38,16 @@ class Expr(Instruction):
             "-":"sub",
             "*":"mul",
             "/":"div",
+            "==":"seq",
+            ">=":"sge",
+            "<=":"sle",
+            ">":"sgt",
+            "<":"slt",
+            "!=":"sne",
+            
+            # binario
+            "&&":"and",
+            "||":"or",
         }
 
         if self.e3:
@@ -174,7 +184,7 @@ class BIN(Instruction):
             '&&':'and',
             '||':'or',
         }
-        fd.write("\t"+inst[self.op]+" "+str(self.e1)+", "+str(self.e2)+", "+str(self.e3)+'\n')
+        fd.write("\t"+inst[self.op]+" "+str(self.e1)+", "+str(self.e1)+", "+str(self.e2)+'\n')
 
 
 def printASM(file, instr3):

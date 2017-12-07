@@ -183,7 +183,7 @@ class ExprBo(Elemento):
             if type(i) != ExprBo and type(i) != ExprAr:
                 if type(i) == Boolean or type(i) == Number:
                     tmp = Elemento.getVar()
-                    lista.append(InterCode.LI(tmp,i.value[1]))
+                    lista.append(InterCode.LI(tmp,int(i.value[1])))
                     arg.append(tmp)
                     continue
                 arg.append(Elemento.tabela[i.value[1]].getReg(lista))
@@ -205,7 +205,7 @@ class ExprBo(Elemento):
             if type(i) != ExprBo and type(i) != ExprAr:
                 if type(i) == Boolean or type(i) == Number:
                     tmp = Elemento.getVar()
-                    lista.append(InterCode.LI(tmp, i.value[1]))
+                    lista.append(InterCode.LI(tmp, int(i.value[1])))
                     arg.append(tmp)
                     continue
 
@@ -221,7 +221,7 @@ class ExprBo(Elemento):
             lista.append(InterCode.Branch(self.value[1], *arg))
         else:
             "Caso para quando é && ou ||"
-            lista.append(InterCode.BIN(self.value[1], arg[0], arg[:2]))
+            lista.append(InterCode.BIN(self.value[1], arg[0], arg[1]))
             lista.append(InterCode.Branch("==", arg[0], 1, flag)) # temos de confirmar isto
 
         Elemento.disAlloc(arg)
