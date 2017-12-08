@@ -16,7 +16,8 @@ def main():
 
     argsParser = ArgumentParser(description='Compiler the Go in Python3')
 
-    argsParser.add_argument('-p', '--print_tree', action='store_true', help='Print the abstract tree')
+    argsParser.add_argument('-t', '--print_tree', action='store_true', help='Print the abstract tree')
+    argsParser.add_argument('-i', '--print_inter', action='store_true', help='Print the intermediate code')
     argsParser.add_argument('file', metavar='f', nargs='+', type=str, help='File')
 
     args = argsParser.parse_args()
@@ -35,8 +36,10 @@ def main():
         tree.Elemento.setTable(table)
 
         x= abstract_tree.getInstructionList()
-
-        InterCode.printASM("a.asm", x, table)
+        if args.print_inter:
+            InterCode.printInter(x)
+        else:
+            InterCode.printASM("a.asm", x, table)
 
 if __name__ == '__main__':
     main()

@@ -135,7 +135,7 @@ class Label(Instruction):
 """op=variavel reg"""
 class Load(Instruction):
     def __str__(self):
-        return "lw "+self.e1+", "+self.op
+        return self.e1+'='+self.op
 
     def translate(self, fd):
         fd.write("\tlw "+self.e1+", "+self.op+"\n")
@@ -144,7 +144,7 @@ class Load(Instruction):
 """op=variavel reg"""
 class Store(Instruction):
     def __str__(self):
-        return "sw "+self.e1+", "+self.op
+        return self.op+'='+self.e1
 
     def translate(self, fd):
         fd.write("\tsw "+self.e1+", "+self.op+"\n")
@@ -153,7 +153,7 @@ class Store(Instruction):
 """op = registo e1 = valor"""
 class LI(Instruction):
     def __str__(self):
-        return "li "+self.op+" "+str(self.e1)
+        return self.op+"="+str(self.e1)
 
     def translate(self, fd):
         fd.write("\tli "+self.op+", "+str(self.e1)+"\n")
@@ -208,3 +208,12 @@ def printASM(file, instr3, tabela):
 
     fd.write('\tli $v0, 10\n\tsyscall\n')
     fd.close()
+
+def printInter(instr3):
+    for i in instr3:
+        if str(i).split(' ')[0]!='syscall':
+            print(i)
+        elif str(i).split(' ')[1]=='5':
+            print('read('+str(i).split(' ')[2]+')')
+        elif str(i).split(' ')[1]=='1':
+            print('print('+str(i).split(' ')[2]+')')
