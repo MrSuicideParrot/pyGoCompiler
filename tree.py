@@ -259,19 +259,22 @@ class Branch(Elemento):
             self.children.append(elsebody)
 
     def recInstr(self):
-        l0 = Elemento.getLabel() #incio do if
-
         l1 = Elemento.getLabel() #verdaeiro
 
         l3 = Elemento.getLabel() # retoma
-        inst = [InterCode.Label(l0)]
-        inst += self.children[0].initIF(l1)
+
+        inst = self.children[0].initIF(l1)
+
+        """Else"""
         if len(self.children) == 3:
             inst += self.children[2].recInstr()
         inst.append(InterCode.GoTo(l3))
+
+        """IF"""
         inst.append(InterCode.Label(l1))
         inst += self.children[1].recInstr()
-        inst.append(InterCode.GoTo(l0))
+
+        """RETOMA AO CODIGO NORMAL"""
         inst.append(InterCode.Label(l3))
         return inst
 
@@ -317,7 +320,7 @@ class For(Elemento):
             inst += self.tipo[2].recInstr()
 
         inst.append(InterCode.GoTo(l1))
-
+        inst.append(InterCode.Label(l3))
         return inst
 
 

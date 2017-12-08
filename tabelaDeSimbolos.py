@@ -90,7 +90,7 @@ class Tabela(dict):
                     lista = i.children[0].list()
                     for c in lista:
                         if c not in self:
-                            self[c] = self.Variavel(self, i.value[1], 'NUMBER' ) # Nao podemos perver tipos
+                            self[c] = self.Variavel(self, c, 'NUMBER' ) # Nao podemos perver tipos
 
                 else:
                     self.create(i)
