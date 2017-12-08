@@ -359,7 +359,11 @@ class Assignment(Elemento):
     def recInstr(self):
         inst = []
         if type(self.children[1]) != ExprAr and type(self.children[1]) != ExprBo:
-            a1 = self.children[1].value[1]
+            if type(self.children[1]) == Boolean or type(self.children[1]) == Number:
+                a1 = Elemento.getVar()
+                inst.append(InterCode.LI(a1, int(self.children[1].value[1])))
+            else:
+                a1 = Elemento.tabela[self.children[1].value[1]].getReg(inst)
         else:
             a1 = Elemento.getVar()
             inst = self.children[1].recInstr(a1)
@@ -380,7 +384,11 @@ class Equalizer(Elemento):
     def recInstr(self):
         inst = []
         if type(self.children[1]) != ExprAr and type(self.children[1]) != ExprBo:
-            a1 = self.children[1].value
+            if type(self.children[1]) == Boolean or type(self.children[1]) == Number:
+                a1 = Elemento.getVar()
+                inst.append(InterCode.LI(a1, int(self.children[1].value[1])))
+            else:
+                a1 = Elemento.tabela[self.children[1].value[1]].getReg(inst)
         else:
             a1 = Elemento.getVar()
             inst = self.children[1].recInstr(a1)

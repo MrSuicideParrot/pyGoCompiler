@@ -106,4 +106,4 @@ class Tabela(dict):
 
     def createData(self, fd):
         for i in self.values():
-            fd.write('\t'+i.var+" .word 0\n")
+            fd.write('\t'+i.var+": .word 0\n")

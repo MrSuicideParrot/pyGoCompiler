@@ -94,7 +94,7 @@ class Atr(Instruction):
         buf += self.e1
         buf += ", "
         buf += str(self.e2)
-        buf += ", $zero\n"
+        buf += "\n"
         fd.write(buf)
 
 
