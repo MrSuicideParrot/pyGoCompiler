@@ -26,9 +26,14 @@ class Expr(Instruction):
     def __str__(self):
         inst = str(self.e1)
         inst += '='
-        inst += str(self.e2)
-        inst += str(self.op)
-        inst += str(self.e3)
+
+        if self.e3:
+            inst += str(self.e2)
+            inst += str(self.op)
+            inst += str(self.e3)
+        else:
+            inst += str(self.op)
+            inst += str(self.e2)
 
         return inst
 
@@ -112,7 +117,7 @@ class Branch(Instruction):
 '''op = Label'''
 class GoTo(Instruction):
     def __str__(self):
-        return '\tgoto '+self.op
+        return 'goto '+self.op
 
     def translate(self, fd):
         fd.write("\tj "+self.op+"\n")
