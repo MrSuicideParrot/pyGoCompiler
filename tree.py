@@ -20,15 +20,18 @@ class Elemento():
         if Elemento.rAvaliable[t]:
             return Elemento.rAvaliable[t].pop()
         else:
-            if t.rType()=='s':
+            if t == 's':
                 return None
             print("Insufficient register number!")
             exit(1)
 
     @staticmethod
-    def freeVar(t):
+    def freeVar(t, s=True):
         if t.rType() == 's':
-            Elemento.tabela.free(t)
+            if s:
+                Elemento.tabela.free(t)
+            else:
+                return
 
         Elemento.rAvaliable[t.rType()].append(t)
 
@@ -41,7 +44,7 @@ class Elemento():
     def disAlloc(args):
         for i in args:
             if type(i) is InterCode.Register:
-                Elemento.freeVar(i)
+                Elemento.freeVar(i, False)
 
     @staticmethod
     def setTable(tabela):
