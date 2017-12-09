@@ -68,9 +68,9 @@ class Expr(Instruction):
         elif self.op == '-':
             buf = '\tsub '
             buf += self.e1
-            buf += ", "
+            buf += ", $zero, "
             buf += self.e2
-            buf += ", $zero\n"
+            buf += "\n"
         else:
             print("ERRO")
             exit(1)

@@ -339,10 +339,12 @@ class Group(Elemento):
         a2 = None
         for i in self.children:
             if type(i) != ExprBo and type(i) != ExprAr:
-                a1 = i.value
+                if type(i) == Boolean or type(i) == Number:
+                    lista.append(InterCode.LI(var, int(i.value[1])))
+                else:
+                    lista.append(InterCode.Atr("=",var,Elemento.tabela[i.value[1]].getReg(lista)))
             else:
-                a2 = Elemento.getVar()
-                lista += i.recInstr(a2)
+                lista += i.recInstr(var)
 
         #lista.append(InterCode.Expr(self.value[1], var, a1, a2))
 
