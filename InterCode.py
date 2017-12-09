@@ -164,10 +164,8 @@ class Syscall(Instruction):
     def __str__(self):
         if self.op == 5:
             return 'read('+str(self.e1)+')'
-        elif self.op == 1:
-            return 'print('+str(self.e1)+')'
         else:
-            return 'syscall '+str(self.op)+' '+str(self.e1)
+            return 'print('+str(self.e1)+')'
 
     def translate(self, fd):
         LI('$v0', self.op).translate(fd)
@@ -187,7 +185,7 @@ class Register(str):
 
 class BIN(Instruction):
     def __str__(self):
-        return self.op+" "+self.e2+" "+self.e3
+        return str(self.op)+" "+str(self.e2)+" "+str(self.e3)
 
     def translate(self, fd):
         inst = {
