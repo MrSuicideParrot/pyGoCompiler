@@ -12,6 +12,6 @@ func main() {
 	for i<b{
 		i=i+1;
 	}
-	fmt.Print(a);
+	fmt.Print(a,i);
 
 }

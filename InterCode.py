@@ -138,6 +138,7 @@ class Load(Instruction):
         return self.e1+'='+self.op
 
     def translate(self, fd):
+        vardic[self.op] = self.e1
         fd.write("\tlw "+self.e1+", "+self.op+"\n")
 
 
@@ -162,7 +163,12 @@ class LI(Instruction):
 """op=code of syscall"""
 class Syscall(Instruction):
     def __str__(self):
-        return "syscall "+str(self.op)+" "+str(self.e1)
+        if self.op == 5:
+            return 'read('+str(self.e1)+')'
+        elif self.op == 1:
+            return 'print('+str(self.e1)+')'
+        else:
+            return 'print(" ")'
 
     def translate(self, fd):
         LI('$v0', self.op).translate(fd)
@@ -171,7 +177,7 @@ class Syscall(Instruction):
             fd.write("\tsyscall\n")
             fd.write("\tadd "+str(self.e1)+", $v0, $zero\n")
         else:
-            fd.write("\tadd $a0, " + str(self.e1) +", $zero\n")
+            fd.write("\tadd $a0, " +"$zero, "+ str(vardic.get(self.e1,self.e1))+"\n")
             fd.write("\tsyscall\n")
 
 
@@ -182,7 +188,7 @@ class Register(str):
 
 class BIN(Instruction):
     def __str__(self):
-        return self.op+" "+self.e2+" "+self.e3
+        return str(self.op)+" "+str(self.e2)+" "+str(self.e3)
 
     def translate(self, fd):
         inst = {
@@ -190,6 +196,9 @@ class BIN(Instruction):
             '||':'or',
         }
         fd.write("\t"+inst[self.op]+" "+str(self.e1)+", "+str(self.e1)+", "+str(self.e2)+'\n')
+
+
+vardic = {}
 
 
 def printASM(file, instr3, tabela):
@@ -207,13 +216,10 @@ def printASM(file, instr3, tabela):
         i.translate(fd)
 
     fd.write('\tli $v0, 10\n\tsyscall\n')
+    #fd.write('\nscan:\n\tli $v0, 5\n\tsyscall\n\tsw $v0, 0($a0)\n\tjr $ra\n')
+    #fd.write('\nprint:\n\tli $v0, 1\n\tsyscall\n\tjr $ra\n')
     fd.close()
 
 def printInter(instr3):
     for i in instr3:
-        if str(i).split(' ')[0]!='syscall':
-            print(i)
-        elif str(i).split(' ')[1]=='5':
-            print('read('+str(i).split(' ')[2]+')')
-        elif str(i).split(' ')[1]=='1':
-            print('print('+str(i).split(' ')[2]+')')
+        print(i)

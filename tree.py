@@ -463,8 +463,8 @@ class ListPRI(ListCommand):
 
             lista.append(InterCode.Syscall(1,arg))      # Só imprime Inteiros
 
-            if right:  # Imprime espaço
-                lista.append(InterCode.Syscall(11,32))
+            #if right:  # Imprime espaço
+            lista.append(InterCode.Syscall(11,32))
 
         "Caso para progredir com a recursão"
         if right:

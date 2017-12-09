@@ -14,5 +14,5 @@ func main() {
     }
     a := -2;
 	a = -(2+2);
-	fmt.Print(a,v,d);
+	fmt.Print(a,b);
 }
