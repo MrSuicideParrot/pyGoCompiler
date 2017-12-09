@@ -138,6 +138,7 @@ class Load(Instruction):
         return self.e1+'='+self.op
 
     def translate(self, fd):
+        vardic[self.op] = self.e1
         fd.write("\tlw "+self.e1+", "+self.op+"\n")
 
 
@@ -164,8 +165,10 @@ class Syscall(Instruction):
     def __str__(self):
         if self.op == 5:
             return 'read('+str(self.e1)+')'
-        else:
+        elif self.op == 1:
             return 'print('+str(self.e1)+')'
+        else:
+            return 'print(" ")'
 
     def translate(self, fd):
         LI('$v0', self.op).translate(fd)
@@ -174,7 +177,7 @@ class Syscall(Instruction):
             fd.write("\tsyscall\n")
             fd.write("\tadd "+str(self.e1)+", $v0, $zero\n")
         else:
-            fd.write("\tadd $a0, " +"$zero, "+ str(self.e1)+"\n")
+            fd.write("\tadd $a0, " +"$zero, "+ str(vardic.get(self.e1,self.e1))+"\n")
             fd.write("\tsyscall\n")
 
 
@@ -195,6 +198,9 @@ class BIN(Instruction):
         fd.write("\t"+inst[self.op]+" "+str(self.e1)+", "+str(self.e1)+", "+str(self.e2)+'\n')
 
 
+vardic = {}
+
+
 def printASM(file, instr3, tabela):
     """
     :param file: ficheiro
@@ -210,6 +216,8 @@ def printASM(file, instr3, tabela):
         i.translate(fd)
 
     fd.write('\tli $v0, 10\n\tsyscall\n')
+    #fd.write('\nscan:\n\tli $v0, 5\n\tsyscall\n\tsw $v0, 0($a0)\n\tjr $ra\n')
+    #fd.write('\nprint:\n\tli $v0, 1\n\tsyscall\n\tjr $ra\n')
     fd.close()
 
 def printInter(instr3):
