@@ -471,8 +471,8 @@ class ListPRI(ListCommand):
                 lista.append(InterCode.LI(tmp, 10))
 
             lista.append(InterCode.Syscall(11, tmp))
-            Elemento.disAlloc([tmp])
-            
+            Elemento.disAlloc([tmp, arg])
+
         "Caso para progredir com a recursão"
         if right:
             lista = lista + right.recInstr(func)
