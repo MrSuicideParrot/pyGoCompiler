@@ -138,7 +138,7 @@ class Load(Instruction):
         return self.e1+'='+self.op
 
     def translate(self, fd):
-        vardic[self.op] = self.e1
+      #  vardic[self.op] = self.e1
         fd.write("\tlw "+self.e1+", "+self.op+"\n")
 
 
@@ -177,7 +177,7 @@ class Syscall(Instruction):
             fd.write("\tsyscall\n")
             fd.write("\tadd "+str(self.e1)+", $v0, $zero\n")
         else:
-            fd.write("\tadd $a0, " +"$zero, "+ str(vardic.get(self.e1,self.e1))+"\n")
+            fd.write("\tadd $a0, " +"$zero, "+ str(self.e1)+"\n")
             fd.write("\tsyscall\n")
 
 
@@ -198,7 +198,7 @@ class BIN(Instruction):
         fd.write("\t"+inst[self.op]+" "+str(self.e1)+", "+str(self.e1)+", "+str(self.e2)+'\n')
 
 
-vardic = {}
+#vardic = {}
 
 
 def printASM(file, instr3, tabela):
