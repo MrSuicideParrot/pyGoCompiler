@@ -38,8 +38,8 @@ def main():
         x= abstract_tree.getInstructionList()
         if args.print_inter:
             InterCode.printInter(x)
-        else:
-            InterCode.printASM("a.asm", x, table)
+
+        InterCode.printASM("a.asm", x, table)
 
 if __name__ == '__main__':
     main()

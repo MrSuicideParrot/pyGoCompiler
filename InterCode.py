@@ -162,7 +162,12 @@ class LI(Instruction):
 """op=code of syscall"""
 class Syscall(Instruction):
     def __str__(self):
-        return "syscall "+str(self.op)+" "+str(self.e1)
+        if self.op == 5:
+            return 'read('+str(self.e1)+')'
+        elif self.op == 1:
+            return 'print('+str(self.e1)+')'
+        else:
+            return 'syscall '+str(self.op)+' '+str(self.e1)
 
     def translate(self, fd):
         LI('$v0', self.op).translate(fd)
@@ -171,7 +176,7 @@ class Syscall(Instruction):
             fd.write("\tsyscall\n")
             fd.write("\tadd "+str(self.e1)+", $v0, $zero\n")
         else:
-            fd.write("\tadd $a0, " + str(self.e1) +", $zero\n")
+            fd.write("\tadd $a0, " +"$zero, "+ str(self.e1)+"\n")
             fd.write("\tsyscall\n")
 
 
@@ -211,9 +216,4 @@ def printASM(file, instr3, tabela):
 
 def printInter(instr3):
     for i in instr3:
-        if str(i).split(' ')[0]!='syscall':
-            print(i)
-        elif str(i).split(' ')[1]=='5':
-            print('read('+str(i).split(' ')[2]+')')
-        elif str(i).split(' ')[1]=='1':
-            print('print('+str(i).split(' ')[2]+')')
+        print(i)
