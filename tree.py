@@ -452,8 +452,9 @@ class ListPRI(ListCommand):
             lista.append(InterCode.Syscall(5,Elemento.tabela[left].getReg(lista)))
         elif func == 'Print':
             if type(left) != ExprAr and type(left) != ExprBo:
-                if type(left) == Boolean or type(left):
-                    arg = left.value[1]
+                if type(left) == Boolean or type(left) == Number:
+                    arg = Elemento.getVar()
+                    lista.append(InterCode.LI(arg,left.value[1]))
                 else:
                     arg = Elemento.tabela[left.value[1]].getReg(lista)
             else:
