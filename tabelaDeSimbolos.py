@@ -79,9 +79,13 @@ class Tabela(dict):
                 elif type(i) is tree.Equalizer:
                     var = i.children[0].value[1]
                     if var in self:
-                        if self[var].getType() != self.dic_tipos[i.children[1].value[0]]:
-                            print('ERROR: variable does not type')
-                            exit(1)
+                        if i.children[1].value[0] != 'ID':
+                            if self[var].getType() != self.dic_tipos[i.children[1].value[0]]:
+                                print('ERROR: variable does not type')
+                                exit(1)
+                        elif self[var].getType() != self[i.children[1].value[1]].getType():
+                                print('ERROR: variable does not type')
+                                exit(1)
                     else:
                         print('ERROR: variable does not exist')
                         exit(1)
