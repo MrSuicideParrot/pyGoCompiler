@@ -19,6 +19,8 @@ func main() {
 
 * Os tipos definidos no trabalho são valores do tipo Inteiro, Float ou Booleano.
 
+* Devido à ocorrência de problemas com o uso de floats em assembly MIPS, não nos foi possível implementar esta parte do trabalho na compilação do código assembly final para MIPS. 
+
 * Às variavies só podem ser atribuidos valores numéricos.
 
 * Todas as atribuições devem ser seguidas de um ";".
