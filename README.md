@@ -21,6 +21,8 @@ func main() {
 
 * Devido à ocorrência de problemas com o uso de floats em assembly MIPS, não nos foi possível implementar esta parte do trabalho na compilação do código assembly final para MIPS. 
 
+* A declaração de varáveis só pode acontecer uma única vez.
+
 * Às variavies só podem ser atribuidos valores numéricos.
 
 * Todas as atribuições devem ser seguidas de um ";".
