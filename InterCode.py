@@ -135,7 +135,7 @@ class Label(Instruction):
 """op=variavel reg"""
 class Load(Instruction):
     def __str__(self):
-        return self.e1+'='+self.op
+        return self.e1+':='+self.op
 
     def translate(self, fd):
       #  vardic[self.op] = self.e1
@@ -145,7 +145,7 @@ class Load(Instruction):
 """op=variavel reg"""
 class Store(Instruction):
     def __str__(self):
-        return self.op+'='+self.e1
+        return self.op+':='+self.e1
 
     def translate(self, fd):
         fd.write("\tsw "+self.e1+", "+self.op+"\n")
@@ -154,7 +154,7 @@ class Store(Instruction):
 """op = registo e1 = valor"""
 class LI(Instruction):
     def __str__(self):
-        return self.op+"="+str(self.e1)
+        return self.op+":="+str(self.e1)
 
     def translate(self, fd):
         fd.write("\tli "+self.op+", "+str(self.e1)+"\n")
@@ -164,7 +164,7 @@ class LI(Instruction):
 class Syscall(Instruction):
     def __str__(self):
         if self.op == 5:
-            return 'read('+str(self.e1)+')'
+            return str(self.e1)+':=read()'
         elif self.op == 1:
             return 'print('+str(self.e1)+')'
         else:
