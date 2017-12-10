@@ -96,6 +96,17 @@ class Tabela(dict):
                         if c not in self:
                             self[c] = self.Variavel(self, c, 'NUMBER' ) # Nao podemos perver tipos
 
+                elif type(i) is tree.Func and i.value[1] == "Print":
+                    lista = i.children[0].list()
+                    for c in lista:
+                        if c.value[0] is 'ID':
+                            if c.value[1] not in self:
+                                print('ERROR: variable does not exist')
+                                exit(1)
+                        else:
+                            self.create(c)
+
+
                 else:
                     self.create(i)
 
