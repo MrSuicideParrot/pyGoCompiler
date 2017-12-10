@@ -188,7 +188,7 @@ class Register(str):
 
 class BIN(Instruction):
     def __str__(self):
-        return str(self.op)+" "+str(self.e2)+" "+str(self.e3)
+        return str(self.op)+" "+str(self.e1)+" "+str(self.e2)
 
     def translate(self, fd):
         inst = {
